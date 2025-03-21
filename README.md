@@ -17,27 +17,15 @@ Please try to use short and descriptive names as far as practically possible
 
 ### Directories
 - Kabab-case
-- Examples:
-  - `assets`
-  - `root-directory`
-  - `components`
-  - `user-profiles`
+- Examples: `assets`, `root-directory`, `components`, `user-profiles`
 
 ### Files
 - Kabab-case:
 - Examples:
-  - **HTML:**
-    - `index.html`
-    - `about-us.html`
-  - **CSS:**
-    - `main-style.css`
-    - `reset.css`
-  - **JavaScript:**
-    - `app.js`
-    - `user-profile.js`
-  - **Images:**
-    - `background-image.png`
-    - `logo.svg`
+  - **HTML:** `index.html`, `about-us.html`
+  - **CSS:** `main-style.css`, `reset.css`
+  - **JavaScript:** `app.js`, `user-profile.js`
+  - **Images:** `background-image.png`, `logo.svg`
 
 ### HTML
 - IDs:
@@ -62,11 +50,7 @@ Please try to use short and descriptive names as far as practically possible
   - Example: `const API_URL = 'https://api.example.com';`
 - Routes (URLs)
   - Kabab-case
-  - Examples:
-    - `/about-us`
-    - `/user-profile`
-    - `/contact-support`
-
+  - Examples:  `/about-us`, `/user-profile`, `/contact-support`
 
 ## 2 How to Contribute
 Please note that the main branch is protected for security purposes. 
