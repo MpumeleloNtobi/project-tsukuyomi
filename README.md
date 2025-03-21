@@ -7,9 +7,66 @@ Group 35 Software Design Project 2025
 > 
 > None of us has the skillset but we all have the Work ethic and that will be more than enough.....🤝
 
+## 1 Naming Convention
+Please try to use short and descriptive names as far as practically possible
+
+### Definitions
+- Kabab-case: lowercase letters with hyphenation between words
+
+### Directories
+- Kabab-case
+- Examples:
+  - `assets`
+  - `root-directory`
+  - `components`
+  - `user-profiles`
+
+### Files
+- Kabab-case:
+- Examples:
+  - **HTML:**
+    - `index.html`
+    - `about-us.html`
+  - **CSS:**
+    - `main-style.css`
+    - `reset.css`
+  - **JavaScript:**
+    - `app.js`
+    - `user-profile.js`
+  - **Images:**
+    - `background-image.png`
+    - `logo.svg`
+
+### HTML
+- IDs:
+  - Kebab-case
+  - Example: `<div id="main-container">`
+- Classes:
+  - Kabab-case
+  - Example: `<div class="nav-item">`
+
+### JavaScript
+- Variables:
+  - camelCase
+  - Examples: `let userProfile;`
+- Functions:
+  - camelCase
+  - Examples: `function fetchData() { ... }` 
+- Classes:
+  - PascalCase
+  - Example: `class UserProfile { ... }`
+- Constants:
+  - UPPERCASE with underscores between words
+  - Example: `const API_URL = 'https://api.example.com';`
+- Routes (URLs)
+  - Kabab-case
+  - Examples:
+    - `/about-us`
+    - `/user-profile`
+    - `/contact-support`
 
 
-## 1 How to Contribute
+## 2 How to Contribute
 Please note that the main branch is protected for security purposes. 
 This means that you cannot push changes directly to the main branch. 
 Instead, you should create a pull request (PR) to propose and merge your changes. 
@@ -18,7 +75,6 @@ Therefore, follow these steps to propose any changes:
 
 ### Clone the Repository
   - If you haven’t already, clone the remote repository: `https://github.com/MpumeleloNtobi/project-tsukuyomi.git`
-  - If you haven’t already, clone the remote repository: ``
 
 ### Sync the Main Branch
 Ensure your local main branch is up to date: `git pull`
