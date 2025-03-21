@@ -11,7 +11,9 @@ Group 35 Software Design Project 2025
 Please try to use short and descriptive names as far as practically possible
 
 ### Definitions
-- Kabab-case: lowercase letters with hyphenation between words
+- Kabab-case: lowercase letters with hyphenation between words e.g. `variable-name`
+- camelCase: the first word is lowercase, and each subsequent word starts with a capital letter e.g. `variableName`
+- PascalCase: each word starts with a capital letter and no separators are used e.g. `VariableName`
 
 ### Directories
 - Kabab-case
