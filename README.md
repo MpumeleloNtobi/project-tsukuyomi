@@ -10,10 +10,15 @@ Group 35 Software Design Project 2025
 
 
 ## 1 How to Contribute
-Please note that the main branch has been locked for security purposes. Therefore, follow these steps to propose any changes:
+Please note that the main branch is protected for security purposes. 
+This means that you cannot push changes directly to the main branch. 
+Instead, you should create a pull request (PR) to propose and merge your changes. 
+
+Therefore, follow these steps to propose any changes:
 
 ### Clone the Repository
-  - If you haven’t already, clone the remote repository: `git clone https://github.com/MpumeleloNtobi/to-do-app.git`
+  - If you haven’t already, clone the remote repository: `https://github.com/MpumeleloNtobi/project-tsukuyomi.git`
+  - If you haven’t already, clone the remote repository: ``
 
 ### Sync the Main Branch
 Ensure your local main branch is up to date: `git pull`
