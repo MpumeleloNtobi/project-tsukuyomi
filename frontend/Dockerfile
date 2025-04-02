@@ -5,13 +5,13 @@ FROM node:18
 WORKDIR /app
 
 # Copy package.json and package-lock.json (if present)
-COPY frontend/sd-project/package*.json ./
+COPY frontend/package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the app
-COPY frontend/sd-project/ .
+COPY frontend/ .
 
 # Expose frontend port
 EXPOSE 3000
