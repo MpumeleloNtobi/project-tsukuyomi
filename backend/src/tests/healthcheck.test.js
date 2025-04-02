@@ -7,7 +7,6 @@ describe('Health Check Endpoint', () => {
     
     // Assert status code
     expect(response.status).toBe(200);
-
     // Assert response body contains { status: 'UP' }
     expect(response.body.status).toBe('UP');
   });
