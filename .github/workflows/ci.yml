@@ -7,7 +7,11 @@ on:
     paths:
       - 'frontend/**'
       - 'backend/**'
+    tags:
+      - '*' # Trigger on any tag creation
   pull_request:
+    branches:
+      - main
     paths:
       - 'frontend/**'
       - 'backend/**'
@@ -15,17 +19,16 @@ on:
 jobs:
   backend-tests:
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.head_commit.message, 'backend') || github.event_name == 'pull_request' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
+      - name: Install backend dependencies
         working-directory: ./backend
         run: npm install
 
@@ -35,20 +38,59 @@ jobs:
 
   frontend-tests:
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.head_commit.message, 'frontend') || github.event_name == 'pull_request' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         working-directory: ./frontend
         run: npm install
 
       - name: Run Frontend Tests
         working-directory: ./frontend
         run: npm test
+
+  build-and-push-images:
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to GitLab Container Registry
+        run: docker login -u ${{ secrets.GITLAB_USERNAME }} -p ${{ secrets.GITLAB_TOKEN }} registry.gitlab.com
+
+      - name: Build and push Backend QA image (on pull request)
+        if: github.event_name == 'pull_request'
+        working-directory: ./backend
+        run: |
+          docker build -t registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/qa-backend:${{ github.head_ref || github.run_id }} .
+          docker push registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/qa-backend:${{ github.head_ref || github.run_id }}
+
+      - name: Build and push Frontend QA image (on pull request)
+        if: github.event_name == 'pull_request'
+        working-directory: ./frontend
+        run: |
+          docker build -t registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/qa-frontend:${{ github.head_ref || github.run_id }} .
+          docker push registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/qa-frontend:${{ github.head_ref || github.run_id }}
+
+      - name: Build and push Backend Production image (on tag)
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        working-directory: ./backend
+        run: |
+          TAG_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/tags\///')
+          docker build -t registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/prd-backend:$TAG_NAME .
+          docker push registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/prd-backend:$TAG_NAME
+
+      - name: Build and push Frontend Production image (on tag)
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        working-directory: ./frontend
+        run: |
+          TAG_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/tags\///')
+          docker build -t registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/prd-frontend:$TAG_NAME .
+          docker push registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/prd-frontend:$TAG_NAME
