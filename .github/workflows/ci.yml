@@ -1,4 +1,4 @@
-name: CI for Frontend and Backend
+name: CI/CD - Build, Push, and Deploy
 
 on:
   push:
@@ -62,36 +62,151 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Login to GitLab Container Registry
-        run: |
-          echo "${{ secrets.GITLAB_TOKEN }}" | docker login -u "${{ secrets.GITLAB_USERNAME }}" --password-stdin registry.gitlab.com
+      # Login to Docker Hub (on tag only, for push)
+      - name: Login to Docker Hub (on tag only)
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Build and push Backend QA image (on pull request)
         if: github.event_name == 'pull_request'
         working-directory: ./backend
         run: |
-          docker build -t registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/qa-backend:${{ github.head_ref || github.run_id }} .
-          docker push registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/qa-backend:${{ github.head_ref || github.run_id }}
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/qa-backend:latest .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/qa-backend:latest
 
       - name: Build and push Frontend QA image (on pull request)
         if: github.event_name == 'pull_request'
         working-directory: ./frontend
         run: |
-          docker build -t registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/qa-frontend:${{ github.head_ref || github.run_id }} .
-          docker push registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/qa-frontend:${{ github.head_ref || github.run_id }}
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/qa-frontend:latest .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/qa-frontend:latest
 
       - name: Build and push Backend Production image (on tag)
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         working-directory: ./backend
         run: |
           TAG_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/tags\///')
-          docker build -t registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/prd-backend:$TAG_NAME .
-          docker push registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/prd-backend:$TAG_NAME
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/prd-backend:$TAG_NAME .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/prd-backend:$TAG_NAME
 
       - name: Build and push Frontend Production image (on tag)
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
         working-directory: ./frontend
         run: |
           TAG_NAME=$(echo "${{ github.ref }}" | sed 's/refs\/tags\///')
-          docker build -t registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/prd-frontend:$TAG_NAME .
-          docker push registry.gitlab.com/${{ secrets.GITLAB_NAMESPACE }}/prd-frontend:$TAG_NAME
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/prd-frontend:$TAG_NAME .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/prd-frontend:$TAG_NAME
+
+  deploy-qa:
+    runs-on: ubuntu-latest
+    needs: build-and-push-images
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Deploy Backend QA to Azure
+        uses: azure/CLI@v1
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          AZURE_CONTAINER_APP_ENVIRONMENT: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT }}
+          AZURE_CONTAINER_APP_NAME_QA_BACKEND: ${{ secrets.AZURE_CONTAINER_APP_NAME_QA_BACKEND }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+            az containerapp update \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --name "$AZURE_CONTAINER_APP_NAME_QA_BACKEND" \
+              --image "$DOCKER_HUB_USERNAME/qa-backend:latest" \
+              --registry-server "index.docker.io" \
+              --registry-username "$DOCKER_HUB_USERNAME" \
+              --registry-password "$DOCKER_HUB_TOKEN"
+
+      - name: Deploy Frontend QA to Azure
+        uses: azure/CLI@v1
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          AZURE_CONTAINER_APP_ENVIRONMENT: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT }}
+          AZURE_CONTAINER_APP_NAME_QA_FRONTEND: ${{ secrets.AZURE_CONTAINER_APP_NAME_QA_FRONTEND }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+            az containerapp update \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --name "$AZURE_CONTAINER_APP_NAME_QA_FRONTEND" \
+              --image "$DOCKER_HUB_USERNAME/qa-frontend:latest" \
+              --registry-server "index.docker.io" \
+              --registry-username "$DOCKER_HUB_USERNAME" \
+              --registry-password "$DOCKER_HUB_TOKEN"
+
+  deploy-prod:
+    runs-on: ubuntu-latest
+    needs: build-and-push-images
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Login to Docker Hub (if needed)
+        uses: docker/login-action@v2
+        if: ${{ secrets.DOCKER_HUB_TOKEN != '' }} # Only login if a token is provided
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Deploy Backend Prod to Azure
+        uses: azure/CLI@v1
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          AZURE_CONTAINER_APP_ENVIRONMENT: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT }}
+          AZURE_CONTAINER_APP_NAME_PROD_BACKEND: ${{ secrets.AZURE_CONTAINER_APP_NAME_PROD_BACKEND }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+          TAG_NAME: $(echo "${{ github.ref }}" | sed 's/refs\/tags\///')
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+            az containerapp update \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --name "$AZURE_CONTAINER_APP_NAME_PROD_BACKEND" \
+              --image "$DOCKER_HUB_USERNAME/prd-backend:$TAG_NAME" \
+              --registry-server "index.docker.io" \
+              --registry-username "$DOCKER_HUB_USERNAME" \
+              --registry-password "$DOCKER_HUB_TOKEN"
+
+      - name: Deploy Frontend Prod to Azure
+        uses: azure/CLI@v1
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          AZURE_CONTAINER_APP_ENVIRONMENT: ${{ secrets.AZURE_CONTAINER_APP_ENVIRONMENT }}
+          AZURE_CONTAINER_APP_NAME_PROD_FRONTEND: ${{ secrets.AZURE_CONTAINER_APP_NAME_PROD_FRONTEND }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+          TAG_NAME: $(echo "${{ github.ref }}" | sed 's/refs\/tags\///')
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+            az containerapp update \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --name "$AZURE_CONTAINER_APP_NAME_PROD_FRONTEND" \
+              --image "$DOCKER_HUB_USERNAME/prd-frontend:$TAG_NAME" \
+              --registry-server "index.docker.io" \
+              --registry-username "$DOCKER_HUB_USERNAME" \
+              --registry-password "$DOCKER_HUB_TOKEN"
