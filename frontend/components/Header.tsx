@@ -16,12 +16,12 @@ const Header = () => {
             <ul className="flex space-x-4">
               <li>
                 <Link href="/sellers">
-                  <Button variant="ghost">I'm a seller</Button>
+                  <Button variant="ghost">Im a seller</Button>
                 </Link>
               </li>
               <li>
                 <Link href="/buyers">
-                  <Button variant="ghost">I'm a buyer</Button>
+                  <Button variant="ghost">Im a buyer</Button>
                 </Link>
               </li>
 
