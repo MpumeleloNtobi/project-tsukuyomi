@@ -15,6 +15,7 @@ export default clerkMiddleware(async (auth, req) => {
   // If the user is a buyer, they can only access buyer routes
   // If the user is a seller, they can only access seller routes and buyer routes
   // If the user is not logged in, they can only access public routes
+  // Please submit PRS by the morning!
 
   switch (userRole) {
     case 'admin':
