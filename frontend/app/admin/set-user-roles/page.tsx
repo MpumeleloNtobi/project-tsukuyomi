@@ -1,7 +1,6 @@
 // import { SearchUsers } from "./SearchUsers";
 import { clerkClient } from '@clerk/nextjs/server'
 import { removeRole, setRole } from './actions'
-import Header from '@/components/Header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 

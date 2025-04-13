@@ -1,0 +1,21 @@
+name: Deploy PRD - CI/CD Pipeline
+
+on:
+    workflow_call:
+
+permissions:
+      id-token: write
+      contents: read
+jobs: 
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Azure
+        run: |
+          pip install azure-cli
+          az login --service-principal -u 4a1c0bb7-65b2-4a2d-960b-33828784a903 -p rXi8Q~~ZkVOZqIZ9sBDucNMmYZxOAKU7pacQAbL4 --tenant c9b42d4e-a281-4025-b38a-13df00e41887
+          az extension add --name containerapp --upgrade
+          az provider register --namespace Microsoft.App
+          az provider register --namespace Microsoft.OperationalInsights
+          az containerapp up --name prd-backend-storify --image docker.io/muaazbayat01/prd-sdproject-backend --resource-group sdproject --environment sdproject-env --ingress external --target-port 5000
+          az containerapp up --name prd-frontend-storify --image docker.io/muaazbayat01/prd-sdproject-frontend --resource-group sdproject --environment sdproject-env --ingress external --target-port 3000

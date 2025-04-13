@@ -1,0 +1,28 @@
+name: QA - CI/CD Pipeline
+# This workflow is triggered on pull requests to the main branch and builds, tests, and deploys the application to Azure Container Apps.
+# It also builds and pushes Docker images to Docker Hub for both the backend and frontend applications.
+# It uses reusable workflows for backend and frontend tests, and for building and pushing Docker images.
+# It also deploys the application to Azure Container Apps for both QA and production environments.
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  backend-tests:
+    uses: ./.github/workflows/test-backend.yml
+
+  frontend-tests:
+    uses: ./.github/workflows/test-frontend.yml
+
+  build-and-push-qa-images:
+    needs: [backend-tests, frontend-tests]
+    uses: ./.github/workflows/build-and-push-qa.yml
+    secrets:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+  
+  deploy-qa:
+    needs: [build-and-push-qa-images]
+    uses: ./.github/workflows/deploy-qa.yml
