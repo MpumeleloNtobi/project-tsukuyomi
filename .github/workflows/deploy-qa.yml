@@ -2,10 +2,6 @@ name: Deploy QA - CI/CD Pipeline
 
 on:
     workflow_call:
-
-permissions:
-      id-token: write
-      contents: read
 jobs: 
   build-and-deploy:
     runs-on: ubuntu-latest
