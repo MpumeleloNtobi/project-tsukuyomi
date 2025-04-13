@@ -25,6 +25,8 @@ module.exports = {
  
     // Handle module aliases
     '^@/components/(.*)$': '<rootDir>/components/$1',
+    '^@/components/ui/(.*)$': '<rootDir>/components/ui/$1',
+    '^@/lib/(.*)$': '<rootDir>/lib/$1',
  
     // Handle @next/font
     '@next/font/(.*)': `<rootDir>/__mocks__/nextFontMock.js`,
