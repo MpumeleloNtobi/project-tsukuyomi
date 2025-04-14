@@ -36,7 +36,15 @@ export default clerkMiddleware(async (auth, req) => {
       break
     case 'seller':
       // TODO: seller user trying to access seller routes
+      if (isSellerRoute(req)) {
+        return NextResponse.next();
+      }
       // TODO: seller user trying to access admin routes
+      if (isAdminRoute(req)) {
+        const url = new URL('/seller/home', req.url)
+        console.log('A seller cannot access admin routes. Redirecting ...:', url)
+        return NextResponse.redirect(url)
+      }
       break
     default:
       // user is not logged in
