@@ -30,10 +30,18 @@ export default clerkMiddleware(async (auth, req) => {
         return NextResponse.redirect(url)
       }
       break
-    case 'buyer':
-      // TODO: buyer user trying to access buyer routes
-      // TODO: buyer user trying to access admin routes or seller routes
-      break
+      case 'buyer':
+        if (isBuyerRoute(req)) {
+          return NextResponse.next()
+        }
+      
+        if (isAdminRoute(req) || isSellerRoute(req)) {
+          const url = new URL('/buyer/home', req.url)
+          console.log('A buyer cannot access admin or seller routes. Redirecting ...:', url)
+          return NextResponse.redirect(url)
+        }
+        break
+      
     case 'seller':
       // TODO: seller user trying to access seller routes
       // TODO: seller user trying to access admin routes
