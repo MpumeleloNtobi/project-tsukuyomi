@@ -39,9 +39,6 @@ A simple breakdown of the storify sitemap and functionality, built for local art
 
     * View order history.
     * View order details and tracking.
-* **Wishlist:**
-
-    * Save products to a wishlist.
 * **Payment:**
 
     * payment
