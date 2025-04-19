@@ -2,6 +2,7 @@
 // Description: This is the main entry point for the Express application.
 // It sets up the server, connects to the database, and defines the API routes everything.
 const express = require('express')
+const cors = require('cors');
 const { config } = require('dotenv')
 const { neon, sql: neonSqlHelper } = require('@neondatabase/serverless')
 config()
@@ -19,6 +20,7 @@ const getDb = () => {
 // 1. Create the application + use json
 const app = express()
 app.use(express.json())
+app.use(cors());
 const port = process.env.PORT || 5000
 
 app.get('/', async (_, res) => {
