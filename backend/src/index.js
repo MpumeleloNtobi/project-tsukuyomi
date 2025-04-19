@@ -106,42 +106,95 @@ app.post('/stores', async (req, res) => {
 })
 
 /*
-  / PUT update a specific store
-  */
+ * PUT /stores/:store_id - Update a specific store (Dynamically)
+ */
 app.put('/stores/:store_id', async (req, res) => {
-  const storeId = req.params.store_id
-  const { name } = req.body
+  const storeId = req.params.store_id;
 
-  // Name validation
-  if (!name) {
+  // --- Validate Store ID (assuming UUID) ---
+  if (!isValidUUID(storeId)) {
+      return res.status(400).json({ error: 'Invalid store ID format (must be a UUID).' });
+  }
+
+  // --- Build updates object and validate provided fields ---
+  const { name, status } = req.body; // Extract potential fields
+  const updates = {}; // Store validated fields to update
+  const columnMappings = { // Map request fields to DB columns (adjust if needed)
+      name: 'name',
+      status: 'status'
+  };
+  const allowedStatuses = ["awaiting approval", "approved", "watchlist", "banned"]; // Define valid statuses
+
+  // Validate 'name' if provided
+  if (name !== undefined) {
+      if (typeof name !== 'string' || name.trim() === '') { // Also check if empty/whitespace only
+          return res.status(400).json({ error: 'Name must be a non-empty string.' });
+      }
+      updates.name = name;
+  }
+
+  // Validate 'status' if provided
+  if (status !== undefined) {
+      if (typeof status !== 'string') {
+          return res.status(400).json({ error: 'Status must be a string.' });
+      }
+      if (!allowedStatuses.includes(status)) {
+           return res.status(400).json({ error: `Invalid status value. Allowed statuses are: ${allowedStatuses.join(', ')}.` });
+      }
+      updates.status = status;
+  }
+
+  const updateFields = Object.keys(updates);
+
+  // Check if there's anything valid to update
+  if (updateFields.length === 0) {
     return res
       .status(400)
-      .json({ error: 'Name is required for updating the store' })
+      .json({ error: 'No valid fields provided for update (provide name or status).' });
   }
-  if (typeof name !== 'string') {
-    return res.status(400).json({ error: 'Name must be a string' })
-  }
+
+  // --- Manually Construct the Query ---
+  const setClauses = [];
+  const values = [];
+  let placeholderIndex = 1;
+
+  updateFields.forEach((fieldKey) => {
+    // Get the correct DB column name
+    const columnName = columnMappings[fieldKey]; // Assumes simple lowercase names for stores
+    setClauses.push(`${columnName} = $${placeholderIndex}`);
+    values.push(updates[fieldKey]); // Add the value to the parameters array
+    placeholderIndex++;
+  });
+
+  // Add the store ID for the WHERE clause as the last parameter
+  values.push(storeId);
+
+  const queryString = `
+      UPDATE stores
+      SET ${setClauses.join(', ')}
+      WHERE id = $${placeholderIndex} -- Use the next placeholder index for the id
+      RETURNING *;
+    `;
+   // Example queryString (if both name and status provided):
+   // "UPDATE stores SET name = $1, status = $2 WHERE id = $3 RETURNING *;"
+   // Example values: ["New Store Name", "approved", "uuid-string-here"]
 
   try {
-    const sql = getDb()
-    // SQL: Update using template literals for parameters.
-    const updatedStores = await sql`
-        UPDATE stores
-        SET name = ${name}
-        WHERE id = ${storeId}
-        RETURNING *;
-      `
+    const sql = getDb();
+    // Use sql.query() for conventional query string + parameters array
+    const updatedStores = await sql.query(queryString, values);
 
     if (updatedStores.length === 0) {
-      // RETURNING * gave back an empty array, meaning the WHERE clause didn't match.
-      return res.status(404).json({ error: 'Store not found' })
+      // WHERE clause didn't match any rows
+      return res.status(404).json({ error: 'Store not found.' });
     }
-    res.json(updatedStores[0]) // Send back the updated store object
+    res.json(updatedStores[0]); // Send back the updated store object
   } catch (error) {
-    console.error('Error updating store:', error)
-    res.status(500).json({ error: 'Error updating store' })
+    console.error('Error updating store:', error);
+    // Consider adding specific error handling if needed (e.g., constraint violations)
+    res.status(500).json({ error: 'Error updating store' });
   }
-})
+});
 
 /*
   / DELETE a specific store
