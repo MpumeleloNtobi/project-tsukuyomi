@@ -10,14 +10,12 @@ function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
-  console.log("NEXT_PUBLIC_BACKEND_URL", BACKEND_URL);
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`${BACKEND_URL}/products`); // Replace with your API endpoint
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products`); // Replace with your API endpoint
         if (!response.ok) {
           throw new Error(
             `Failed to fetch products: ${response.status} ${response.statusText}`,
