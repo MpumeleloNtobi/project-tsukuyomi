@@ -5,6 +5,7 @@
 import { useState, useEffect } from "react";
 import { type Product } from "@/app/data/product";
 import ProductGallery  from "@/components/ProductGallery"
+import Header from "@/components/Header";
 
 function Home() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -44,6 +45,7 @@ function Home() {
 
   return (
     <>
+    <Header/>
     <div className="flex min-h-screen flex-col">
       <main className="flex-grow">
       <div>
