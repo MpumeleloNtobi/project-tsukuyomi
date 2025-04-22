@@ -1,0 +1,105 @@
+-- ============================================================================
+--  SAMPLE DATA FOR STORES TABLE
+-- ============================================================================
+-- (Assuming stores table has columns: id UUID PRIMARY KEY, "clerkId" TEXT, name TEXT)
+-- (Replace clerkId values if needed)
+
+-- Generate UUIDs (You can use SELECT uuid_generate_v4(); in psql if the extension is enabled,
+-- or generate them beforehand as done here)
+-- Store 1 UUID:
+DEFINE store1_uuid = 'user_2vufeilp3DRjLzCC6lWPAddIFV9';
+-- Store 2 UUID:
+DEFINE store2_uuid = 'user_2vufbzA1XO3IC5URybugXmMROs6';
+-- Store 3 UUID:
+DEFINE store3_uuid = 'user_2vufimsf1Zwt19Pt4GUSWU3KVQ8';
+
+INSERT INTO stores (id, "clerkId", name) VALUES
+('&store1_uuid', 'clerk_gadget_001', 'Gadget Galaxy'),
+('&store2_uuid', 'clerk_home_002', 'Home Harmony'),
+('&store3_uuid', 'clerk_outdoor_003', 'Outdoor Outfitters');
+
+
+-- ============================================================================
+--  SAMPLE DATA FOR PRODUCTS TABLE
+-- ============================================================================
+-- (Assuming products table columns: id SERIAL/IDENTITY, "storeId" UUID, name TEXT,
+--  description TEXT, price DOUBLE PRECISION, "stockQuantity" INTEGER,
+--  category TEXT, "imageUrl" TEXT)
+
+-- -----------------------------------------
+-- Products for Store 1: Gadget Galaxy (&store1_uuid)
+-- -----------------------------------------
+
+INSERT INTO products ("storeId", name, description, price, "stockQuantity", category, "imageUrl") VALUES
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Smartphone Z', 'Latest generation smartphone with AI camera.', 799.99, 50, 'Electronics', 'https://placehold.co/300x300?text=Smartphone+Z'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Noise-Cancelling Headphones', 'Immersive sound experience, perfect for travel.', 149.50, 75, 'Audio', 'https://placehold.co/300x300?text=Headphones'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Wireless Charger Pad', 'Fast charging for compatible devices.', 39.99, 120, 'Accessories', 'https://placehold.co/300x300?text=Wireless+Charger'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Smartwatch Series 5', 'Track fitness, notifications, and more.', 249.00, 40, 'Wearables', 'https://placehold.co/300x300?text=Smartwatch+5'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Portable Power Bank 10000mAh', 'Charge your devices on the go.', 25.99, 150, 'Accessories', 'https://placehold.co/300x300?text=Power+Bank'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Bluetooth Speaker Mini', 'Compact speaker with rich sound.', 45.00, 90, 'Audio', 'https://placehold.co/300x300?text=BT+Speaker+Mini'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Gaming Mouse RGB', 'High precision mouse for gaming enthusiasts.', 59.99, 65, 'Peripherals', 'https://placehold.co/300x300?text=Gaming+Mouse'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Mechanical Keyboard', 'Tactile keyboard for typing and gaming.', 89.99, 55, 'Peripherals', 'https://placehold.co/300x300?text=Mech+Keyboard'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Webcam HD 1080p', 'Clear video for calls and streaming.', 49.95, 80, 'Peripherals', 'https://placehold.co/300x300?text=Webcam+HD'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Tablet Pro 11-inch', 'Powerful tablet for work and play.', 499.00, 30, 'Electronics', 'https://placehold.co/300x300?text=Tablet+Pro'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'E-Reader Glo', 'Read books comfortably day or night.', 129.99, 70, 'Electronics', 'https://placehold.co/300x300?text=E-Reader'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Smart Light Bulb Color', 'Control lighting with your voice or app.', 19.99, 200, 'Smart Home', 'https://placehold.co/300x300?text=Smart+Bulb'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Drone Mini Explorer', 'Easy-to-fly drone with camera.', 99.00, 25, 'Gadgets', 'https://placehold.co/300x300?text=Drone+Mini'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'USB-C Hub Multiport', 'Expand connectivity for your laptop.', 34.50, 110, 'Accessories', 'https://placehold.co/300x300?text=USB-C+Hub'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Screen Protector Glass', 'Protect your Smartphone Z screen.', 9.99, 300, 'Accessories', 'https://placehold.co/300x300?text=Screen+Protector'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Laptop Stand Adjustable', 'Ergonomic stand for comfortable work.', 22.99, 85, 'Accessories', 'https://placehold.co/300x300?text=Laptop+Stand'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'VR Headset Vision', 'Immersive virtual reality experience.', 299.00, 15, 'Gadgets', 'https://placehold.co/300x300?text=VR+Headset'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Smart Plug Wi-Fi', 'Control appliances remotely.', 12.99, 180, 'Smart Home', 'https://placehold.co/300x300?text=Smart+Plug'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Wireless Earbuds Air', 'True wireless freedom with great sound.', 79.99, 95, 'Audio', 'https://placehold.co/300x300?text=Earbuds+Air'),
+('fd8c40fb-104f-46c4-bb8b-2c3f4bc2c69c', 'Gaming Headset Surround', 'Hear every detail in your games.', 69.95, 45, 'Audio', 'https://placehold.co/300x300?text=Gaming+Headset');
+
+-- -----------------------------------------
+-- Products for Store 2: Home Harmony (&store2_uuid)
+-- -----------------------------------------
+
+INSERT INTO products ("storeId", name, description, price, "stockQuantity", category, "imageUrl") VALUES
+('22247c9f-5eed-4030-b14b-957233143c74', 'Ceramic Vase Abstract', 'Modern design vase for flowers or decor.', 35.50, 60, 'Decor', 'https://placehold.co/300x300?text=Ceramic+Vase'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Throw Pillow Velvet', 'Soft and luxurious cushion for sofa or bed.', 24.99, 100, 'Textiles', 'https://placehold.co/300x300?text=Velvet+Pillow'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Wooden Cutting Board', 'Durable acacia wood board for kitchen prep.', 29.95, 80, 'Kitchenware', 'https://placehold.co/300x300?text=Cutting+Board'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'LED Floor Lamp', 'Adjustable brightness floor lamp.', 79.00, 40, 'Lighting', 'https://placehold.co/300x300?text=Floor+Lamp'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Storage Basket Woven', 'Natural seagrass basket for organization.', 19.99, 120, 'Storage', 'https://placehold.co/300x300?text=Woven+Basket'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Wall Mirror Round Gold', 'Elegant round mirror with gold frame.', 55.00, 50, 'Decor', 'https://placehold.co/300x300?text=Round+Mirror'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Dinnerware Set (16pc)', 'Service for 4, durable stoneware.', 89.99, 35, 'Kitchenware', 'https://placehold.co/300x300?text=Dinnerware+Set'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Duvet Cover Set Queen', 'Soft cotton duvet cover and pillow shams.', 65.00, 70, 'Bedding', 'https://placehold.co/300x300?text=Duvet+Cover'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Bookshelf 5-Tier', 'Industrial style bookshelf for display.', 119.99, 25, 'Furniture', 'https://placehold.co/300x300?text=Bookshelf'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Scented Candle Lavender', 'Relaxing lavender scent, long burn time.', 15.95, 150, 'Decor', 'https://placehold.co/300x300?text=Scented+Candle'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Kitchen Utensil Set Silicone', 'Non-stick utensils with holder.', 32.99, 90, 'Kitchenware', 'https://placehold.co/300x300?text=Utensil+Set'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Bath Towel Set Cotton', 'Absorbent and soft bath towels (Set of 4).', 42.00, 110, 'Bath', 'https://placehold.co/300x300?text=Towel+Set'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Desk Lamp LED Modern', 'Minimalist desk lamp with USB port.', 38.50, 75, 'Lighting', 'https://placehold.co/300x300?text=Desk+Lamp'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Picture Frame Set (7pc)', 'Various sizes for creating a gallery wall.', 45.99, 65, 'Decor', 'https://placehold.co/300x300?text=Picture+Frames'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Area Rug Geometric 5x7', 'Stylish rug to define living spaces.', 139.00, 20, 'Rugs', 'https://placehold.co/300x300?text=Area+Rug'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Coffee Maker Drip 12-Cup', 'Programmable coffee maker.', 55.99, 55, 'Appliances', 'https://placehold.co/300x300?text=Coffee+Maker'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Knife Block Set Stainless', 'Sharp knives with wooden block.', 99.95, 30, 'Kitchenware', 'https://placehold.co/300x300?text=Knife+Set'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Wall Clock Minimalist', 'Silent non-ticking wall clock.', 28.00, 95, 'Decor', 'https://placehold.co/300x300?text=Wall+Clock'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Placemat Set Woven (Set of 4)', 'Protect your table in style.', 18.99, 130, 'Tableware', 'https://placehold.co/300x300?text=Placemats'),
+('22247c9f-5eed-4030-b14b-957233143c74', 'Artificial Plant Fiddle Leaf', 'Low maintenance greenery for any room.', 49.99, 60, 'Decor', 'https://placehold.co/300x300?text=Artificial+Plant');
+
+-- -----------------------------------------
+-- Products for Store 3: Outdoor Outfitters (&store3_uuid)
+-- -----------------------------------------
+
+INSERT INTO products ("storeId", name, description, price, "stockQuantity", category, "imageUrl") VALUES
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Camping Tent 4-Person', 'Waterproof dome tent, easy setup.', 129.99, 30, 'Camping Gear', 'https://placehold.co/300x300?text=4P+Tent'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Hiking Backpack 50L', 'Durable backpack with rain cover.', 89.50, 50, 'Backpacks', 'https://placehold.co/300x300?text=Hiking+Backpack'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Sleeping Bag 3-Season', 'Comfortable sleeping bag for moderate temps.', 65.00, 70, 'Camping Gear', 'https://placehold.co/300x300?text=Sleeping+Bag'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Camping Chair Folding', 'Lightweight and portable chair.', 29.99, 100, 'Camping Furniture', 'https://placehold.co/300x300?text=Camping+Chair'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Insulated Water Bottle 32oz', 'Keeps drinks cold or hot for hours.', 24.95, 150, 'Drinkware', 'https://placehold.co/300x300?text=Water+Bottle'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Headlamp LED Rechargeable', 'Bright hands-free lighting for trails.', 19.99, 120, 'Lighting', 'https://placehold.co/300x300?text=Headlamp'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Hiking Boots Waterproof Men', 'Supportive boots for tough terrain (Size 10).', 119.00, 40, 'Footwear', 'https://placehold.co/300x300?text=Hiking+Boots+M'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Hiking Boots Waterproof Women', 'Comfortable boots for trails (Size 8).', 115.00, 45, 'Footwear', 'https://placehold.co/300x300?text=Hiking+Boots+W'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Camping Stove Portable Propane', 'Single burner stove for cooking outdoors.', 45.99, 55, 'Cooking Gear', 'https://placehold.co/300x300?text=Camping+Stove'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Cooler Box 48-Quart', 'Keeps food and drinks cold for days.', 59.95, 25, 'Coolers', 'https://placehold.co/300x300?text=Cooler+Box'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Trekking Poles Carbon Fiber', 'Lightweight poles for stability.', 75.00, 60, 'Hiking Gear', 'https://placehold.co/300x300?text=Trekking+Poles'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Hammock Double Nylon', 'Relaxing hammock for two.', 39.99, 80, 'Camping Furniture', 'https://placehold.co/300x300?text=Hammock'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'First Aid Kit Outdoor', 'Comprehensive kit for minor injuries.', 28.50, 90, 'Safety', 'https://placehold.co/300x300?text=First+Aid+Kit'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Binoculars Compact 8x42', 'Clear viewing for birdwatching or scenery.', 99.00, 35, 'Optics', 'https://placehold.co/300x300?text=Binoculars'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Campfire Roasting Sticks (Set of 4)', 'Extendable sticks for marshmallows.', 14.99, 110, 'Cooking Gear', 'https://placehold.co/300x300?text=Roasting+Sticks'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Solar Charger Panel 10W', 'Charge devices using solar power.', 49.99, 40, 'Electronics', 'https://placehold.co/300x300?text=Solar+Panel'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Water Filter Straw Personal', 'Filter water directly from sources.', 21.95, 130, 'Water Treatment', 'https://placehold.co/300x300?text=Water+Filter+Straw'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Dry Bag Waterproof 20L', 'Keep gear dry during water activities.', 18.99, 85, 'Bags', 'https://placehold.co/300x300?text=Dry+Bag'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Camping Lantern LED', 'Bright area lighting for campsite.', 26.99, 75, 'Lighting', 'https://placehold.co/300x300?text=Camping+Lantern'),
+('9ea613f1-5708-496c-9c2a-5aac3c9a1b66', 'Multi-Tool Pocket Knife', 'Versatile tool for various tasks.', 32.95, 100, 'Tools', 'https://placehold.co/300x300?text=Multi-Tool');
