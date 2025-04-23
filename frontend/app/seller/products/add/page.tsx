@@ -1,5 +1,7 @@
 'use client'
-import React, { useState } from 'react';
+
+
+/*import React, { useState } from 'react';
 
 function Addnewproduct() {
   const [productName, setProductName] = useState('');
@@ -141,3 +143,13 @@ function Addnewproduct() {
 }
 
 export default Addnewproduct;
+*/
+import {ProfileForm} from "@/components/forms/addproductform"
+
+
+function AddProduct(){
+  return(<>
+  <ProfileForm></ProfileForm>;
+  </>)
+}
+export default AddProduct;
