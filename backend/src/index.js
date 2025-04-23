@@ -7,6 +7,7 @@ const { config } = require('dotenv')
 const { neon, sql: neonSqlHelper } = require('@neondatabase/serverless')
 config()
 
+
 // Helper function to get the SQL query function
 // This ensures you're using the DATABASE_URL from your environment
 const getDb = () => {
@@ -532,6 +533,13 @@ app.delete('/products/:product_id', async (req, res) => {
 })
 
 // LAST STEP: Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`)
-})
+// Start the server only if this file is run directly (not imported for testing)
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`)
+  })
+}
+
+// Export app for testing purposes
+module.exports = app
+
