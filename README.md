@@ -1,5 +1,6 @@
 # Project Tsukuyomi Group 35 SD - Project
 # Artisanal crafts and stores market
+Smiley face
 
 [![Coverage Status](https://coveralls.io/repos/github/MpumeleloNtobi/project-tsukuyomi/badge.svg?branch=uncleguspacho-patch-5)](https://coveralls.io/github/MpumeleloNtobi/project-tsukuyomi?branch=uncleguspacho-patch-5)
 
