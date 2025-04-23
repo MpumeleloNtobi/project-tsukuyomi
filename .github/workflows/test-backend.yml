@@ -22,3 +22,6 @@ jobs:
       - name: Run Backend Tests
         working-directory: ./backend
         run: npm test
+        
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
