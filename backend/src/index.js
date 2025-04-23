@@ -30,6 +30,11 @@ app.get('/', async (_, res) => {
   res.json({ version })
 })
 
+app.get('/api/health', async (_, res) => {
+  res.json({ status: 'UP' })
+}
+)
+
 /*
 /            _                      
 /        ___| |_ ___  _ __ ___  ___ 
@@ -532,8 +537,11 @@ app.delete('/products/:product_id', async (req, res) => {
 })
 
 // LAST STEP: Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`)
-})
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`)
+  })
+}
 
-module.exports = app;
+// Export app for testing purposes
+module.exports = app
