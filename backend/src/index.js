@@ -537,9 +537,11 @@ app.delete('/products/:product_id', async (req, res) => {
 })
 
 // LAST STEP: Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`)
-})
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`)
+  })
+}
 
 // Export app for testing purposes
 module.exports = app
