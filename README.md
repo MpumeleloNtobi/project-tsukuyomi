@@ -5,6 +5,7 @@
 
 ## 1 Naming Convention
 Please try to use short and descriptive names as far as practically possible
+We need clear reuslts
 
 ### Definitions
 - Kabab-case: lowercase letters with hyphenation between words e.g. `variable-name`
