@@ -11,9 +11,9 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-  
-
-import { Button } from "@/components/ui/button"
+  import { toast } from "sonner"
+ 
+  import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -56,11 +56,10 @@ export function ProfileForm() {
     },
   })
 
-  
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-  //submit everything to the API
-  console.log("submitted", values);
-  router.push("/seller/products");
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values)
   }
 
   return (
@@ -144,8 +143,9 @@ export function ProfileForm() {
               </FormItem>
             )}
           />
-  
+          
           <Button type="submit" className="w-full">Submit</Button>
+  
         </form>
       </Form>
     </div>
