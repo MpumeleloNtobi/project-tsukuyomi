@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server'
 // Define route protection rules here:
 const isAdminRoute = createRouteMatcher(['/admin(.*)'])
 const isBuyerRoute = createRouteMatcher(['/buyer(.*)'])
+const isSellerSignUpRoute = createRouteMatcher(['/seller/store/create'])
 const isSellerRoute = createRouteMatcher(['/seller(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
@@ -34,7 +35,10 @@ export default clerkMiddleware(async (auth, req) => {
       if (isBuyerRoute(req)) {
         return NextResponse.next()
       }
-    
+      if (isSellerSignUpRoute(req))
+      {
+        return NextResponse.next()
+      }
       if (isAdminRoute(req) || isSellerRoute(req)) {
         const url = new URL('/buyer/home', req.url)
         console.log('A buyer cannot access admin or seller routes. Redirecting ...:', url)
