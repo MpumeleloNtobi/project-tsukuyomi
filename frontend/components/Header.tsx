@@ -3,8 +3,19 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-
+import { useUser } from '@clerk/nextjs'
 const Header = () => {
+  const { user } = useUser()
+  const role = user?.publicMetadata.role
+  if (role==='buyer')
+  {
+      const isBuyer = true;
+  }
+  else
+  {
+    const isBuyer = false;
+  }
+
   return (
     <header className="border-b bg-white">
       <div className="container mx-auto px-4">
@@ -14,26 +25,31 @@ const Header = () => {
           </Link>
           <nav>
             <ul className="flex space-x-4">
-              <li>
-                <Link href="/sellers">
-                  <Button variant="ghost">I am a seller</Button>
-                </Link>
-              </li>
-              <li>
-                <Link href="/buyers">
-                  <Button variant="ghost">I am a buyer</Button>
-                </Link>
-              </li>
-
               <SignedIn>
+                { user?.publicMetadata.role==="buyer"?(
+                  <>
+                  <Button variant={'outline'}><a href='/seller/store/create'>Sell on Storify</a></Button>
+                  <Button variant={'outline'}><a href='/buyer/home'>My Acc</a></Button>
+                  </>
+                ):(
+                  <>
+                  <Button variant={'outline'}><a href='/seller/dashboard'>Dashboard</a></Button>
+                  </>
+                )}
                 <li className="flex items-center">
                   <UserButton />
                 </li>
               </SignedIn>
               <SignedOut>
-                <li className="flex items-center rounded bg-black px-2 font-bold text-white">
+              <div className="inline-flex items-center justify-center
+            px-4 py-2
+            font-medium
+            rounded-md
+            transition-colors duration-200
+            focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
+            disabled:opacity-50 disabled:pointer-events-none bg-black text-white">
                   <SignInButton mode="modal" />
-                </li>
+                </div>
               </SignedOut>
             </ul>
           </nav>

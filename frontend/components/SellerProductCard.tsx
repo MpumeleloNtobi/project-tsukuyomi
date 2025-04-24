@@ -14,7 +14,7 @@ interface ProductCardProps {
   alt: string
 }
 
-export default function ProductCard({
+export default function SellerProductCard({
   name = "Nike Air MX Super 2500 - Red",
   price = 449,
   image = "/placeholder.svg?height=300&width=300",
@@ -46,9 +46,6 @@ export default function ProductCard({
         </div>
         
       </CardContent>
-      <CardFooter className="p-4 pt-3">
-        <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white">Add to cart</Button>
-      </CardFooter>
     </Card>
   )
 }
