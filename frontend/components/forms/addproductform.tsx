@@ -24,6 +24,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
+
 
 
 const formSchema = z.object({
@@ -67,6 +69,8 @@ async function createProduct(data: z.infer<typeof formSchema>, storeId: string) 
 export default function ProductForm() {
   // 1. Use the useForm hook to define the form and bind it with validation schema
   //set the default values
+  const router = useRouter()
+
   const { user } = useUser()
 
   // Piece of state to hold the storeId
@@ -104,7 +108,9 @@ export default function ProductForm() {
       error: (error) => {
         return `Error adding product: ${error.message}`;
       },
+
     });
+    router.push("/seller/dashboard");
   }
 
   return (
