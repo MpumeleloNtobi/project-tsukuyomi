@@ -1,6 +1,4 @@
-
 "use client"
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -11,9 +9,11 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-  import { toast } from "sonner"
- 
-  import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import { Plus } from 'lucide-react';
+import { useEffect, useState } from "react"
+import { useUser } from "@clerk/nextjs"
 import {
   Form,
   FormControl,
@@ -25,39 +25,86 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-//We define the form schema/model and then inside is simple the validation logic
+
 const formSchema = z.object({
-  ProductName: z.string().min(4, {
-    message: "Product name must have atleast 4 characters",
-  }),
+  ProductName: z.string().min(4, {message: "Product name must have atleast 4 characters"}),
+  Description: z.string().min(10, {message: "Description must have atleast 10 characters"}),
   Productprice: z.coerce.number().min(1, "Price must be at least 1"),
   Quantity : z.coerce.number().int("Must be an integer").min(1, "Quantity must be at least 1"),
-  Description : z.string().min(15,{message : "The description must be atleast 15  characters"}),
   Category : z.string().min(3,{message :"we're still going to validate Category"})
-
-
 })
 
-// ProfileForm component, where form logic is defined
-export function ProfileForm() {
-    const router=useRouter();
+// Function to simulate the API call
+async function createProduct(data: z.infer<typeof formSchema>, storeId: string) {
+  const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/products`;
+
+  const productData = {
+    storeId: storeId,
+    name: data.ProductName,
+    description: data.Description,
+    price: data.Productprice,
+    stockQuantity: data.Quantity,
+    category: data.Category,
+    imageUrl: " ", // Ignoring imageUrl as requested
+  };
+
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(productData),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Failed to add product');
+  }
+
+  return response.json();
+}
+
+export default function ProductForm() {
   // 1. Use the useForm hook to define the form and bind it with validation schema
   //set the default values
+  const { user } = useUser()
+
+  // Piece of state to hold the storeId
+  const [storeId, setStoreId] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (user) {
+      setStoreId(user?.publicMetadata?.storeId as string | undefined);
+    }
+  }, [user]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ProductName: "",
-      Productprice:0,
-      Quantity : 0,
-      Description :"",
+      Description: "",
+      Productprice:1,
+      Quantity : 1,
       Category :""
-
-
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!storeId) {
+      toast.error("Store ID not found. Please ensure you are logged in and have a store associated with your account.");
+      return;
+    }
+
+    toast.promise(createProduct(values, storeId), {
+      loading: 'Adding product...',
+      success: (data) => {
+        form.reset(); // Optionally reset the form after successful submission
+        return `${values.ProductName} has been added successfully!`;
+      },
+      error: (error) => {
+        return `Error adding product: ${error.message}`;
+      },
+    });
   }
 
   return (
@@ -75,14 +122,30 @@ export function ProfileForm() {
                   <Input placeholder="Please enter name" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is the name we're gonna assign to the product
+                  Give your product a clear and concise name that will help customers identify it.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-  
-          {/* Field 2: Product Price */}
+          {/* Field 2: Description */}
+          <FormField
+            control={form.control}
+            name="Description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter a detailed description" {...field} />
+                </FormControl>
+                <FormDescription>
+                Provide a comprehensive overview of your products features, benefits, and any other relevant details.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* Field 3: Product Price */}
           <FormField
             control={form.control}
             name="Productprice"
@@ -90,15 +153,15 @@ export function ProfileForm() {
               <FormItem>
                 <FormLabel>Price</FormLabel>
                 <FormControl>
-                  <Input 
+                  <Input
                     type="number" placeholder="Please enter Price" {...field}/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-  
-          {/* Field 3: Category */}
+
+          {/* Field 4: Category */}
           <FormField
             control={form.control}
             name="Category"
@@ -124,14 +187,14 @@ export function ProfileForm() {
               </FormItem>
             )}
           />
-  
-          {/* Field 4: Quantity */}
+
+          {/* Field 5: Quantity */}
           <FormField
             control={form.control}
             name="Quantity"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Quantity of this product</FormLabel>
+                <FormLabel>Quantity in stock</FormLabel>
                 <FormControl>
                   <Input
                     type="number" placeholder="Please enter Quantity" {...field}
@@ -141,12 +204,12 @@ export function ProfileForm() {
               </FormItem>
             )}
           />
-          
-          <Button type="submit" className="w-full">Submit</Button>
-  
+          <div>
+            <Button type="submit" className="w-full"><Plus/>Add product</Button>
+          </div>
+
         </form>
       </Form>
     </div>
   );
 }
-  
