@@ -42,7 +42,7 @@ export default function ProductCard({
       <CardContent className="p-4 pt-3 pb-0">
         <h3 className="text-sm font-medium text-gray-900 mb-1">{name}</h3>
         <div className="flex items-center gap-2">
-          <span className="text-xl font-bold">${price}</span>
+          <span className="text-xl font-bold">R{price}</span>
         </div>
         
       </CardContent>
