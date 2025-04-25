@@ -47,7 +47,7 @@ async function createProduct(data: z.infer<typeof formSchema>, storeId: string) 
     price: data.Productprice,
     stockQuantity: data.Quantity,
     category: data.Category,
-    imageUrl: `https://placehold.co/600x400?text=${name.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
+    imageUrl: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
   };
 
   const response = await fetch(apiUrl, {

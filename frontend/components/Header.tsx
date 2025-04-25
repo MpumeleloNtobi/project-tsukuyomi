@@ -28,7 +28,7 @@ const Header = () => {
               <SignedIn>
                 { user?.publicMetadata.role==="buyer"?(
                   <>
-                  <Button variant={'outline'}><a href='/seller/store/create'>Sell on Storify</a></Button>
+                  <Button variant={'outline'}><Link href='/seller/store/create'>Sell on Storify</Link></Button>
                   <Button variant={'outline'}><a href='/buyer/home'>My Acc</a></Button>
                   </>
                 ):(
