@@ -7,7 +7,7 @@ name: QA - CI/CD Pipeline
 on:
   pull_request:
     branches:
-      - main
+      - develop
 
 jobs:
   backend-tests:
