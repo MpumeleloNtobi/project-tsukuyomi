@@ -1,7 +1,5 @@
 'use server'
 import { clerkClient } from '@clerk/nextjs/server'
-import { revalidatePath } from 'next/cache';       // <-- Import revalidatePath
-import { redirect } from 'next/navigation';     // <-- Import redirect
 
 export async function setRole(formData: FormData): Promise<void> {
   const client = await clerkClient()
