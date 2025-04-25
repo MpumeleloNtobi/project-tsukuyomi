@@ -10,11 +10,11 @@ config()
 // Helper function to get the SQL query function
 // This ensures you're using the DATABASE_URL from your environment
 const getDb = () => {
-  if (!process.env.DATABASE_URL) {
+  if (!process.env.Test_DATABASE_URL) {
     throw new Error('DATABASE_URL environment variable is not set.')
   }
   // Initialize neon sql function for each request (common pattern for serverless)
-  return neon(process.env.DATABASE_URL)
+  return neon(process.env.Test_DATABASE_URL)
 }
 
 // 1. Create the application + use json
@@ -24,7 +24,7 @@ app.use(cors());
 const port = process.env.PORT || 5000
 
 app.get('/', async (_, res) => {
-  const sql = neon(`${process.env.DATABASE_URL}`)
+  const sql = neon(`${process.env.Test_DATABASE_URL}`)
   const response = await sql`SELECT version()`
   const { version } = response[0]
   res.json({ version })
