@@ -42,3 +42,12 @@ coverage/
 
 # secrets
 .secrets
+
+# Architectural views documents
+Development View - Component Diagram.odp
+Scenarios (+1) View - Use Cases Diagram.odp
+Logical View - Class Diagram.odp
+.~lock.Development View - Component Diagram.odp#
+.~lock.Scenarios (+1) View - Use Cases Diagram.odp#
+Logical View - Class Diagram.pdf
+Scenarios (+1) View - Use Cases Diagram.pdf
