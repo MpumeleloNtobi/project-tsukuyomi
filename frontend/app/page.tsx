@@ -48,9 +48,9 @@ function Home() {
     <Header/>
     <div className="flex min-h-screen flex-col">
       <main className="flex-grow">
-      <div>
-      <ProductGallery products={products} title="🎉 Celebrate Craftsmanship! Discover and support the incredible talent of our artisans. 🥳" />
-    </div>
+        <div>
+          <ProductGallery products={products} title="🎉 Celebrate Craftsmanship! Discover and support the incredible talent of our artisans. 🥳" />
+        </div>
       </main>
       <footer className="flex w-full items-center justify-center bg-gray-100 py-6 dark:bg-gray-800">
         <div className="container px-4 md:px-6">

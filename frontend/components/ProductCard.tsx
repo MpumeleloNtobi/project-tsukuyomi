@@ -29,7 +29,6 @@ export default function ProductCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative bg-gray-100 p-4">
-      
         <div className="relative h-[200px] w-full">
           <Image
             src={image || "/placeholder.svg"}
@@ -47,7 +46,7 @@ export default function ProductCard({
         
       </CardContent>
       <CardFooter className="p-4 pt-3">
-        <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white">Add to cart</Button>
+        <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white cursor-pointer">Add to cart</Button>
       </CardFooter>
     </Card>
   )
