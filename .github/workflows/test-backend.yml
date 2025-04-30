@@ -16,9 +16,15 @@ jobs:
           node-version: '18'
 
       - name: Install backend dependencies
-        working-directory: ./backend
+        working-directory: backend
         run: npm install
 
       - name: Run Backend Tests
-        working-directory: ./backend
+        working-directory: backend
         run: npm test
+        
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          path-to-lcov: backend/coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}

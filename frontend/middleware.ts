@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server'
 // Define route protection rules here:
 const isAdminRoute = createRouteMatcher(['/admin(.*)'])
 const isBuyerRoute = createRouteMatcher(['/buyer(.*)'])
+const isSellerSignUpRoute = createRouteMatcher(['/seller/store/create'])
 const isSellerRoute = createRouteMatcher(['/seller(.*)'])
 
 export default clerkMiddleware(async (auth, req) => {
@@ -34,7 +35,10 @@ export default clerkMiddleware(async (auth, req) => {
       if (isBuyerRoute(req)) {
         return NextResponse.next()
       }
-    
+      if (isSellerSignUpRoute(req))
+      {
+        return NextResponse.next()
+      }
       if (isAdminRoute(req) || isSellerRoute(req)) {
         const url = new URL('/buyer/home', req.url)
         console.log('A buyer cannot access admin or seller routes. Redirecting ...:', url)
@@ -44,12 +48,18 @@ export default clerkMiddleware(async (auth, req) => {
       
     case 'seller':
       // TODO: seller user trying to access seller routes
+      if (isSellerSignUpRoute(req))
+      {
+        const url = new URL('/seller/dashboard', req.url)
+        console.log('A seller cannot create more than one store Redirecting ...:', url)
+        return NextResponse.redirect(url)
+      }
       if (isSellerRoute(req)) {
         return NextResponse.next();
       }
       // TODO: seller user trying to access admin routes
       if (isAdminRoute(req)) {
-        const url = new URL('/seller/home', req.url)
+        const url = new URL('/seller/dashboard', req.url)
         console.log('A seller cannot access admin routes. Redirecting ...:', url)
         return NextResponse.redirect(url)
       }

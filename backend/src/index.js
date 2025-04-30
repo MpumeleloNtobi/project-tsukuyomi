@@ -30,6 +30,11 @@ app.get('/', async (_, res) => {
   res.json({ version })
 })
 
+app.get('/api/health', async (_, res) => {
+  res.json({ status: 'UP' })
+}
+)
+
 /*
 /            _                      
 /        ___| |_ ___  _ __ ___  ___ 
@@ -272,12 +277,12 @@ app.post('/products', async (req, res) => {
         error:
           'Missing required fields: storeId, name, description, price, stockQuantity, category, imageUrl are required.'
       })
-  }
+  } // -- Validating the created store (all fields are required) --
   if (!isValidUUID(storeId)) {
     return res
       .status(400)
       .json({ error: 'Invalid storeId format (must be a UUID).' })
-  }
+  } // -- Validating the format of the ID --
   if (
     typeof name !== 'string' ||
     typeof description !== 'string' ||
@@ -289,17 +294,17 @@ app.post('/products', async (req, res) => {
       .json({
         error: 'name, description, category, and imageUrl must be strings.'
       })
-  }
+  } // -- Validating the format of the fields that are required to be strings. --
   if (typeof price !== 'number' || typeof stockQuantity !== 'number') {
     return res
       .status(400)
       .json({ error: 'price and stockQuantity must be numbers.' })
-  }
+  } // -- Validating the format of the fields that are required to be numbers. --
   if (!Number.isInteger(stockQuantity) || stockQuantity < 0) {
     return res
       .status(400)
       .json({ error: 'stockQuantity must be a non-negative integer.' })
-  }
+  } // -- Validating the correct format of the Quantity of stocks. --
   // Add more validation as needed (e.g., price > 0, string lengths)
 
   try {
@@ -369,7 +374,7 @@ app.get('/products/:product_id', async (req, res) => {
   if (isNaN(parseInt(productId)) || !Number.isInteger(Number(productId))) {
     return res
       .status(400)
-      .send('Invalid product ID format (must be an integer).')
+      .send({error: 'Invalid product ID format (must be an integer).'})
   }
 
   try {
@@ -377,12 +382,12 @@ app.get('/products/:product_id', async (req, res) => {
     const products = await sql`SELECT * FROM products WHERE id = ${productId};`
 
     if (products.length === 0) {
-      return res.status(404).send('Product not found')
+      return res.status(404).send({error:'Product not found.'})
     }
     res.json(products[0])
   } catch (error) {
     console.error('Error fetching product:', error)
-    res.status(500).send('Error fetching product')
+    res.status(500).send({error: 'Error fetching product'})
   }
 })
 
@@ -491,7 +496,7 @@ app.put('/products/:product_id', async (req, res) => {
 
     // The 'neon' driver returns the results directly in the array when using .query too
     if (updatedProducts.length === 0) {
-      return res.status(404).json({ error: 'Product not found.' })
+      return res.status(404).json({ error: 'Product not found' })
     }
     res.json(updatedProducts[0]) // Send back the updated product object
   } catch (error) {
@@ -532,6 +537,11 @@ app.delete('/products/:product_id', async (req, res) => {
 })
 
 // LAST STEP: Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`)
-})
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`)
+  })
+}
+
+// Export app for testing purposes
+module.exports = app

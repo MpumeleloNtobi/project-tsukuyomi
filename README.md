@@ -1,11 +1,7 @@
-# Project Tsukuyomi
-Group 35 Software Design Project 2025
-> Project ✍️ Tsukiyomi 👺—where the blind lead the blind to light, and reality is nothing more than a fragile lie waiting to be shattered.
-> Here, time bends, flesh withers, and the mind crumbles under the weight of an eternity spent in agony, all in the name of a twisted salvation.
-> A world where suffering is infinite, yet mercy is an illusion—where the only escape is to accept the dream or be consumed by the nightmare.
-> This is the dawn of the eternal moon… and the dusk of free will 🌙🔥.
-> 
-> None of us has the skillset but we all have the Work ethic and that will be more than enough.....🤝
+# Project Tsukuyomi Group 35 SD - Project
+# Artisanal crafts and stores market
+
+[![Coverage Status](https://coveralls.io/repos/github/MpumeleloNtobi/project-tsukuyomi/badge.svg?branch=uncleguspacho-patch-5)](https://coveralls.io/github/MpumeleloNtobi/project-tsukuyomi?branch=uncleguspacho-patch-5)
 
 ## 1 Naming Convention
 Please try to use short and descriptive names as far as practically possible
