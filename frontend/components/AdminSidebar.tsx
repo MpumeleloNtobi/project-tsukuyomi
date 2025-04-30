@@ -1,5 +1,7 @@
-import { Store, UserCog, PackageSearch } from "lucide-react"
+'use client';
 
+import { Store, UserCog, PackageSearch, BarChart2 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import {
   Sidebar,
   SidebarContent,
@@ -9,49 +11,67 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
-// Menu items.
 const items = [
   {
-    title: "User Management",
-    url: "/admin/set-user-roles",
+    title: 'View Dashboard',
+    url: '/admin/home',
+    icon: BarChart2,
+  },
+  {
+    title: 'Manage Users',
+    url: '/admin/set-user-roles',
     icon: UserCog,
   },
   {
-    title: "Store Management",
-    url: "/admin/stores",
+    title: 'Manage Stores',
+    url: '/admin/stores',
     icon: Store,
   },
   {
-    title: "Product Management",
-    url: "/admin/products",
+    title: 'Manage Products',
+    url: '/admin/products',
     icon: PackageSearch,
   },
-]
+];
 
 export function AppSidebar() {
+  const pathname = usePathname();
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <h3 className="font-bold">Admin</h3>
+        <SidebarGroupLabel className="font-bold text-sm px-4 pt-4 pb-2 mb-4">
+            Admin
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {items.map((item) => {
+                const isActive = pathname === item.url;
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <a
+                        href={item.url}
+                        className={
+                          `flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ` +
+                          (isActive
+                            ? 'bg-gray-200 text-black font-semibold'
+                            : 'text-gray-600 hover:bg-gray-100')
+                        }
+                      >
+                        <item.icon className="h-5 w-5" />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
