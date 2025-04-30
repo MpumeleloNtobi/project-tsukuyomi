@@ -34,7 +34,7 @@ export default function AdminHome(): ReactElement {
   ];
 
   return (
-    <section className="w-full p-8 space-y-16">
+    <section className="w-full p-8 py-4 space-y-16">
       <div className="w-full rounded-2xl bg-gradient-to-r from-blue-100 to-blue-50 p-8 text-center space-y-4">
         <h1 className="text-5xl font-extrabold text-gray-800">
           Welcome to the Admin Dashboard

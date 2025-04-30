@@ -36,7 +36,7 @@ const items = [
   },
 ];
 
-export function AppSidebar() {
+export function AdminSidebar() {
   const pathname = usePathname();
   return (
     <Sidebar>
