@@ -1,6 +1,6 @@
 'use client';
 
-import { Store, UserCog, PackageSearch, BarChart2 } from 'lucide-react';
+import { BarChart2, Store, ClipboardList, Archive, PieChart } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import {
   Sidebar,
@@ -15,35 +15,40 @@ import {
 
 const items = [
   {
-    title: 'View Dashboard',
-    url: '/admin/home',
+    title: 'Dashboard',
+    url: '/seller/dashboard',
     icon: BarChart2,
   },
   {
-    title: 'Manage Users',
-    url: '/admin/set-user-roles',
-    icon: UserCog,
-  },
-  {
-    title: 'Manage Stores',
-    url: '/admin/stores',
+    title: 'My Store',
+    url: '/seller/store',
     icon: Store,
   },
   {
-    title: 'Manage Products',
-    url: '/admin/products',
-    icon: PackageSearch,
+    title: 'View Orders',
+    url: '/seller/orders',
+    icon: ClipboardList,
+  },
+  {
+    title: 'View Inventory',
+    url: '/seller/inventory',
+    icon: Archive,
+  },
+  {
+    title: 'Reporting',
+    url: '/seller/reporting',
+    icon: PieChart,
   },
 ];
 
-export function AdminSidebar() {
+export function SellerSidebar() {
   const pathname = usePathname();
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
         <SidebarGroupLabel className="font-bold text-sm px-4 pt-4 pb-2 mb-4">
-            Admin
+            Seller
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
