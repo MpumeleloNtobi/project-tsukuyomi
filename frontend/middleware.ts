@@ -6,10 +6,26 @@ const isAdminRoute = createRouteMatcher(['/admin(.*)'])
 const isBuyerRoute = createRouteMatcher(['/buyer(.*)'])
 const isSellerSignUpRoute = createRouteMatcher(['/seller/store/create'])
 const isSellerRoute = createRouteMatcher(['/seller(.*)'])
+const isAuthPage = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/sign-in', '/sign-up',]);
+const isRoot = createRouteMatcher(['/'])
 
 export default clerkMiddleware(async (auth, req) => {
   // Fetch the user's role from the session claims
   const userRole = (await auth()).sessionClaims?.metadata?.role
+
+  // If a user just signed in/up and are a seller, send them to /seller/dashboard
+  if (isRoot(req) && userRole === 'seller') {
+    const url = new URL('/seller/dashboard', req.url);
+    return NextResponse.redirect(url);
+  }
+  else if (isRoot(req) && userRole === 'admin') {
+    const url = new URL('/admin/dashboard', req.url);
+    return NextResponse.redirect(url);
+  }
+  else if (isRoot(req) && userRole === 'buyer') {
+    const url = new URL('/buyer/home', req.url);
+    return NextResponse.redirect(url);
+  }
 
   // The logic here is to make sure that a user with a certain role can only access certain routes
   // For example, if the user is an admin, they can access only admin routes
@@ -66,7 +82,7 @@ export default clerkMiddleware(async (auth, req) => {
       break
     default:
       // user is not logged in
-      if (isAdminRoute(req)|| isBuyerRoute(req)|| isSellerRoute(req)) {
+      if (isAdminRoute(req) || isBuyerRoute(req) || isSellerRoute(req)) {
         const url = new URL('/', req.url)
         console.log('An unauthenticated user cannot access admin, buyer or seller routes. Redirecting ...:', url)
         return NextResponse.redirect(url)
