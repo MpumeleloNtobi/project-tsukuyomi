@@ -13,7 +13,7 @@ export default async function AdminDashboard(params: {
   const users = query ? (await client.users.getUserList({ query })).data : []
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="w-full p-8 py-4 space-y-16">
       <main className="container mx-auto flex-grow p-4">
         <form className="mb-6">
           <div className="flex flex-col gap-2">
