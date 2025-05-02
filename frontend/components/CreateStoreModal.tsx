@@ -77,7 +77,7 @@ export function CreateStoreModal(): ReactElement {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Become a Seller</Button>
+        <Button className='cursor-pointer' variant="outline">Become a Seller</Button>
       </DialogTrigger>
       <DialogContent onOpenAutoFocus={e => e.preventDefault()}>
         <DialogHeader>
