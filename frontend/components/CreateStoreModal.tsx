@@ -26,15 +26,15 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { AddressAutocomplete } from '@/components/AddressAutocomplete';
 
-// Validation schema for store creation
+// Zod schema
 const storeSchema = z.object({
-  name: z.string().min(2, { message: 'Store name must be at least 2 characters' }),
+  name:        z.string().min(2, { message: 'Store name must be at least 2 characters' }),
   description: z.string().min(10, { message: 'Description must be at least 10 characters' }),
-  yocoKey: z.string().optional(),
-  address: z.string().min(5, { message: 'Address must be at least 5 characters' }),
+  yocoKey:     z.string().optional(),
+  address:     z.string().min(5, { message: 'Address must be at least 5 characters' }),
 });
-
 type StoreForm = z.infer<typeof storeSchema>;
 
 export function CreateStoreModal(): ReactElement {
@@ -44,50 +44,53 @@ export function CreateStoreModal(): ReactElement {
   const form = useForm<StoreForm>({
     resolver: zodResolver(storeSchema),
     defaultValues: {
-      name: '',
+      name:        '',
       description: '',
-      yocoKey: '',
-      address: '',
+      yocoKey:     '',
+      address:     '',
     },
   });
 
-  async function handleSubmit(values: StoreForm) {
+  const onSubmit = async (values: StoreForm) => {
     try {
-      const payload = { ...values, clerkId: clerk_id };
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/stores/`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ ...values, clerkId: clerk_id }),
         }
       );
-      if (!res.ok) {
-        toast.error('Failed to create store');
-        return;
-      }
+      if (!res.ok) throw new Error('Create failed');
       toast.success('Store created!');
       router.push('/seller/dashboard');
     } catch (err) {
       console.error(err);
       toast.error('Something went wrong');
     }
-  }
+  };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className='cursor-pointer' variant="outline">Become a Seller</Button>
+        <Button variant="outline">Become a Seller</Button>
       </DialogTrigger>
-      <DialogContent onOpenAutoFocus={e => e.preventDefault()}>
+
+      <DialogContent 
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        onPointerDownOutside={(event) => {
+            event.preventDefault();
+        }}
+        >
         <DialogHeader>
-          <DialogTitle className='text-center'>Create a Store</DialogTitle>
-          <DialogDescription className='text-center'>
+          <DialogTitle className="text-center">Create a Store</DialogTitle>
+          <DialogDescription className="text-center">
             Provide your store details below
           </DialogDescription>
         </DialogHeader>
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="name"
@@ -117,7 +120,7 @@ export function CreateStoreModal(): ReactElement {
                       {...field}
                       placeholder="Describe your store"
                       rows={3}
-                      className="w-full border px-3 py-2 rounded"
+                      className="w-full border px-3 py-2 rounded resize-none"
                     />
                   </FormControl>
                   <FormMessage />
@@ -144,25 +147,32 @@ export function CreateStoreModal(): ReactElement {
             />
 
             <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <input
-                      {...field}
-                      placeholder="Store address"
-                      className="w-full border px-3 py-2 rounded"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Address</FormLabel>
+                            <FormControl>
+                                <AddressAutocomplete
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    onSelect={(addr) => {
+                                        console.log('🚀 Selected via click:', addr);
+                                        field.onChange(addr);
+                                    }}
+                                />
+                            </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
             />
 
             <DialogFooter>
-              <Button className='w-full cursor-pointer' type="submit" disabled={form.formState.isSubmitting}>
+              <Button
+                className="w-full"
+                type="submit"
+                disabled={form.formState.isSubmitting}
+              >
                 {form.formState.isSubmitting ? 'Creating...' : 'Create'}
               </Button>
             </DialogFooter>
