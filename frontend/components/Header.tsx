@@ -2,8 +2,10 @@
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
+import { CreateStoreModal } from './CreateStoreModal'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@clerk/nextjs'
+
 const Header = () => {
   const { user } = useUser()
   const role = user?.publicMetadata.role
@@ -28,7 +30,7 @@ const Header = () => {
               <SignedIn>
                 { user?.publicMetadata.role==="buyer"?(
                   <>
-                  <Button variant={'outline'}><Link href='/seller/store/create'>Sell on Storify</Link></Button>
+                  <CreateStoreModal />
                   <Button variant={'outline'}><a href='/buyer/home'>My Acc</a></Button>
                   </>
                 ):(
