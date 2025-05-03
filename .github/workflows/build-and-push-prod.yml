@@ -29,5 +29,5 @@ jobs:
             docker build -t muaazbayat01/prd-sdproject-frontend -f frontend/frontend.Dockerfile frontend/.  
       - name: Push Production images
         run: |
-            docker build -t muaazbayat01/prd-sdproject-backend -f backend/backend.Dockerfile backend/.
-            docker build -t muaazbayat01/prd-sdproject-frontend -f frontend/frontend.Dockerfile frontend/. 
+            docker push muaazbayat01/prd-sdproject-backend
+            docker push muaazbayat01/prd-sdproject-frontend
