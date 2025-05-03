@@ -31,7 +31,6 @@ const Header = () => {
                 { role === "buyer" ? (
                   <>
                     <CreateStoreModal />
-                    <Button className="cursor-pointer"  variant={'outline'}><a href='/buyer/home'>My Acc</a></Button>
                   </>
                   ) : role === "seller" ? (
                     <>
