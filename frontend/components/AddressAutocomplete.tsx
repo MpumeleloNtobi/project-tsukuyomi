@@ -9,7 +9,7 @@ const libraries = ['places'] as const;
 interface AddressAutocompleteProps {
   value: string;
   onChange: (address: string) => void;
-  onSelect: (address: string) => void;
+  onSelect: (place: google.maps.places.PlaceResult) => void;
 }
 
 export function AddressAutocomplete({
@@ -25,7 +25,7 @@ export function AddressAutocomplete({
   });
 
   const handleLoad = useCallback((autocomplete: google.maps.places.Autocomplete) => {
-    autocomplete.setFields(['formatted_address']);
+    autocomplete.setFields(['address_components', 'formatted_address']);
     autoRef.current = autocomplete;
   }, []);
 
@@ -34,7 +34,7 @@ export function AddressAutocomplete({
     if (!ac) return;
     const place = ac.getPlace();
     if (place.formatted_address) {
-      onSelect(place.formatted_address);
+      onSelect(place);
       onChange(place.formatted_address);
     }
   }, [onChange, onSelect]);
@@ -43,10 +43,7 @@ export function AddressAutocomplete({
   if (!isLoaded) return <p>Loading autocomplete…</p>;
 
   return (
-    <Autocomplete
-        onLoad={handleLoad}
-        onPlaceChanged={handlePlaceChanged}
-    >
+    <Autocomplete onLoad={handleLoad} onPlaceChanged={handlePlaceChanged}>
       <input
         type="text"
         value={value}

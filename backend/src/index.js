@@ -5,7 +5,14 @@ const express = require('express')
 const cors = require('cors');
 const { config } = require('dotenv')
 const { neon, sql: neonSqlHelper } = require('@neondatabase/serverless')
+//const clerkClient = require('@clerk/clerk-sdk-node');
+const { Clerk } = require('@clerk/backend');
 config()
+
+console.log("Clerk key: " + process.env.CLERK_SECRET_KEY);
+const clerk = new Clerk({
+  secretKey: process.env.CLERK_SECRET_KEY, // or CLERK_SECRET_KEY depending on your setup
+});
 
 // Helper function to get the SQL query function
 // This ensures you're using the DATABASE_URL from your environment
@@ -50,9 +57,7 @@ app.get('/api/health', async (_, res) => {
 app.get('/stores', async (req, res) => {
   try {
     const sql = getDb()
-    // SQL: Select all columns from the stores table
     const stores = await sql`SELECT * FROM stores;`
-    // neon driver returns the array of rows directly
     res.json(stores)
   } catch (error) {
     console.error('Error fetching stores:', error)
@@ -84,26 +89,43 @@ app.get('/stores/:store_id', async (req, res) => {
   / POST create a new store
   */
 app.post('/stores', async (req, res) => {
-  const { clerkId, name } = req.body
-
-  // Validation
-  if (!clerkId || !name) {
+  const { clerkId, storeName, storeDescription, yocoKey, town, postalCode, streetName, streetNumber } = req.body;
+  console.log(clerkId, storeName, storeDescription, yocoKey, town, postalCode, streetName, streetNumber);
+  if (!clerkId || !storeName || !storeDescription || !yocoKey || !town || !postalCode || !streetName || !streetNumber) {
     return res.status(400).send('clerkId and name are required')
   }
-  if (typeof clerkId !== 'string' || typeof name !== 'string') {
+  if (
+    typeof clerkId !== 'string' || 
+    typeof storeName !== 'string' 
+  ) {
     return res.status(400).send('clerkId and name must be strings')
   }
 
   try {
     const sql = getDb()
-    // SQL: Insert using template literals for parameters.
-    // Note: "clerkId" is quoted assuming the column name case sensitivity matters. Adjust if needed.
     const newStores = await sql`
-        INSERT INTO stores ("clerkId", name)
-        VALUES (${clerkId}, ${name})
+        INSERT INTO 
+          stores (
+            "clerkId", 
+            name, 
+            description, 
+            "yocoKey", 
+            town, 
+            "postalCode", 
+            "streetName", 
+            "streetNumber"
+          )
+        VALUES 
+          (${clerkId}, ${storeName}, ${storeDescription}, ${yocoKey}, ${town}, ${postalCode}, ${streetName}, ${streetNumber})
         RETURNING *;
-      `
-    res.status(201).json(newStores[0]) // Send the newly created store object
+    `
+    await clerk.users.updateUserMetadata(clerkId, {
+      publicMetadata: {
+        role: 'seller',
+        storeId: newStores[0].id,
+      },
+    });
+    res.status(201).json(newStores[0]); // Send the newly created store object
   } catch (error) {
     console.error('Error creating store:', error)
     res.status(500).send('Error creating store')
