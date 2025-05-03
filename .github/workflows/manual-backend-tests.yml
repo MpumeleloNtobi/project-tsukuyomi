@@ -1,31 +1,28 @@
 name: Run Backend Tests Manually
 
-on:
+on: 
   workflow_dispatch: 
 
 jobs:
-  backend-tests:
+  test:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Set up Node.js
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 18
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Install backend dependencies
-        working-directory: backend
-        run: npm install
+      - name: Install dependencies
+        run: cd ./backend && npm install
 
-      - name: Run Backend Tests
-        working-directory: backend
-        run: npm test
-        
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
+      - name: Run tests and collect coverage
+        run: npm test -- --coverage
+
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
         with:
-          path-to-lcov: backend/coverage/lcov.info
-          run: cat backend/coverage/lcov.info
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: coverage/lcov.info
