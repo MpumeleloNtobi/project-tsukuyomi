@@ -9,7 +9,6 @@ const { neon, sql: neonSqlHelper } = require('@neondatabase/serverless')
 const { Clerk } = require('@clerk/backend');
 config()
 
-console.log("Clerk key: " + process.env.CLERK_SECRET_KEY);
 const clerk = new Clerk({
   secretKey: process.env.CLERK_SECRET_KEY, // or CLERK_SECRET_KEY depending on your setup
 });
@@ -90,7 +89,6 @@ app.get('/stores/:store_id', async (req, res) => {
   */
 app.post('/stores', async (req, res) => {
   const { clerkId, storeName, storeDescription, yocoKey, town, postalCode, streetName, streetNumber } = req.body;
-  console.log(clerkId, storeName, storeDescription, yocoKey, town, postalCode, streetName, streetNumber);
   if (!clerkId || !storeName || !storeDescription || !yocoKey || !town || !postalCode || !streetName || !streetNumber) {
     return res.status(400).send('clerkId and name are required')
   }
