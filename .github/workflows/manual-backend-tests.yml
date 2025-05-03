@@ -1,0 +1,8 @@
+name: Run Backend Tests Manually
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  call-backend-tests:
+    uses: ./.github/workflows/backend-tests.yml 
