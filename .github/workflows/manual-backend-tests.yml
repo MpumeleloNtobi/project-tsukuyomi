@@ -16,13 +16,13 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: cd ./backend && ls && npm i
+        run: cd backend && npm i
 
       - name: Run tests and collect coverage
-        run: npm test -- --coverage
+        run: cd backend && npm test -- --coverage
 
       - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          file: coverage/lcov.info
+          file: backend/coverage/lcov.info
