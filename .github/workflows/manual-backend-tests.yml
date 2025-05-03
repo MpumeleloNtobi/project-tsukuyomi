@@ -4,5 +4,28 @@ on:
   workflow_dispatch: 
 
 jobs:
-  call-backend-tests:
-    uses: ./.github/workflows/test-backend.yml 
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm install
+
+      - name: Run Backend Tests
+        working-directory: backend
+        run: npm test
+        
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          path-to-lcov: backend/coverage/lcov.info
+          run: cat backend/coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
