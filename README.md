@@ -1,7 +1,7 @@
 # Project Tsukuyomi Group 35 SD - Project
 # Artisanal crafts and stores market
 
-[![Coverage Status](https://coveralls.io/repos/github/MpumeleloNtobi/project-tsukuyomi/badge.svg?branch=uncleguspacho-patch-5)](https://coveralls.io/github/MpumeleloNtobi/project-tsukuyomi?branch=uncleguspacho-patch-5)
+[![Coverage Status](https://coveralls.io/repos/github/MpumeleloNtobi/project-tsukuyomi/badge.svg?branch=main)](https://coveralls.io/github/MpumeleloNtobi/project-tsukuyomi?branch=main)
 
 ## 1 Naming Convention
 Please try to use short and descriptive names as far as practically possible
