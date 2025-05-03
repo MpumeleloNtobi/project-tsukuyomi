@@ -16,7 +16,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: cd ./backend && ls && npm ci
+        run: cd ./backend && ls && npm i
 
       - name: Run tests and collect coverage
         run: npm test -- --coverage
