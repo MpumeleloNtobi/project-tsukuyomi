@@ -89,7 +89,6 @@ const storesRoute = (app, dbUrl) => {
    */
   app.post('/stores', async (req, res) => {
     const { clerkId, storeName, storeDescription, stitchClientKey, stitchClientSecret, town, postalCode, streetName, streetNumber } = req.body;
-
     if (!clerkId || !storeName || !storeDescription || !stitchClientKey || !town || !postalCode || !streetName || !streetNumber) {
       return res.status(400).send('There are some missing fields!')
     }
