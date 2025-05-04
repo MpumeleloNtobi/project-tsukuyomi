@@ -15,22 +15,22 @@ import {
 
 const items = [
   {
-    title: 'View Dashboard',
-    url: '/admin/home',
+    title: 'Dashboard',
+    url: '/admin/dashboard',
     icon: BarChart2,
   },
   {
-    title: 'Manage Users',
+    title: 'Users',
     url: '/admin/set-user-roles',
     icon: UserCog,
   },
   {
-    title: 'Manage Stores',
+    title: 'Stores',
     url: '/admin/stores',
     icon: Store,
   },
   {
-    title: 'Manage Products',
+    title: 'Products',
     url: '/admin/products',
     icon: PackageSearch,
   },

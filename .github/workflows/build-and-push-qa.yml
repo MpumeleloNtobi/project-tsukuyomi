@@ -29,5 +29,5 @@ jobs:
             docker build -t muaazbayat01/qa-sdproject-frontend -f frontend/frontend.Dockerfile frontend/.  
       - name: Push QA images
         run: |
-            docker build -t muaazbayat01/qa-sdproject-backend -f backend/backend.Dockerfile backend/.
-            docker build -t muaazbayat01/qa-sdproject-frontend -f frontend/frontend.Dockerfile frontend/. 
+            docker push muaazbayat01/qa-sdproject-frontend
+            docker push muaazbayat01/qa-sdproject-backend

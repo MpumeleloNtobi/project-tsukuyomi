@@ -2,8 +2,10 @@
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
+import { CreateStoreModal } from './CreateStoreModal'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@clerk/nextjs'
+
 const Header = () => {
   const { user } = useUser()
   const role = user?.publicMetadata.role
@@ -18,7 +20,7 @@ const Header = () => {
 
   return (
     <header className="border-b bg-white">
-      <div className="container mx-auto px-4">
+      <div className="px-4">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="text-xl font-bold">
             Storify
@@ -26,16 +28,20 @@ const Header = () => {
           <nav>
             <ul className="flex space-x-4">
               <SignedIn>
-                { user?.publicMetadata.role==="buyer"?(
+                { role === "buyer" ? (
                   <>
-                  <Button variant={'outline'}><Link href='/seller/store/create'>Sell on Storify</Link></Button>
-                  <Button variant={'outline'}><a href='/buyer/home'>My Acc</a></Button>
+                    <CreateStoreModal />
                   </>
-                ):(
-                  <>
-                  <Button variant={'outline'}><a href='/seller/dashboard'>Dashboard</a></Button>
-                  </>
-                )}
+                  ) : role === "seller" ? (
+                    <>
+                      <Button className="cursor-pointer" variant={'outline'}><a href='/seller/dashboard'>Switch to Buyer</a></Button>
+                    </>
+                  ) : (
+                    <>
+                      
+                    </>
+                  )
+                }  
                 <li className="flex items-center">
                   <UserButton />
                 </li>
