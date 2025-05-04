@@ -1,108 +1,79 @@
 const request = require('supertest')
-const app = require('../index') 
+const { app, productsRoute } = require('../index') // or wherever you're initializing it
+const { v4: uuidv4 } = require('uuid')
 
-// Define the health check route as provided by the user
-app.get('/api/health', async (_, res) => {
-  res.json({ status: 'UP' });
-});
+const testDbUrl = 'postgresql://neondb_owner:npg_ZUgQeMX64rTm@ep-dry-term-a8pxk2za-pooler.eastus2.azure.neon.tech/neondb?sslmode=require'
 
-// Describe the test suite for the health check endpoint
-describe('GET /api/health', () => {
-  // Define a test case for the health check endpoint
-  it('should return 200 OK and status UP', async () => {
-    // Use supertest to make a GET request to the /api/health endpoint
-    const response = await request(app).get('/api/health');
+// Assuming this initializes the routes
+beforeAll(() => {
+  productsRoute(app, testDbUrl)
+})
 
-    // Assert that the response status code is 200
-    expect(response.statusCode).toBe(200);
+describe('Product Routes', () => {
+  let storeId
+  let productId
 
-    // Assert that the response body is the expected JSON object
-    expect(response.body).toEqual({ status: 'UP' });
-  });
-});
+  
+  beforeAll(async () => {
+    const storeRes = await request(app).post('/stores').send({
+      clerkId: 'user_2weIquySWssq85GcSQenYQ0ZQKa',
+      storeName: 'Product Store',
+      storeDescription: 'For product tests',
+      stitchClientKey: 'test_key',
+      stitchClientSecret: 'test_secret',
+      town: 'Townsville',
+      postalCode: '12345',
+      streetName: 'Main',
+      streetNumber: '42'
+    })
+    storeId = storeRes.body.id
+  })
 
-// describe('Stores API', () => {
+  afterAll(async () => {
+    if (storeId) {
+      await request(app).delete(`/stores/${storeId}`)
+    }
+  })
 
-//   test('Create store', async () => {
-//     const res = await request(app).post('/stores').send({ name: 'Test Store' })
-//     expect(res.statusCode).toBe(400)
-//     //expect(res.body.name).toBe('Test Store')
-//     //storeId = res.body.id
-//   })
+  test('POST /products - should create a product', async () => {
+    const res = await request(app).post('/products').send({
+      storeId,
+      name: 'Test Product',
+      description: 'A good product',
+      price: 9.99,
+      stockQuantity: 100,
+      category: 'Test',
+      imageUrl: 'http://image.url/product.png'
+    })
 
-//   test('Get all stores', async () => {
-//     const res = await request(app).get('/stores')
-//     expect(res.statusCode).toBe(500)
-//     //expect(Array.isArray(res.body)).toBe(true)
-//     //expect(res.body.length).toBeGreaterThan(0)
-//   })
+    expect(res.statusCode).toBe(201)
+    expect(res.body).toHaveProperty('id')
+    productId = res.body.id
+  })
 
-//   test('Get store by id', async () => {
-//     const storeId  = "someID"
-//     const res = await request(app).get(`/stores/${storeId}`)
-//     expect(res.statusCode).toBe(500)
-//     //expect(res.body.id).toBe(storeId)
-//   })
+  test('GET /products/:id - should return the product', async () => {
+    const res = await request(app).get(`/products/${productId}`)
+    expect(res.statusCode).toBe(200)
+    expect(res.body.id).toBe(productId)
+  })
 
-//   test('Update store', async () => {
-//     const storeId  = "someID"
-//     const res = await request(app)
-//       .patch(`/stores/${storeId}`)
-//       .send({ name: 'Updated Store' })
-//     expect(res.statusCode).toBe(404)
-//     //expect(res.body.name).toBe('Updated Store')
-//   })
+  test('PUT /products/:id - should update the product', async () => {
+    const res = await request(app).put(`/products/${productId}`).send({
+      name: 'Updated Product',
+      stockQuantity: 50
+    })
+    expect(res.statusCode).toBe(200)
+    expect(res.body.name).toBe('Updated Product')
+    expect(res.body.stockQuantity).toBe(50)
+  })
 
-//   test('Delete store', async () => {
-//     const storeId  = "someID"
-//     const res = await request(app).delete(`/stores/${storeId}`)
-//     expect(res.statusCode).toBe(500)
-//   })
-// })
+  test('DELETE /products/:id - should delete the product', async () => {
+    const res = await request(app).delete(`/products/${productId}`)
+    expect(res.statusCode).toBe(204)
+  })
 
-// describe('Products API', () => {
-
-//   beforeAll(async () => {
-//     const res = await request(app).post('/stores').send({ name: 'Store for Product' })
-//     storeId = res.body.id
-//   })
-
-//   test('Create product', async () => {
-//     const storeId  = "someID"
-//     const res = await request(app)
-//       .post('/products')
-//       .send({ name: 'Test Product', storeId })
-//     expect(res.statusCode).toBe(400)
-//     //expect(res.body.name).toBe('Test Product')
-//     //expect(res.body.storeId).toBe(storeId)
-//     productId = res.body.id
-//   })
-
-//   test('Get all products', async () => {
-//     const res = await request(app).get('/products')
-//     expect(res.statusCode).toBe(500)
-//     //expect(Array.isArray(res.body)).toBe(true)
-//   })
-
-//   test('Get product by id', async () => {
-//     const productId  = "someID"
-//     const res = await request(app).get(`/products/${productId}`)
-//     expect(res.statusCode).toBe(400)
-//     //expect(res.body.id).toBe(productId)
-//   })
-
-//   test('Update product', async () => {
-//     const productId  = "someID"
-//     const res = await request(app)
-//       .patch(`/products/${productId}`)
-//       .send({ name: 'Updated Product' })
-//     expect(res.statusCode).toBe(404)
-//     //expect(res.body.name).toBe('Updated Product')
-//   })
-
-//   test('Delete product', async () => {
-//     const productId  = "someID"
-//     const res = await request(app).delete(`/products/${productId}`)
-//     expect(res.statusCode).toBe(400)
-//   })
-// })
+  test('GET /products/:id - should return 404 after deletion', async () => {
+    const res = await request(app).get(`/products/${productId}`)
+    expect(res.statusCode).toBe(400)
+  })
+})

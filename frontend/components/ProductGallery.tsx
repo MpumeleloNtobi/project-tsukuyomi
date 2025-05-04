@@ -15,10 +15,11 @@ import {
 
 interface ProductGalleryProps {
   title?: string;
-  products: Product[]; // Now products is a required prop
+  products: Product[];
+  description?: string;
 }
 
-function ProductGallery({ title = "Product Gallery", products: initialProducts }: ProductGalleryProps) {
+function ProductGallery({ title = "Product Gallery", products: initialProducts, description = "" }: ProductGalleryProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState<Product[]>(initialProducts); // Initialize with the passed-in products
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -46,6 +47,7 @@ function ProductGallery({ title = "Product Gallery", products: initialProducts }
   return (
     <div className="container mx-auto px-4 py-8">
          <h1 className="text-2xl font-bold mb-6">{title}</h1>
+         <h2 className="text-xl font-bold mb-6">{description}</h2>
       <div className="flex flex-col md:flex-row gap-4 mb-8">
      
         <div className="relative flex-1">
@@ -83,14 +85,18 @@ function ProductGallery({ title = "Product Gallery", products: initialProducts }
           <p className="text-gray-500">No products found.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (
             <ProductCard
               key={product.id}
+              id={product.id}
+              description={product.description}
               name={product.name}
               price={product.price}
-              image={product.imageUrl}
-              alt={product.name}
+              stockQuantity={product.stockQuantity}
+              category={product.category}
+              storeId={product.storeId}
+              image1url={product.imageUrl}
             />
           ))}
         </div>
