@@ -6,24 +6,17 @@ const isAdminRoute = createRouteMatcher(['/admin(.*)'])
 const isBuyerRoute = createRouteMatcher(['/buyer(.*)'])
 const isSellerSignUpRoute = createRouteMatcher(['/seller/store/create'])
 const isSellerRoute = createRouteMatcher(['/seller(.*)'])
-const isAuthPage = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/sign-in', '/sign-up',]);
 const isRoot = createRouteMatcher(['/'])
 
 export default clerkMiddleware(async (auth, req) => {
   // Fetch the user's role from the session claims
   const userRole = (await auth()).sessionClaims?.metadata?.role
-
-  // If a user just signed in/up and are a seller, send them to /seller/dashboard
-  if (isRoot(req) && userRole === 'seller') {
-    const url = new URL('/seller/dashboard', req.url);
-    return NextResponse.redirect(url);
-  }
-  else if (isRoot(req) && userRole === 'admin') {
+  if (isRoot(req) && userRole === 'admin') {
     const url = new URL('/admin/dashboard', req.url);
     return NextResponse.redirect(url);
   }
   else if (isRoot(req) && userRole === 'buyer') {
-    const url = new URL('/buyer/home', req.url);
+    const url = new URL('/home', req.url);
     return NextResponse.redirect(url);
   }
 

@@ -31,7 +31,8 @@ import { AddressAutocomplete } from '@/components/AddressAutocomplete';
 const storeSchema = z.object({
   storeName: z.string().min(2),
   storeDescription: z.string().min(10),
-  yocoKey: z.string().optional(),
+  stitchClientKey: z.string().optional(),
+  stitchClientSecret: z.string().optional(),
   streetAddress: z.string().min(5),
   streetNumber: z.string().optional(),
   streetName: z.string().optional(),
@@ -52,7 +53,8 @@ export function CreateStoreModal(): ReactElement {
     defaultValues: {
       storeName: '',
       storeDescription: '',
-      yocoKey: '',
+      stitchClientKey: '',
+      stitchClientSecret: '',
       streetAddress: '',
       streetNumber: '',
       streetName: '',
@@ -136,14 +138,33 @@ export function CreateStoreModal(): ReactElement {
 
             <FormField
               control={form.control}
-              name="yocoKey"
+              name="stitchClientKey"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>YOCO Key</FormLabel>
+                  <FormLabel>Stitch Client Key</FormLabel>
                   <FormControl>
                     <input
                       {...field}
-                      placeholder="YOCO API Key"
+                      placeholder="test-bfd0ab2c-0258-4973-8f4c-06e0e0ad97a3"
+                      className="w-full border px-3 py-2 rounded"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+
+            <FormField
+              control={form.control}
+              name="stitchClientSecret"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Stitch Client Secret</FormLabel>
+                  <FormControl>
+                    <input
+                      {...field}
+                      placeholder="PQZn85k9I2P2DqbhifL0h3C0VhLLJhaXWimS6JAmqGWw3AixZ54f0nR1reGL6J/2"
                       className="w-full border px-3 py-2 rounded"
                     />
                   </FormControl>

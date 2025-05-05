@@ -1,74 +1,68 @@
 const request = require('supertest')
-const app = require('../index') 
-// Define the health check route as provided by the user
-app.get('/api/health', async (_, res) => {
-  res.json({ status: 'UP' });
-});
 
-// Describe the test suite for the health check endpoint
-describe('GET /api/health', () => {
-  // Define a test case for the health check endpoint
-  it('should return 200 OK and status UP', async () => {
-    // Use supertest to make a GET request to the /api/health endpoint
-    const response = await request(app).get('/api/health');
+const { app, storesRoute } = require('../index')
 
-    // Assert that the response status code is 200
-    expect(response.statusCode).toBe(200);
+const testDbUrl = 'postgresql://neondb_owner:npg_ZUgQeMX64rTm@ep-dry-term-a8pxk2za-pooler.eastus2.azure.neon.tech/neondb?sslmode=require'
 
-    // Assert that the response body is the expected JSON object
-    expect(response.body).toEqual({ status: 'UP' });
-  });
-});
+beforeAll(() => {
+  storesRoute(app, testDbUrl)
+})
 
-// describe('Store Endpoints', () => {
-//   let createdStoreId = null
+describe('Store Routes', () => {
+  let createdStoreId // this will hold the ID of the store we create
+  test('GET /stores - should return an array of stores', async () => {
+    const res = await request(app).get('/stores')
+    expect(res.statusCode).toBe(200)
+    expect(Array.isArray(res.body)).toBe(true)
+  })
 
-//   // === Test POST /stores ===
-//   it('should create a new store', async () => {
-//     const response = await request(app).post('/stores').send({
-//       clerkId: 'test-clerk-id',
-//       name: 'Test Store'
-//     })
+  test('POST /stores - validation should fail on missing fields', async () => {
+    const res = await request(app).post('/stores').send({
+      clerkId: 'user_2vgsDIvJJuDUsGTYO4nM956nKG6',
+      storeName: 'Test Store'
+      // Missing required fields like description, address...
+    })
 
-//     expect(response.statusCode).toBe(201)
-//     expect(response.body).toHaveProperty('id')
-//     expect(response.body.name).toBe('Test Store')
+    expect(res.statusCode).toBe(400)
+    expect(res.text).toMatch(/missing fields/i)
+  })
 
-//     createdStoreId = response.body.id // Save for later tests
-//   })
+  test('POST /stores - should create a store', async () => {
+    const res = await request(app).post('/stores').send({
+      clerkId: 'user_2weIquySWssq85GcSQenYQ0ZQKa',
+      storeName: 'Test Store',
+      storeDescription: 'Test description',
+      stitchClientKey: 'client_key_123',
+      stitchClientSecret: 'client_secret_123',
+      town: 'Test Town',
+      postalCode: '12345',
+      streetName: 'Main St',
+      streetNumber: '12'
+    })
 
-//   // === Test GET /stores/:id ===
-//   it('should fetch the newly created store', async () => {
-//     const response = await request(app).get(`/stores/${createdStoreId}`)
+    expect(res.statusCode).toBe(201)
+    expect(res.body).toHaveProperty('id')
+    expect(res.body.name).toBe('Test Store')
+    createdStoreId = res.body.id // Save the ID for later tests
+  })
 
-//     expect(response.statusCode).toBe(200)
-//     expect(response.body).toHaveProperty('id', createdStoreId)
-//     expect(response.body).toHaveProperty('name', 'Test Store')
-//   })
+  test('PUT /stores/:store_id - should update store name and status', async () => {
+    const res = await request(app).put(`/stores/${createdStoreId}`).send({
+      name: 'Updated Store Name',
+      status: 'approved'
+    })
 
-//   // === Test PUT /stores/:id ===
-//   it('should update the store name and status', async () => {
-//     const response = await request(app).put(`/stores/${createdStoreId}`).send({
-//       name: 'Updated Store',
-//       status: 'approved'
-//     })
+    expect(res.statusCode).toBe(200)
+    expect(res.body.name).toBe('Updated Store Name')
+    expect(res.body.status).toBe('approved')
+  })
 
-//     expect(response.statusCode).toBe(200)
-//     expect(response.body.name).toBe('Updated Store')
-//     expect(response.body.status).toBe('approved')
-//   })
+  test('DELETE /stores/:store_id - should delete the store', async () => {
+    const res = await request(app).delete(`/stores/${createdStoreId}`)
+    expect(res.statusCode).toBe(204)
 
-//   // === Test DELETE /stores/:id ===
-//   it('should delete the store', async () => {
-//     const response = await request(app).delete(`/stores/${createdStoreId}`)
-
-//     expect(response.statusCode).toBe(204)
-//   })
-
-//   // === Confirm store deletion ===
-//   it('should return 404 when trying to fetch deleted store', async () => {
-//     const response = await request(app).get(`/stores/${createdStoreId}`)
-
-//     expect(response.statusCode).toBe(404)
-//   })
-// })
+    // Confirm deletion with a follow-up GET
+    const followUp = await request(app).get(`/stores/${createdStoreId}`)
+    expect(followUp.statusCode).toBe(404)
+  })
+})
