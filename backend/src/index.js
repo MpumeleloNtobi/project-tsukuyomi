@@ -188,7 +188,7 @@ const storesRoute = (app, dbUrl) => {
     `
 
     try {
-      const result = await sql.query(query, values)
+      const result = await sql(query, values)
       if (result.length === 0) {
         return res.status(404).json({ error: 'Store not found.' })
       }
@@ -246,7 +246,6 @@ const productsRoute = (app, dbUrl) => {
  * POST /products - Create a new product
  */
 app.post('/products', async (req, res) => {
-  // Destructure all expected fields from the body
   const {
     storeId,
     name,
@@ -254,80 +253,55 @@ app.post('/products', async (req, res) => {
     price,
     stockQuantity,
     category,
-    imageUrl
-  } = req.body
+    image1url,
+    image2url,
+    image3url
+  } = req.body;
 
-  // --- Validation ---
   if (
-    !storeId ||
-    !name ||
-    description === undefined ||
-    price === undefined ||
-    stockQuantity === undefined ||
-    !category ||
-    !imageUrl
+    !storeId || !name || description === undefined || price === undefined ||
+    stockQuantity === undefined || !category ||
+    !image1url || !image2url || !image3url
   ) {
-    return res
-      .status(400)
-      .json({
-        error:
-          'Missing required fields: storeId, name, description, price, stockQuantity, category, imageUrl are required.'
-      })
-  } // -- Validating the created store (all fields are required) --
-  if (!isValidUUID(storeId)) {
-    return res
-      .status(400)
-      .json({ error: 'Invalid storeId format (must be a UUID).' })
-  } // -- Validating the format of the ID --
+    return res.status(400).json({
+      error: 'Missing required fields: storeId, name, description, price, stockQuantity, category, image1url, image2url, image3url are required.'
+    });
+  }
+
   if (
-    typeof name !== 'string' ||
-    typeof description !== 'string' ||
-    typeof category !== 'string' ||
-    typeof imageUrl !== 'string'
+    typeof name !== 'string' || typeof description !== 'string' || typeof category !== 'string' ||
+    typeof image1url !== 'string' || typeof image2url !== 'string' || typeof image3url !== 'string'
   ) {
-    return res
-      .status(400)
-      .json({
-        error: 'name, description, category, and imageUrl must be strings.'
-      })
-  } // -- Validating the format of the fields that are required to be strings. --
+    return res.status(400).json({ error: 'Text fields must be strings.' });
+  }
+
   if (typeof price !== 'number' || typeof stockQuantity !== 'number') {
-    return res
-      .status(400)
-      .json({ error: 'price and stockQuantity must be numbers.' })
-  } // -- Validating the format of the fields that are required to be numbers. --
+    return res.status(400).json({ error: 'price and stockQuantity must be numbers.' });
+  }
+
   if (!Number.isInteger(stockQuantity) || stockQuantity < 0) {
-    return res
-      .status(400)
-      .json({ error: 'stockQuantity must be a non-negative integer.' })
-  } // -- Validating the correct format of the Quantity of stocks. --
-  // Add more validation as needed (e.g., price > 0, string lengths)
+    return res.status(400).json({ error: 'stockQuantity must be a non-negative integer.' });
+  }
 
   try {
-    const sql = getDb()
-    // Use column names exactly as defined in your schema (quoting if necessary)
-    // Assuming lowercase or case-insensitive names based on the image conventions, except for potentially mixedCase ones.
-    // Quote "storeId", "stockQuantity", "imageUrl" if they strictly require that casing in PG.
-    const newProducts = await sql`
-        INSERT INTO products
-          ("storeId", name, description, price, "stockQuantity", category, "imageUrl")
-        VALUES
-          (${storeId}, ${name}, ${description}, ${price}, ${stockQuantity}, ${category}, ${imageUrl})
-        RETURNING *;
-      `
-    res.status(201).json(newProducts[0])
+    const newProduct = await sql`
+      INSERT INTO products (
+        "storeId", name, description, price, "stockQuantity", category,
+        "image1url", "image2url", "image3url"
+      ) VALUES (
+        ${storeId}, ${name}, ${description}, ${price}, ${stockQuantity}, ${category},
+        ${image1url}, ${image2url}, ${image3url}
+      ) RETURNING *;
+    `;
+
+    // ✅ Respond to client
+    res.status(201).json(newProduct[0]);
   } catch (error) {
-    console.error('Error creating product:', error)
-    // Check for foreign key violation (e.g., storeId doesn't exist)
-    if (error.code === '23503') {
-      // PostgreSQL foreign key violation error code
-      return res
-        .status(400)
-        .json({ error: `Store with ID ${storeId} does not exist.` })
-    }
-    res.status(500).send('Error creating product')
+    console.error('Error inserting product:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
-})
+});
+
 
 /*
  * GET /products - Get all products (optionally filtered by storeId)
@@ -336,7 +310,6 @@ app.get('/products', async (req, res) => {
   const { storeId } = req.query // Check for storeId in query parameters
 
   try {
-    const sql = getDb()
     let products
 
     if (storeId) {
@@ -374,7 +347,6 @@ app.get('/products/:product_id', async (req, res) => {
   }
 
   try {
-    const sql = getDb()
     const products = await sql`SELECT * FROM products WHERE id = ${productId};`
 
     if (products.length === 0) {
@@ -391,115 +363,118 @@ app.get('/products/:product_id', async (req, res) => {
  * PUT /products/:product_id - Update a specific product (Corrected)
  */
 app.put('/products/:product_id', async (req, res) => {
-  const productId = req.params.product_id
+  const productId = req.params.product_id;
 
-  // Validate product ID
   if (isNaN(parseInt(productId)) || !Number.isInteger(Number(productId))) {
     return res
       .status(400)
-      .json({ error: 'Invalid product ID format (must be an integer).' })
+      .json({ error: 'Invalid product ID format (must be an integer).' });
   }
 
-  // --- Build updates object and validate provided fields ---
-  const { name, description, price, stockQuantity, category, imageUrl } =
-    req.body
-  const updates = {} // Store validated fields to update
+  const {
+    name,
+    description,
+    price,
+    stockQuantity,
+    category,
+    image1url,
+    image2url,
+    image3url
+  } = req.body;
+
+  const updates = {};
   const columnMappings = {
-    // Map request fields to potential quoted DB columns
     name: 'name',
     description: 'description',
     price: 'price',
-    stockQuantity: '"stockQuantity"', // Quote if needed in DB
+    stockQuantity: '"stockQuantity"',
     category: 'category',
-    imageUrl: '"imageUrl"' // Quote if needed in DB
-  }
+    image1url: '"image1url"',
+    image2url: '"image2url"',
+    image3url: '"image3url"'
+  };
 
-  // (Validation logic remains the same as before...)
+  // Validations and collecting update fields
   if (name !== undefined) {
-    if (typeof name !== 'string')
-      return res.status(400).json({ error: 'name must be a string.' })
-    updates.name = name
+    if (typeof name !== 'string') return res.status(400).json({ error: 'name must be a string.' });
+    updates.name = name;
   }
+
   if (description !== undefined) {
-    if (typeof description !== 'string')
-      return res.status(400).json({ error: 'description must be a string.' })
-    updates.description = description
+    if (typeof description !== 'string') return res.status(400).json({ error: 'description must be a string.' });
+    updates.description = description;
   }
+
   if (price !== undefined) {
-    if (typeof price !== 'number')
-      return res.status(400).json({ error: 'price must be a number.' })
-    updates.price = price
+    if (typeof price !== 'number') return res.status(400).json({ error: 'price must be a number.' });
+    updates.price = price;
   }
+
   if (stockQuantity !== undefined) {
-    if (
-      typeof stockQuantity !== 'number' ||
-      !Number.isInteger(stockQuantity) ||
-      stockQuantity < 0
-    ) {
-      return res
-        .status(400)
-        .json({ error: 'stockQuantity must be a non-negative integer.' })
+    if (typeof stockQuantity !== 'number' || !Number.isInteger(stockQuantity) || stockQuantity < 0) {
+      return res.status(400).json({ error: 'stockQuantity must be a non-negative integer.' });
     }
-    updates.stockQuantity = stockQuantity // Use the key that matches columnMappings
+    updates.stockQuantity = stockQuantity;
   }
+
   if (category !== undefined) {
-    if (typeof category !== 'string')
-      return res.status(400).json({ error: 'category must be a string.' })
-    updates.category = category
-  }
-  if (imageUrl !== undefined) {
-    if (typeof imageUrl !== 'string')
-      return res.status(400).json({ error: 'imageUrl must be a string.' })
-    updates.imageUrl = imageUrl // Use the key that matches columnMappings
+    if (typeof category !== 'string') return res.status(400).json({ error: 'category must be a string.' });
+    updates.category = category;
   }
 
-  const updateFields = Object.keys(updates)
+  if (image1url !== undefined) {
+    if (typeof image1url !== 'string') return res.status(400).json({ error: 'image1url must be a string.' });
+    updates.image1url = image1url;
+  }
 
-  // Check if there's anything to update
+  if (image2url !== undefined) {
+    if (typeof image2url !== 'string') return res.status(400).json({ error: 'image2url must be a string.' });
+    updates.image2url = image2url;
+  }
+
+  if (image3url !== undefined) {
+    if (typeof image3url !== 'string') return res.status(400).json({ error: 'image3url must be a string.' });
+    updates.image3url = image3url;
+  }
+
+  const updateFields = Object.keys(updates);
   if (updateFields.length === 0) {
-    return res
-      .status(400)
-      .json({ error: 'No valid fields provided for update.' })
+    return res.status(400).json({ error: 'No valid fields provided for update.' });
   }
 
-  // --- Manually Construct the Query ---
-  const setClauses = []
-  const values = []
-  let placeholderIndex = 1
+  // Construct dynamic query
+  const setClauses = [];
+  const values = [];
+  let placeholderIndex = 1;
 
   updateFields.forEach((fieldKey) => {
-    // Get the correct DB column name (potentially quoted)
-    const columnName = columnMappings[fieldKey]
-    setClauses.push(`${columnName} = $${placeholderIndex}`)
-    values.push(updates[fieldKey]) // Add the value to the parameters array
-    placeholderIndex++
-  })
+    const columnName = columnMappings[fieldKey];
+    setClauses.push(`${columnName} = $${placeholderIndex}`);
+    values.push(updates[fieldKey]);
+    placeholderIndex++;
+  });
 
-  // Add the product ID for the WHERE clause as the last parameter
-  values.push(productId)
-
+  values.push(productId); // for WHERE clause
   const queryString = `
-      UPDATE products
-      SET ${setClauses.join(', ')}
-      WHERE id = $${placeholderIndex} -- Use the next placeholder index for the id
-      RETURNING *;
-    `
+    UPDATE products
+    SET ${setClauses.join(', ')}
+    WHERE id = $${placeholderIndex}
+    RETURNING *;
+  `;
 
   try {
-    const sql = getDb()
-    // *** Use sql.query() for conventional query string + parameters array ***
-    const updatedProducts = await sql.query(queryString, values)
+    const result = await sql(queryString, values);
 
-    // The 'neon' driver returns the results directly in the array when using .query too
-    if (updatedProducts.length === 0) {
-      return res.status(404).json({ error: 'Product not found' })
+    if (result.length === 0) {
+      return res.status(404).json({ error: 'Product not found' });
     }
-    res.json(updatedProducts[0]) // Send back the updated product object
+
+    res.json(result[0]);
   } catch (error) {
-    console.error('Error updating product:', error) // Log the actual Neon error
-    res.status(500).json({ error: 'Error updating product' })
+    console.error('Error updating product:', error);
+    res.status(500).json({ error: 'Error updating product' });
   }
-})
+});
 
 /*
  * DELETE /products/:product_id - Delete a specific product
@@ -515,7 +490,6 @@ app.delete('/products/:product_id', async (req, res) => {
   }
 
   try {
-    const sql = getDb()
     const deletedProducts = await sql`
         DELETE FROM products
         WHERE id = ${productId}
@@ -539,7 +513,8 @@ app.delete('/products/:product_id', async (req, res) => {
  \___/|_|  \__,_|\___|_|  |___/
 
 */
-
+const ordersRoute = (app, dbUrl) => {
+  const sql = neon(dbUrl)
 app.post('/orders', async (req, res) => {
   const {
     storeId,
@@ -582,7 +557,6 @@ app.post('/orders', async (req, res) => {
   }
 
   try {
-    const sql = getDb();
 
     const [order] = await sql`
       INSERT INTO orders (
@@ -644,7 +618,6 @@ app.get('/orders/:order_id', async (req, res) => {
   }
 
   try {
-    const sql = getDb()
     const orders = await sql`SELECT * FROM orders WHERE id = ${orderId};`
 
     if (orders.length === 0) {
@@ -790,7 +763,6 @@ app.put('/orders/:order_id', async (req, res) => {
   `
 
   try {
-    const sql = getDb()
     const updatedOrders = await sql(queryString, values)
   
     if (updatedOrders.length === 0) {
@@ -804,7 +776,7 @@ app.put('/orders/:order_id', async (req, res) => {
   }
   
 })
-
+}
 
 /*
      _   _ _       _        __                                      _       
@@ -815,65 +787,8 @@ app.put('/orders/:order_id', async (req, res) => {
                             |_|          |___/                              
 
 */
-
-app.get('/auth/token', async (req, res) => {
-  const { storeId } = req.query
-
-  if (!storeId) {
-    return res.status(400).json({ error: 'Missing storeId parameter' })
-  }
-
-  try {
-    const sql = getDb()
-    const [store] = await sql`
-      SELECT "stitchClientKey", "stitchClientSecret"
-      FROM stores
-      WHERE id = ${storeId}
-      LIMIT 1;
-    `
-
-    if (!store) {
-      return res.status(404).json({ error: 'Store not found' })
-    }
-
-    const { stitchClientKey, stitchClientSecret } = store
-
-    if (!stitchClientKey || !stitchClientSecret) {
-      return res.status(400).json({
-        error: 'Missing Stitch credentials for this store'
-      })
-    }
-
-    const response = await fetch('https://express.stitch.money/api/v1/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        // This cookie is optional. If required, replace with a real value:
-        'Cookie': 'GAESA=CrABMDA3ZjY1...fake...yNTEzNzM0MWU3YzBkZTgwOTMzYmViYmJmYjBiNDRkYzgQ_6rf2Oky'
-      },
-      body: JSON.stringify({
-        clientId: stitchClientKey,
-        clientSecret: stitchClientSecret,
-        scope: 'client_paymentrequest'
-      })
-    })
-
-    if (!response.ok) {
-      const errBody = await response.text()
-      return res.status(response.status).json({
-        error: 'Failed to get token from Stitch',
-        detail: errBody
-      })
-    }
-
-    const data = await response.json()
-    res.json({ token: data.access_token || data.token || data })
-  } catch (err) {
-    console.error('Token fetch error:', err)
-    res.status(500).json({ error: 'Internal server error' })
-  }
-})
-
+const paymentsRoute = (app, dbUrl) => {
+  const sql = neon(dbUrl)
 app.post('/stitch/payment-link', async (req, res) => {
   const { storeId, amount, orderId, payerName = '', deliveryFee = 0 } = req.body;
 
@@ -885,7 +800,6 @@ app.post('/stitch/payment-link', async (req, res) => {
   }
 
   try {
-    const sql = getDb();
     console.log(`[Stitch] Fetching credentials for storeId: ${storeId}`);
     const [store] = await sql`
       SELECT "stitchClientKey", "stitchClientSecret"
@@ -913,11 +827,6 @@ app.post('/stitch/payment-link', async (req, res) => {
       });
 
       const tokenData = await tokenRes.json();
-
-      if (!tokenRes.ok) {
-        console.error('[Stitch] Token request failed:', tokenData);
-        return res.status(500).json({ error: 'Failed to get token', details: tokenData });
-      }
 
       token = tokenData?.data?.accessToken;
       if (!token) {
@@ -983,15 +892,19 @@ app.post('/stitch/payment-link', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
+}
 
 // LAST STEP: Start the server
 if (require.main === module) {
   storesRoute(app, process.env.DATABASE_URL)
+  productsRoute(app, process.env.DATABASE_URL)
+  ordersRoute(app, process.env.DATABASE_URL)
+  paymentsRoute(app, process.env.DATABASE_URL)
+
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`)
   })
 }
 
 // Export app for testing purposes
-module.exports = {app, storesRoute, productsRoute}
+module.exports = {app, storesRoute, productsRoute, ordersRoute, paymentsRoute}

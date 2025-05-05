@@ -53,7 +53,7 @@ describe('Store Routes', () => {
     })
 
     expect(res.statusCode).toBe(200)
-    expect(res.body.name).toBe('Updatd Store Name')
+    expect(res.body.name).toBe('Updated Store Name')
     expect(res.body.status).toBe('approved')
   })
 
