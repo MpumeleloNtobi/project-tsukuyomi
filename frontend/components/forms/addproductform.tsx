@@ -9,6 +9,9 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
+
+ 
+
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Plus } from 'lucide-react';
@@ -66,7 +69,12 @@ async function createProduct(data: z.infer<typeof formSchema>, storeId: string) 
   return response.json();
 }
 
-export default function ProductForm() {
+type ProductFromprops={
+  onSuccess:()=>void;
+};
+
+
+export default function ProductForm({ onSuccess} : ProductFromprops) {
   // 1. Use the useForm hook to define the form and bind it with validation schema
   //set the default values
   const router = useRouter()
@@ -103,6 +111,7 @@ export default function ProductForm() {
       loading: 'Adding product...',
       success: (data) => {
         form.reset(); // Optionally reset the form after successful submission
+        onSuccess();
         return `${values.ProductName} has been added successfully!`;
       },
       error: (error) => {
@@ -110,7 +119,10 @@ export default function ProductForm() {
       },
 
     });
-    router.push("/seller/dashboard");
+    //Phutheho edited here while building the add product Modal
+    //I want to reset to the very same page after adding a new product
+    const storeid=user?.publicMetadata.storeId;
+    router.push(`/seller/${storeid}/products`);
   }
 
   return (
