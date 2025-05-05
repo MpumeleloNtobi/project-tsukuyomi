@@ -24,7 +24,7 @@ app.use(cors());
 const port = process.env.PORT || 5000
 
 app.get('/', async (_, res) => {
-  const sql = neon(`${process.env.DATABASE_URL}`)
+  const sql = require('./db')
   const response = await sql`SELECT version()`
   const { version } = response[0]
   res.json({ version })

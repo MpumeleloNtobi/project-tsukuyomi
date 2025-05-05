@@ -1,5 +1,27 @@
-const request = require('supertest')
-const app = require('../index') 
+// File: src/tests/products.test.js
+jest.mock('../db', () => {
+  return jest.fn(); // this mocks the default exported sql tagged template function
+});
+
+const sql = require('../db');
+const request = require('supertest');
+const app = require('../index'); 
+
+beforeEach(() => {
+  sql.mockReset(); // Clear old mocks between tests
+});
+
+test('GET /products should return fake products', async () => {
+  sql.mockResolvedValue([
+    { id: '1', name: 'Mock Product', store_id: 'abc-123' }
+  ]);
+
+  const res = await request(app).get('/products');
+  expect(res.statusCode).toBe(200);
+  expect(res.body[0].name).toBe('Mock Product');
+});
+
+
 
 describe('Stores API', () => {
 
