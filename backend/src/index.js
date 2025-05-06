@@ -10,7 +10,7 @@ const { Clerk } = require('@clerk/backend');
 config()
 
 const clerk = new Clerk({
-  secretKey:'sk_test_Lo9YZO4TWhU0veJ5K5L71oYYLJM8nrVNrOo2QhWHv8'
+  secretKey: process.env.CLERK_SECRET_KEY
 });
 
 // Helper function to get the SQL query function
