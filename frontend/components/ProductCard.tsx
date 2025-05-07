@@ -2,25 +2,35 @@
 
 import { useState } from "react"
 import Image from "next/image"
-//import { Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
-//import { Badge } from "@/components/ui/badge"
-
-interface ProductCardProps {
-  name: string
-  price: number
-  image: string
-  alt: string
-}
+import { useCart } from "@/app/hooks/use-cart"
+import { Product } from "@/types/products"
+import { Badge } from "./ui/badge"
+import Link from "next/link"
 
 export default function ProductCard({
-  name = "Nike Air MX Super 2500 - Red",
-  price = 449,
-  image = "/placeholder.svg?height=300&width=300",
-  alt = "Product image",
-}: ProductCardProps) {
+  id= 168,
+  storeId= "06e14636-f586-4b1f-bf60-96d6742d95ee",
+  name= "Smartphone Z",
+  description= "Latest generation smartphone with AI camera.",
+  price= 799.99,
+  stockQuantity= 50,
+  category= "Electronics",
+  image1url= "https://placehold.co/600x400?text=Smartphone+Z"
+}: Product) {
   const [isHovered, setIsHovered] = useState(false)
+  const { addItem } = useCart()
+
+  const handleAddToCart = (id: string, name: string, description: string, price: number, quantity: number) => {
+    addItem({
+      id: id,
+      name: name,
+      description: description,
+      price: price,
+      quantity: 1,
+    })
+  }
 
   return (
     <Card
@@ -28,38 +38,27 @@ export default function ProductCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      <Link href={`/stores/${storeId}/products/${id}`}>
       <div className="relative bg-gray-100 p-4">
         <div className="relative h-[200px] w-full">
           <Image
-            src={image || "/placeholder.svg"}
-            alt={alt}
+            src={image1url || "/placeholder.svg"}
+            alt={description}
             fill
             className={`object-contain transition-transform duration-300 ${isHovered ? "scale-105" : ""}`}
           />
         </div>
       </div>
+      </Link>
       <CardContent className="p-4 pt-3 pb-0">
         <h3 className="text-sm font-medium text-gray-900 mb-1">{name}</h3>
-        <div className="flex items-center gap-2">
-          <span className="text-xl font-bold">R{price}</span>
+        <div className="flex items-center gap-2 mb-2">
+         <Badge className="bg-gray-300 text-black">{stockQuantity}</Badge>
         </div>
-        
+        <span className="text-xl font-bold">R{price}</span>
+        <Button variant={"outline"}className="float-right hover:bg-linear-to-r from-rose-500 via-pink-500 to-red-500 cursor-pointer"  onClick={() => handleAddToCart(`${id}`,name,description,price,1)}>Add to cart</Button>
       </CardContent>
-      <CardFooter className="p-4 pt-3">
-        <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white cursor-pointer">Add to cart</Button>
-      </CardFooter>
+      
     </Card>
   )
 }
-
-/**
-<div className="flex items-center mt-1">
-          {[...Array(5)].map((_, i) => (
-            <Star
-              key={i}
-              className={`w-4 h-4 ${i < Math.floor(rating) ? "fill-yellow-400 text-yellow-400" : "fill-gray-200 text-gray-200"}`}
-            />
-          ))}
-          <span className="ml-1 text-sm text-gray-700">{rating.toFixed(1)}</span>
-        </div>
-*/ 

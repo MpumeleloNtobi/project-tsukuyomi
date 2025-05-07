@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <SellerSidebar />
       <main className="w-full">
-        <Header />
+        <Header showCart={false}/>
         <SidebarTrigger />
         {children}
       </main>

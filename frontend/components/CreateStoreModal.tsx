@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactElement } from 'react';
+import { useState, ReactElement } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -28,72 +28,80 @@ import {
 } from '@/components/ui/form';
 import { AddressAutocomplete } from '@/components/AddressAutocomplete';
 
-// Zod schema
 const storeSchema = z.object({
-  name:        z.string().min(2, { message: 'Store name must be at least 2 characters' }),
-  description: z.string().min(10, { message: 'Description must be at least 10 characters' }),
-  yocoKey:     z.string().optional(),
-  address:     z.string().min(5, { message: 'Address must be at least 5 characters' }),
+  storeName: z.string().min(2),
+  storeDescription: z.string().min(10),
+  stitchClientKey: z.string().optional(),
+  stitchClientSecret: z.string().optional(),
+  streetAddress: z.string().min(5),
+  streetNumber: z.string().optional(),
+  streetName: z.string().optional(),
+  town: z.string().optional(),
+  province: z.string().optional(),
+  postalCode: z.string().optional(),
+  country: z.string().optional(),
 });
+
 type StoreForm = z.infer<typeof storeSchema>;
 
 export function CreateStoreModal(): ReactElement {
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { userId: clerk_id } = useAuth();
-
   const form = useForm<StoreForm>({
     resolver: zodResolver(storeSchema),
     defaultValues: {
-      name:        '',
-      description: '',
-      yocoKey:     '',
-      address:     '',
+      storeName: '',
+      storeDescription: '',
+      stitchClientKey: '',
+      stitchClientSecret: '',
+      streetAddress: '',
+      streetNumber: '',
+      streetName: '',
+      town: '',
+      province: '',
+      postalCode: '',
+      country: '',
     },
   });
 
   const onSubmit = async (values: StoreForm) => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/stores/`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...values, clerkId: clerk_id }),
-        }
-      );
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stores/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...values, clerkId: clerk_id }),
+      });
+
       if (!res.ok) throw new Error('Create failed');
       toast.success('Store created!');
-      router.push('/seller/dashboard');
-    } catch (err) {
-      console.error(err);
+      setOpen(false);
+      router.push('/');
+    } catch {
       toast.error('Something went wrong');
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Become a Seller</Button>
+        <Button className="cursor-pointer" variant="outline">Become a Seller</Button>
       </DialogTrigger>
-
-      <DialogContent 
+      <DialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}
-        onPointerDownOutside={(event) => {
-            event.preventDefault();
-        }}
-        >
+        onPointerDownOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="text-center">Create a Store</DialogTitle>
           <DialogDescription className="text-center">
             Provide your store details below
           </DialogDescription>
         </DialogHeader>
-
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="name"
+              name="storeName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Store Name</FormLabel>
@@ -111,7 +119,7 @@ export function CreateStoreModal(): ReactElement {
 
             <FormField
               control={form.control}
-              name="description"
+              name="storeDescription"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
@@ -130,14 +138,33 @@ export function CreateStoreModal(): ReactElement {
 
             <FormField
               control={form.control}
-              name="yocoKey"
+              name="stitchClientKey"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>YOCO Key</FormLabel>
+                  <FormLabel>Stitch Client Key</FormLabel>
                   <FormControl>
                     <input
                       {...field}
-                      placeholder="YOCO API Key"
+                      placeholder="test-bfd0ab2c-0258-4973-8f4c-06e0e0ad97a3"
+                      className="w-full border px-3 py-2 rounded"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+
+            <FormField
+              control={form.control}
+              name="stitchClientSecret"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Stitch Client Secret</FormLabel>
+                  <FormControl>
+                    <input
+                      {...field}
+                      placeholder="PQZn85k9I2P2DqbhifL0h3C0VhLLJhaXWimS6JAmqGWw3AixZ54f0nR1reGL6J/2"
                       className="w-full border px-3 py-2 rounded"
                     />
                   </FormControl>
@@ -147,29 +174,47 @@ export function CreateStoreModal(): ReactElement {
             />
 
             <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Address</FormLabel>
-                            <FormControl>
-                                <AddressAutocomplete
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    onSelect={(addr) => {
-                                        console.log('🚀 Selected via click:', addr);
-                                        field.onChange(addr);
-                                    }}
-                                />
-                            </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
+              control={form.control}
+              name="streetAddress"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Street Address</FormLabel>
+                  <FormControl>
+                    <AddressAutocomplete
+                      value={field.value}
+                      onChange={field.onChange}
+                      onSelect={(place) => {
+                        const addr = place.formatted_address || '';
+                        field.onChange(addr);
+                        const comps: Record<string, string> = {};
+                        (place.address_components || []).forEach((c) =>
+                          c.types.forEach((t) => {
+                            if (t === 'street_number') comps.streetNumber = c.long_name;
+                            else if (t === 'route') comps.streetName = c.long_name;
+                            else if (t === 'locality') comps.town = c.long_name;
+                            else if (t === 'administrative_area_level_1')
+                              comps.province = c.short_name;
+                            else if (t === 'postal_code') comps.postalCode = c.long_name;
+                            else if (t === 'country') comps.country = c.long_name;
+                          })
+                        );
+                        form.setValue('streetNumber', comps.streetNumber || '');
+                        form.setValue('streetName', comps.streetName || '');
+                        form.setValue('town', comps.town || '');
+                        form.setValue('province', comps.province || '');
+                        form.setValue('postalCode', comps.postalCode || '');
+                        form.setValue('country', comps.country || '');
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
 
             <DialogFooter>
               <Button
-                className="w-full"
+                className="w-full cursor-pointer"
                 type="submit"
                 disabled={form.formState.isSubmitting}
               >

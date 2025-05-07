@@ -1,29 +1,25 @@
 'use client'
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+import { ShoppingCart } from "@/components/Cart"
 import Link from 'next/link'
 import { CreateStoreModal } from './CreateStoreModal'
 import { Button } from '@/components/ui/button'
 import { useUser } from '@clerk/nextjs'
-
-const Header = () => {
+import { CartProvider } from '@/app/hooks/use-cart'
+import Image from 'next/image'
+import storify from '@/public/storify.png'
+interface headerInterface {
+  showCart: boolean;
+}
+const Header = ({showCart=false}: headerInterface) => {
   const { user } = useUser()
   const role = user?.publicMetadata.role
-  if (role==='buyer')
-  {
-      const isBuyer = true;
-  }
-  else
-  {
-    const isBuyer = false;
-  }
-
   return (
-    <header className="border-b bg-white">
-      <div className="px-4">
+    <header className="border-b bg-linear-to-r from-rose-500 via-pink-500 to-red-500 px-6">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="text-xl font-bold">
-            Storify
+          <Link href="/home">
+          <Image  width={200}className="p-3" alt="logo" src={storify} />
           </Link>
           <nav>
             <ul className="flex space-x-4">
@@ -31,18 +27,20 @@ const Header = () => {
                 { role === "buyer" ? (
                   <>
                     <CreateStoreModal />
-                    <Button className="cursor-pointer"  variant={'outline'}><a href='/buyer/home'>My Acc</a></Button>
                   </>
                   ) : role === "seller" ? (
                     <>
-                      <Button className="cursor-pointer" variant={'outline'}><a href='/seller/dashboard'>Switch to Buyer</a></Button>
+                      <Button className="cursor-pointer" variant={'outline'}><a href='/seller/dashboard'>Seller Dashboard</a></Button>
                     </>
                   ) : (
                     <>
                       
                     </>
                   )
-                }  
+                }
+                {
+                  showCart ? ( <ShoppingCart/> ) : (<></>)
+                }
                 <li className="flex items-center">
                   <UserButton />
                 </li>
@@ -64,8 +62,8 @@ const Header = () => {
             </ul>
           </nav>
         </div>
-      </div>
     </header>
+   
   )
 }
 
