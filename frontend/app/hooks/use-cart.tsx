@@ -104,6 +104,7 @@ export function useCart() {
   const context = useContext(CartContext)
 
   if (context === undefined) {
+    console.trace("useCart used outside of CartProvider");
     throw new Error("useCart must be used within a CartProvider")
   }
 

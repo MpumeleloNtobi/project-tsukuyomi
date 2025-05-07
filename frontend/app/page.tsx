@@ -2,11 +2,14 @@ import Header from "@/components/Header"
 import StoreGallery from "@/components/StoreGallery"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle } from "lucide-react"
+import { CartProvider } from "./hooks/use-cart"
 
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
+     <CartProvider storeId={""}>
       <Header showCart={true}/>
+      </CartProvider>
 
       <section className="flex-1 flex flex-col items-center justify-center px-4 pt-16 md:py-16 text-center max-w-5xl mx-auto">
         <div className="space-y-6 max-w-3xl">
