@@ -283,7 +283,15 @@ app.post('/products', async (req, res) => {
     return res.status(400).json({ error: 'stockQuantity must be a non-negative integer.' });
   }
 
+  console.log('Types:', {
+    price: typeof price,
+    stockQuantity: typeof stockQuantity,
+    storeId: storeId
+  });
+  
+
   try {
+    
     const newProduct = await sql`
       INSERT INTO products (
         "storeId", name, description, price, "stockQuantity", category,
@@ -293,6 +301,7 @@ app.post('/products', async (req, res) => {
         ${image1url}, ${image2url}, ${image3url}
       ) RETURNING *;
     `;
+   
 
     // ✅ Respond to client
     res.status(201).json(newProduct[0]);

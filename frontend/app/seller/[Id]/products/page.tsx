@@ -4,7 +4,7 @@
 import {useUser} from "@clerk/nextjs"
 import { Product } from "@/components/product-column"
 import { DataTable } from "@/components/data-table"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import React from "react";
 import {useRouter} from "next/navigation"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
@@ -29,6 +29,29 @@ function SellersProducts() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const storeid = user?.publicMetadata?.storeId;
+
+//We define global variables for the children components
+
+  const [formData, setFormData] = useState<Product | null>(null);
+  const [isEditing,setIsEditing]=useState(false);
+  const [selectedProductId, setproductid] = useState<string | null>(null);
+
+
+//The product will come from the column child 
+  const handleEdit=(product: Product)=>{
+    console.log(`this log is under handleEdit in page.tsx, The product received is ${product}\n`)
+    setFormData(product);
+    console.log(`this log is under handleEdit in page.tsx, The formdata received is ${formData}\n`)
+    setIsEditing(true);
+    console.log(`The state of the editing after being set is ${isEditing}\n`)
+     setproductid(product.id)
+     console.log(`The product id set under handleEdit is ${selectedProductId}\n`)
+  }
+
+
+
+
+
     
   
     const fetchProducts = async () => {
@@ -53,7 +76,7 @@ function SellersProducts() {
       setOpen(false);       
       fetchProducts();      
     };
-  
+
     useEffect(() => {
       if (storeid) fetchProducts();
     }, [user]);
@@ -79,12 +102,12 @@ function SellersProducts() {
         Fill in the details to create a new product.
       </DialogDescription>
     </DialogHeader>
-
-    <ProductForm onSuccess={handleSuccess} />
+{/*To the product form we pass the state "isEditing" and "The new form data" */}
+    <ProductForm onSuccess={handleSuccess} isEditing={isEditing} formData={formData} selectedProductId={selectedProductId}/>
   </DialogContent>
 </Dialog>
         </div>
-        {loading ? <ProductTableSkeleton /> :<DataTable columns={getColumns({ onDeleteSuccess: fetchProducts })} data={products} />}
+        <DataTable columns={getColumns({ onDeleteSuccess: fetchProducts,onEdit: handleEdit })} data={products} />
       </div>
     );
   }

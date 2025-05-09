@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
+import { Product } from "../product-column"
 
 
 
@@ -50,7 +51,9 @@ async function createProduct(data: z.infer<typeof formSchema>, storeId: string) 
     price: data.Productprice,
     stockQuantity: data.Quantity,
     category: data.Category,
-    imageUrl: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
+    image1url: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
+    image2url: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
+    image3url: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
   };
 
   const response = await fetch(apiUrl, {
@@ -63,50 +66,136 @@ async function createProduct(data: z.infer<typeof formSchema>, storeId: string) 
 
   if (!response.ok) {
     const error = await response.json();
+    console.trace("This is where the response Failed");
+    console.log(response);
     throw new Error(error.message || 'Failed to add product');
   }
 
   return response.json();
 }
 
-type ProductFromprops={
+//we create a function that updates the product 
+async function updateProduct(data: z.infer<typeof formSchema>, storeId: string,productId : string | null) {
+  const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/products/${productId}`;
+
+  const productData = {
+    storeId: storeId,
+    name: data.ProductName,
+    description: data.Description,
+    price: data.Productprice,
+    stockQuantity: data.Quantity,
+    category: data.Category,
+    image1url: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
+    image2url: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
+    image3url: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
+  };
+
+  const response = await fetch(apiUrl, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(productData),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    console.trace("This is where the response Failed");
+    console.log(response);
+    throw new Error(error.message || 'Failed to UPDATE product');
+  }
+
+  return response.json();
+}
+
+
+
+
+type ProductFormprops={
   onSuccess:()=>void;
+  isEditing: boolean;
+  formData : Product | null;
+  selectedProductId : string | null;
+  
+    
 };
 
-
-export default function ProductForm({ onSuccess} : ProductFromprops) {
-  // 1. Use the useForm hook to define the form and bind it with validation schema
-  //set the default values
+export default function ProductForm({ onSuccess,isEditing,formData,selectedProductId} : ProductFormprops) {
   const router = useRouter()
-
   const { user } = useUser()
 
   // Piece of state to hold the storeId
   const [storeId, setStoreId] = useState<string | undefined>(undefined);
+  const [productId,setproductid]=useState<string | null>(null)
+  
+  
+
+  //this is for when the productid changes
+  useEffect(()=>{
+    if(selectedProductId!==productId)
+    setproductid(selectedProductId);
+  },[selectedProductId,productId])
+  
+
+
 
   useEffect(() => {
     if (user) {
       setStoreId(user?.publicMetadata?.storeId as string | undefined);
     }
   }, [user]);
-
+//when form data has been passed use that one else use the default empty
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ProductName: "",
-      Description: "",
-      Productprice:1,
-      Quantity : 1,
-      Category :""
+      ProductName: formData?.product_name??"",
+      Description: formData?.product_description??"",
+      Productprice:formData?.price??1,
+      Quantity : formData?.quantity??1,
+      Category :formData?.category??""
     },
   })
+    
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!storeId) {
       toast.error("Store ID not found. Please ensure you are logged in and have a store associated with your account.");
       return;
     }
+   
+    if (isEditing){
 
+      toast.promise(updateProduct(values, storeId,productId), {
+        loading: 'updating product...',
+        success: (data) => {
+          form.reset(); // Optionally reset the form after successful submission
+          onSuccess();
+          return `${values.ProductName} has been updated successfully!`;
+        },
+        error: (error) => {
+          return `Error Updating product: ${error.message}`;
+        },
+  
+      });
+    }
+    else{
+      //this is an instance where You're creating the new product
+      //run the function that creates a new product
+      toast.promise(createProduct(values, storeId), {
+        loading: 'Adding product...',
+        success: (data) => {
+          form.reset(); // Optionally reset the form after successful submission
+          onSuccess();
+          return `${values.ProductName} has been added successfully!`;
+        },
+        error: (error) => {
+          return `Error adding product: ${error.message}`;
+        },
+  
+      });
+
+    }
+/*
     toast.promise(createProduct(values, storeId), {
       loading: 'Adding product...',
       success: (data) => {
@@ -119,6 +208,7 @@ export default function ProductForm({ onSuccess} : ProductFromprops) {
       },
 
     });
+    */
     //Phutheho edited here while building the add product Modal
     //I want to reset to the very same page after adding a new product
     const storeid=user?.publicMetadata.storeId;
@@ -223,7 +313,14 @@ export default function ProductForm({ onSuccess} : ProductFromprops) {
             )}
           />
           <div>
-            <Button type="submit" className="w-full"><Plus/>Add product</Button>
+          <Button type="submit" className="w-full">
+  {isEditing ? "Update Product" : (
+    <>
+      <Plus className="mr-2" />
+      Add Product
+    </>
+  )}
+</Button>
           </div>
 
         </form>

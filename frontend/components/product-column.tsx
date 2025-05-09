@@ -45,8 +45,9 @@ export type Product = {
 
 //We define a function that deletes the product in the database and pas
 
-export const getColumns = ({ onDeleteSuccess }: { onDeleteSuccess: () => void }): ColumnDef<Product>[] => [
+export const getColumns = ({ onDeleteSuccess,onEdit }: {onEdit :(product :Product)=>void; onDeleteSuccess: () => void }): ColumnDef<Product>[] => [
   {
+    id : "name",
     accessorKey: "name",
     header: ({ column }) => {
         return (
@@ -61,10 +62,12 @@ export const getColumns = ({ onDeleteSuccess }: { onDeleteSuccess: () => void })
       },
   },
   {
+    id : "description",
     accessorKey: "description",
     header: "Description",
   },
   {
+    id : "price",
     accessorKey: "price",
     header: () => <div className="text-right">Price</div>,
     cell: ({ row }) => {
@@ -78,10 +81,12 @@ export const getColumns = ({ onDeleteSuccess }: { onDeleteSuccess: () => void })
   },
   },
   {
+    id : "category",
     accessorKey: "category",
     header: "Category",
   },
   {
+    id : "stockQuantity",
     accessorKey: "stockQuantity",
     header: "Quantity",
   },
@@ -96,6 +101,9 @@ export const getColumns = ({ onDeleteSuccess }: { onDeleteSuccess: () => void })
       const [open,setOpen]=React.useState(false);
       const user=useUser();
       const [error, setError] = useState<string | null>(null);
+      const [selectedProductId,setproductid]=useState<string | undefined>(undefined);
+      setproductid(product.id)
+      //from here I should pass the selected productid to the page.tsx
        
       const ApiURL=`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/${product.id}`
       
@@ -149,7 +157,7 @@ export const getColumns = ({ onDeleteSuccess }: { onDeleteSuccess: () => void })
             <DropdownMenuSeparator />
             <DropdownMenuItem>View Product in detail</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit product</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=> onEdit(product)}>Edit product</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
     {/*Since we have set out component to open when an onclick on remove product happens then we don't need an alert trigger button */}
