@@ -3,7 +3,7 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/MpumeleloNtobi/project-tsukuyomi/badge.svg?branch=main)](https://coveralls.io/github/MpumeleloNtobi/project-tsukuyomi?branch=main)
 
-## 1 Naming Convention
+## 1 Naming Conventions
 Please try to use short and descriptive names as far as practically possible
 
 ### Definitions
