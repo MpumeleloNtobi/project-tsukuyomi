@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ShoppingCart, Check, AlertCircle } from "lucide-react"
+import { ShoppingCart, Check, AlertCircle, X } from "lucide-react"
 import { useState } from "react"
 import { useCart } from "@/app/hooks/use-cart"
 
@@ -20,49 +20,59 @@ export type Product = {
   image3url?: string | null
 }
 
-interface ProductCardProps {
+interface ProductDetailsProps {
   product: Product
   onAddToCart?: (product: Product) => void
+  onClose?: () => void 
 }
 
-export default function ProductCard({ product, onAddToCart = () => {} }: ProductCardProps) {
+export default function ProductDetails({ product, onAddToCart = () => {}, onClose }: ProductDetailsProps) {
   const [activeImage, setActiveImage] = useState(0)
+  const { addItem } = useCart()
+  const isInStock = product.stockQuantity > 0
 
-  // Create an array of available images
   const images = [
     product.image1url || "/placeholder.svg?height=600&width=600",
     product.image2url || "/placeholder.svg?height=600&width=600",
     product.image3url || "/placeholder.svg?height=600&width=600",
   ]
 
-  const isInStock = product.stockQuantity > 0
-const { addItem } = useCart()
-
-  const handleAddToCart = (id: string, name: string, description: string, price: number, quantity: number) => {
+  const handleAddToCart = () => {
     addItem({
-      id: id,
-      name: name,
-      description: description,
-      price: price,
+      id: `${product.id}`,
+      name: product.name,
+      description: product.description,
+      price: product.price,
       quantity: 1,
     })
+    onAddToCart(product)
   }
+
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div className="relative w-full max-w-5xl bg-white rounded-xl shadow-lg p-6 mx-auto">
+      {/* Close Button */}
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Image Gallery */}
-        <div className="p-6">
+        <div>
           <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4">
             <Image
               src={images[activeImage] || "/placeholder.svg"}
               alt={product.name}
               width={600}
               height={600}
-              className="w-full h-full object-cover object-center transition-transform duration-500"
+              className="w-full h-full object-cover object-center"
             />
           </div>
 
-          {/* All Images Row */}
           <div className="grid grid-cols-3 gap-3">
             {images.map((image, index) => (
               <button
@@ -85,7 +95,7 @@ const { addItem } = useCart()
         </div>
 
         {/* Product Details */}
-        <div className="flex flex-col justify-between p-6">
+        <div className="flex flex-col justify-between">
           <div className="space-y-4">
             <div>
               <div className="flex justify-between items-start">
@@ -125,7 +135,7 @@ const { addItem } = useCart()
 
           <div className="mt-8">
             <Button
-              onClick={() => handleAddToCart(`${product.id}`,product.name,product.description,product.price,1)}
+              onClick={handleAddToCart}
               disabled={!isInStock}
               className="w-full bg-rose-600 hover:bg-rose-700 text-white font-medium py-6 flex items-center justify-center gap-2 rounded-lg transition-colors"
             >

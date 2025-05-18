@@ -13,21 +13,37 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import ProductDetails from "@/components/ProductDetails"; 
+
 interface ProductGalleryProps {
   title?: string;
   products: Product[];
   description?: string;
 }
 
-function ProductGallery({ title = "Product Gallery", products: initialProducts, description = "" }: ProductGalleryProps) {
+function ProductGallery({
+  title = "Product Gallery",
+  products: initialProducts,
+  description = "",
+}: ProductGalleryProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [products, setProducts] = useState<Product[]>(initialProducts); // Initialize with the passed-in products
+  const [products, setProducts] = useState<Product[]>(initialProducts);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); 
 
-  const categories = ["all", ...Array.from(new Set(initialProducts.map((product) => product.category)))];
+  const categories = [
+    "all",
+    ...Array.from(new Set(initialProducts.map((product) => product.category))),
+  ];
 
   useEffect(() => {
-    let filteredProducts = initialProducts; // Start filtering from the initial products
+    let filteredProducts = initialProducts;
 
     if (searchTerm) {
       filteredProducts = filteredProducts.filter((product) =>
@@ -42,14 +58,14 @@ function ProductGallery({ title = "Product Gallery", products: initialProducts, 
     }
 
     setProducts(filteredProducts);
-  }, [searchTerm, selectedCategory, initialProducts]); // Re-filter when search, category, or initial products change
+  }, [searchTerm, selectedCategory, initialProducts]);
 
   return (
     <div className="container mx-auto px-4 py-8">
-         <h1 className="text-2xl font-bold mb-6">{title}</h1>
-         <h2 className="text-xl font-bold mb-6">{description}</h2>
+      <h1 className="text-2xl font-bold mb-6">{title}</h1>
+      <h2 className="text-xl font-bold mb-6">{description}</h2>
+
       <div className="flex flex-col md:flex-row gap-4 mb-8">
-     
         <div className="relative flex-1">
           <Search
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -97,10 +113,23 @@ function ProductGallery({ title = "Product Gallery", products: initialProducts, 
               category={product.category}
               storeId={product.storeId}
               image1url={product.imageUrl}
+              onClick={() => setSelectedProduct(product)} 
             />
           ))}
         </div>
       )}
+
+      {/* Modal for Product Details */}
+      <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{selectedProduct?.name}</DialogTitle>
+          </DialogHeader>
+          {selectedProduct && (
+            <ProductDetails product={selectedProduct} />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
