@@ -41,6 +41,7 @@ function SellersProducts() {
         if (!response.ok) throw new Error(`Failed to fetch products: ${response.status}`);
         const data = await response.json();
         setProducts(data);
+        console.log(products)
       } catch (error: any) {
         setError(error.message);
         setProducts([]);
