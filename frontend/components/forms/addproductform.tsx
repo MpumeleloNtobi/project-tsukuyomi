@@ -1,235 +1,213 @@
-"use client"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
+"use client";
 
- 
+import { z } from "zod";
 
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Plus } from 'lucide-react';
-import { useEffect, useState } from "react"
-import { useUser } from "@clerk/nextjs"
+const formSchema = z.object({
+  name: z.string().min(4),
+  description: z.string().min(10),
+  price: z.coerce.number().min(1),
+  stockQuantity: z.coerce.number().int().min(1),
+  category: z.string().min(3),
+});
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
+  FormMessage
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import MultipleImageUploader from "@/components/MultipleImageUploader";
+import { Plus } from "lucide-react";
 
+type Props = { onSuccess: () => void };
 
-
-const formSchema = z.object({
-  ProductName: z.string().min(4, {message: "Product name must have atleast 4 characters"}),
-  Description: z.string().min(10, {message: "Description must have atleast 10 characters"}),
-  Productprice: z.coerce.number().min(1, "Price must be at least 1"),
-  Quantity : z.coerce.number().int("Must be an integer").min(1, "Quantity must be at least 1"),
-  Category : z.string().min(3,{message :"we're still going to validate Category"})
-})
-
-// Function to simulate the API call
-async function createProduct(data: z.infer<typeof formSchema>, storeId: string) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/products`;
-
-  const productData = {
-    storeId: storeId,
-    name: data.ProductName,
-    description: data.Description,
-    price: data.Productprice,
-    stockQuantity: data.Quantity,
-    category: data.Category,
-    image1url: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`, // Ignoring imageUrl as requested
-    image2url: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`,
-    image3url: `https://placehold.co/600x400?text=${data.ProductName.replace(/\s/g, '-')}`
-  };
-
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(productData),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Failed to add product');
-  }
-
-  return response.json();
-}
-
-type ProductFromprops={
-  onSuccess:()=>void;
-};
-
-
-export default function ProductForm({ onSuccess} : ProductFromprops) {
-  // 1. Use the useForm hook to define the form and bind it with validation schema
-  //set the default values
-  const router = useRouter()
-
-  const { user } = useUser()
-
-  // Piece of state to hold the storeId
-  const [storeId, setStoreId] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    if (user) {
-      setStoreId(user?.publicMetadata?.storeId as string | undefined);
-    }
-  }, [user]);
+export default function ProductForm({ onSuccess }: Props) {
+  const router = useRouter();
+  const { user } = useUser();
+  const [storeId, setStoreId] = useState<string>("");
+  const [images, setImages] = useState<File[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ProductName: "",
-      Description: "",
-      Productprice:1,
-      Quantity : 1,
-      Category :""
+      name: "",
+      description: "",
+      price: 1,
+      stockQuantity: 1,
+      category: ""
     },
-  })
+  });
+
+  useEffect(() => {
+    const sid = user?.publicMetadata.storeId as string;
+    if (sid) setStoreId(sid);
+  }, [user]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!storeId) {
-      toast.error("Store ID not found. Please ensure you are logged in and have a store associated with your account.");
-      return;
+    try {
+      setIsSubmitting(true);
+      if (!storeId) throw new Error("Store ID not found");
+      if (images.length !== 3) throw new Error("Upload exactly 3 images");
+
+      const data = new FormData();
+      data.append("storeId", storeId);
+      data.append("name", values.name);
+      data.append("description", values.description);
+      data.append("price", values.price.toString());
+      data.append("stockQuantity", values.stockQuantity.toString());
+      data.append("category", values.category);
+      images.forEach((img, i) => data.append(`picture${i + 1}`, img));
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/products`,
+        { method: "POST", body: data }
+      );
+      const text = await res.text();
+      if (!res.ok) {
+        let err;
+        try { err = JSON.parse(text).error; }
+        catch { err = text; }
+        throw new Error(err || `Status ${res.status}`);
+      }
+
+      form.reset();
+      setImages([]);
+      toast.success("Product added successfully!");
+      onSuccess();
+      router.push(`/seller/${storeId}/products`);
+    } catch (err: any) {
+      toast.error(err.message || "An error occurred");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    toast.promise(createProduct(values, storeId), {
-      loading: 'Adding product...',
-      success: (data) => {
-        form.reset(); // Optionally reset the form after successful submission
-        onSuccess();
-        return `${values.ProductName} has been added successfully!`;
-      },
-      error: (error) => {
-        return `Error adding product: ${error.message}`;
-      },
-
-    });
-    //Phutheho edited here while building the add product Modal
-    //I want to reset to the very same page after adding a new product
-    const storeid=user?.publicMetadata.storeId;
-    router.push(`/seller/${storeid}/products`);
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="overflow-y-auto p-1 space-y-6">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 bg-white p-8 rounded-xl shadow-md w-full max-w-md">
-          {/* Field 1: Product Name */}
+        <form
+          id="product-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6"
+        >
           <FormField
             control={form.control}
-            name="ProductName"
+            name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Product Name</FormLabel>
+                <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Please enter name" {...field} />
+                  <Input placeholder="Product name" {...field} />
                 </FormControl>
-                <FormDescription>
-                  Give your product a clear and concise name that will help customers identify it.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {/* Field 2: Description */}
+
           <FormField
             control={form.control}
-            name="Description"
+            name="description"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter a detailed description" {...field} />
-                </FormControl>
-                <FormDescription>
-                Provide a comprehensive overview of your products features, benefits, and any other relevant details.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* Field 3: Product Price */}
-          <FormField
-            control={form.control}
-            name="Productprice"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number" placeholder="Please enter Price" {...field}/>
+                  <Input placeholder="Product description" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* Field 4: Category */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="Price" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="stockQuantity"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Quantity</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="Stock quantity" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           <FormField
             control={form.control}
-            name="Category"
+            name="category"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a category" />
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Choose a category" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="electronics">Electronics</SelectItem>
-                    <SelectItem value="furniture">Home furniture</SelectItem>
-                    <SelectItem value="art">Art collection</SelectItem>
+                    <SelectItem value="furniture">Furniture</SelectItem>
+                    <SelectItem value="art">Art</SelectItem>
+                    <SelectItem value="clothing">Clothing</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription>
-                  Your product should match selected category
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* Field 5: Quantity */}
-          <FormField
-            control={form.control}
-            name="Quantity"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Quantity in stock</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number" placeholder="Please enter Quantity" {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div>
-            <Button type="submit" className="w-full"><Plus/>Add product</Button>
+          <div className="space-y-2">
+            <FormLabel>Product Images (3 required)</FormLabel>
+            <MultipleImageUploader onFilesChange={setImages} requiredCount={3} />
           </div>
-
         </form>
       </Form>
+
+      <div className="bg-white sticky bottom-0">
+        <Button
+          type="submit"
+          form="product-form"
+          className="w-full"
+          disabled={isSubmitting || images.length !== 3}
+          onClick={form.handleSubmit(onSubmit)}
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          {isSubmitting ? "Adding Product..." : "Add Product"}
+        </Button>
+      </div>
     </div>
   );
 }
