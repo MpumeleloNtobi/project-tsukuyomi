@@ -515,6 +515,35 @@ app.delete('/products/:product_id', async (req, res) => {
 */
 const ordersRoute = (app, dbUrl) => {
   const sql = neon(dbUrl)
+
+  /*
+  GET   orders/:storeid ->Get all the orders belonging to a particular store
+
+   */
+app.get('/orders/:storeid', async (req, res) => {
+  const storeid = req.params.storeid;
+
+  if (!storeid) {
+    return res.status(400).json({ Error: "The store ID is not valid" });
+  }
+
+  try {
+
+    const orders = await sql`SELECT * FROM orders WHERE "storeId" = ${storeid}`;
+    if (orders.length === 0) {
+      return res.json({ Error: "You Currently have No orders." });
+    }
+
+    return res.json(orders);
+  } catch (error) {
+    return res.status(500).json({ Error: "Database query failed", Details: error.message });
+  }
+});
+
+  /*
+  This is a function to add an order 
+  Post function
+  */
 app.post('/orders', async (req, res) => {
   const {
     storeId,
