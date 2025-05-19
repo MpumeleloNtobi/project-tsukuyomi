@@ -16,7 +16,7 @@ const Header = ({showCart=false}: headerInterface) => {
   const { user } = useUser()
   const role = user?.publicMetadata.role
   return (
-    <header className="border-b bg-linear-to-r from-rose-500 via-pink-500 to-red-500 px-6">
+    <header className="border-b bg-linear-to-r from-black via-pink-500 to-black px-6">
         <div className="flex h-16 items-center justify-between">
           <Link href="/home">
           <Image  width={200}className="p-3" alt="logo" src={storify} />
