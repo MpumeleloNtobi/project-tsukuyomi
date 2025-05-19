@@ -4,10 +4,23 @@ import StoreGallery from "@/components/StoreGallery"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const { user } = useUser()
   const role = user?.publicMetadata.role
+
+  const router = useRouter()
+
+const handleClick = () => {
+  if (role === "seller") {
+    router.push("/seller/store")
+  } else {
+    router.push("/seller/store/create") 
+  }
+}
+
+
   return (
     <main className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
       <Header showCart={false}/>
@@ -21,12 +34,16 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             
-            <Button
-              size="lg"
-              className="bg-linear-to-r hover:bg-gradient-to-r from-slate-900 to-slate-700 text-white font-medium px-8">
-                {role === "seller" ? "My Store" : "Create a store"}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+          {user && (
+          <Button
+            size="lg"
+            onClick={handleClick}
+            className="bg-linear-to-r hover:bg-gradient-to-r from-slate-900 to-slate-700 text-white font-medium px-8"
+            >
+            {role === "seller" ? "My Store" : "Create a store"}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        )}
           </div>
         </div>
       </section>
