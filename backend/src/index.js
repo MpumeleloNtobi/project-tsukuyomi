@@ -6,11 +6,15 @@ const cors = require('cors');
 const { config } = require('dotenv')
 const { neon, sql: neonSqlHelper } = require('@neondatabase/serverless')
 const { Clerk } = require('@clerk/backend');
+const multer = require('multer');
+const { BlobServiceClient } = require('@azure/storage-blob');
+const { v4: uuidv4 } = require('uuid');
+const path = require('path');
 
 config()
 
 const clerk = new Clerk({
-  secretKey:'sk_test_Lo9YZO4TWhU0veJ5K5L71oYYLJM8nrVNrOo2QhWHv8'
+  secretKey: process.env.CLERK_SECRET_KEY
 });
 
 // Helper function to get the SQL query function
@@ -40,6 +44,64 @@ app.get('/api/health', async (_, res) => {
   res.json({ status: 'UP' })
 }
 )
+
+// Image upload =================================================
+
+// Multer config (in memory)
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+const uploadMultiple = upload.fields([
+  { name: "picture1", maxCount: 1 },
+  { name: "picture2", maxCount: 1 },
+  { name: "picture3", maxCount: 1 },
+])
+
+// Azure Blob Client setup
+const blobServiceClient = BlobServiceClient.fromConnectionString(
+  process.env.AZURE_STORAGE_CONNECTION_STRING
+);
+const containerClient = blobServiceClient.getContainerClient("product-images");
+
+/*
+const imageUploadRoutes = (app, dbUrl) => {
+  const sql = neon(dbUrl);
+
+  app.post('/upload', uploadMultiple, async (req, res) => {
+    try {
+      const files = req.files;
+  
+      if (
+        !files ||
+        !files.picture1 ||
+        !files.picture2 ||
+        !files.picture3
+      ) {
+        return res.status(400).json({ error: 'Exactly 3 images required' });
+      }
+  
+      const allFiles = [files.picture1[0], files.picture2[0], files.picture3[0]];
+  
+      const uploadedUrls = await Promise.all(allFiles.map(async (file) => {
+        const blobName = `${uuidv4()}${path.extname(file.originalname)}`;
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+        await blockBlobClient.upload(file.buffer, file.size);
+        return blockBlobClient.url;
+      }));
+  
+      await sql`
+        INSERT INTO products (image1url, image2url, image3url)
+        VALUES (${uploadedUrls[0]}, ${uploadedUrls[1]}, ${uploadedUrls[2]})
+      `;
+  
+      res.json({ urls: uploadedUrls });
+      
+    } catch (err) {
+      console.error('Upload error:', err);
+      res.status(500).json({ error: 'File upload failed' });
+    }
+  });  
+};
+*/
 
 /*
 /            _                      
@@ -245,62 +307,81 @@ const productsRoute = (app, dbUrl) => {
 /*
  * POST /products - Create a new product
  */
-app.post('/products', async (req, res) => {
-  const {
-    storeId,
-    name,
-    description,
-    price,
-    stockQuantity,
-    category,
-    image1url,
-    image2url,
-    image3url
-  } = req.body;
-
-  if (
-    !storeId || !name || description === undefined || price === undefined ||
-    stockQuantity === undefined || !category ||
-    !image1url || !image2url || !image3url
-  ) {
-    return res.status(400).json({
-      error: 'Missing required fields: storeId, name, description, price, stockQuantity, category, image1url, image2url, image3url are required.'
-    });
-  }
-
-  if (
-    typeof name !== 'string' || typeof description !== 'string' || typeof category !== 'string' ||
-    typeof image1url !== 'string' || typeof image2url !== 'string' || typeof image3url !== 'string'
-  ) {
-    return res.status(400).json({ error: 'Text fields must be strings.' });
-  }
-
-  if (typeof price !== 'number' || typeof stockQuantity !== 'number') {
-    return res.status(400).json({ error: 'price and stockQuantity must be numbers.' });
-  }
-
-  if (!Number.isInteger(stockQuantity) || stockQuantity < 0) {
-    return res.status(400).json({ error: 'stockQuantity must be a non-negative integer.' });
-  }
-
+app.post('/products', uploadMultiple, async (req, res) => {
   try {
+    // Destructure form data
+    const { 
+      storeId,
+      name,
+      description,
+      price,
+      stockQuantity,
+      category
+    } = req.body;
+
+    const files = req.files;
+
+    // Validate required fields
+    const requiredFields = ['storeId', 'name', 'description', 'price', 'stockQuantity', 'category'];
+    const missingFields = requiredFields.filter(field => !req.body[field]);
+    
+    if (missingFields.length > 0) {
+      return res.status(400).json({
+        error: `Missing required fields: ${missingFields.join(', ')}`
+      });
+    }
+
+    // Validate exactly 3 images
+    if (!files || Object.keys(files).length !== 3) {
+      return res.status(400).json({ error: 'Exactly 3 images required' });
+    }
+
+    // Validate numeric fields
+    const numericPrice = parseFloat(price);
+    const numericStock = parseInt(stockQuantity);
+    
+    if (isNaN(numericPrice) || isNaN(numericStock)) {
+      return res.status(400).json({ error: 'Invalid numeric values' });
+    }
+
+    // Upload images to Azure
+    const uploadedUrls = await Promise.all(
+      [1, 2, 3].map(i => {
+        const file = files[`picture${i}`][0];
+        const blobName = `${uuidv4()}${path.extname(file.originalname)}`;
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+        return blockBlobClient.upload(file.buffer, file.size)
+          .then(() => blockBlobClient.url);
+      })
+    );
+
+    // Insert complete product data
     const newProduct = await sql`
       INSERT INTO products (
         "storeId", name, description, price, "stockQuantity", category,
         "image1url", "image2url", "image3url"
       ) VALUES (
-        ${storeId}, ${name}, ${description}, ${price}, ${stockQuantity}, ${category},
-        ${image1url}, ${image2url}, ${image3url}
+        ${storeId},
+        ${name},
+        ${description},
+        ${numericPrice},
+        ${numericStock},
+        ${category},
+        ${uploadedUrls[0]},
+        ${uploadedUrls[1]},
+        ${uploadedUrls[2]}
       ) RETURNING *;
     `;
 
-    // ✅ Respond to client
     res.status(201).json(newProduct[0]);
-  } catch (error) {
-    console.error('Error inserting product:', error);
-    res.status(500).json({ error: 'Internal server error' });
+
+  } catch (err) {
+    console.error('Product creation error:', err);
+    res.status(500).json({ 
+      error: err.message || 'Internal server error' 
+    });
   }
-});
+}); 
 
 
 /*
@@ -515,6 +596,35 @@ app.delete('/products/:product_id', async (req, res) => {
 */
 const ordersRoute = (app, dbUrl) => {
   const sql = neon(dbUrl)
+
+  /*
+  GET   orders/:storeid ->Get all the orders belonging to a particular store
+
+   */
+app.get('/orders/:storeid', async (req, res) => {
+  const storeid = req.params.storeid;
+
+  if (!storeid) {
+    return res.status(400).json({ Error: "The store ID is not valid" });
+  }
+
+  try {
+
+    const orders = await sql`SELECT * FROM orders WHERE "storeId" = ${storeid}`;
+    if (orders.length === 0) {
+      return res.json({ Error: "You Currently have No orders." });
+    }
+
+    return res.json(orders);
+  } catch (error) {
+    return res.status(500).json({ Error: "Database query failed", Details: error.message });
+  }
+});
+
+  /*
+  This is a function to add an order 
+  Post function
+  */
 app.post('/orders', async (req, res) => {
   const {
     storeId,
@@ -900,6 +1010,7 @@ if (require.main === module) {
   productsRoute(app, process.env.DATABASE_URL)
   ordersRoute(app, process.env.DATABASE_URL)
   paymentsRoute(app, process.env.DATABASE_URL)
+  //imageUploadRoutes(app, process.env.DATABASE_URL);
 
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`)
