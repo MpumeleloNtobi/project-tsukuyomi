@@ -1,10 +1,14 @@
 "use client"
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import Header from "@/components/Header"
 import StoreGallery from "@/components/StoreGallery"
+import { CreateStoreModal } from '@/components/CreateStoreModal'
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle } from "lucide-react"
 import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
+import Footer from "@/components/Footer"
+import Link from "next/link"
 
 export default function Home() {
   const { user } = useUser()
@@ -33,18 +37,36 @@ const handleClick = () => {
             From 60sixty to Takealot, retail is now online. And Storify is the place to start. 🚀 your hustle in just a few clicks with us.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            
-          {user && (
-          <Button
-            size="lg"
-            onClick={handleClick}
-            className="bg-linear-to-r hover:bg-gradient-to-r from-slate-900 to-slate-700 text-white font-medium px-8"
-            >
-            {role === "seller" ? "My Store" : "Create a store"}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        )}
-          </div>
+  {!user ? (
+    /* 1. Not signed in */
+     <SignInButton mode="modal">
+                  <button
+                    className="
+                      inline-flex cursor-pointer items-center justify-center 
+                      px-4 py-2 font-medium rounded-md transition-colors duration-200 
+                      focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 
+                      disabled:opacity-50 disabled:pointer-events-none 
+                      bg-black text-white"
+                  >
+                    Sign In
+                  </button>
+                </SignInButton>
+  ) : role === "seller" ? (
+    /* 2. Signed in as seller */
+    <Button
+      size="lg"
+      onClick={() => router.push("/seller/store")}
+      className="bg-gradient-to-r from-slate-900 to-slate-700 hover:from-slate-800 hover:to-slate-600 text-white font-medium px-8"
+    >
+      My Store
+      <ArrowRight className="ml-2 h-4 w-4" />
+    </Button>
+  ) : (
+    /* 3. Signed in as buyer */
+     <CreateStoreModal />
+  )}
+</div>
+
         </div>
       </section>
 
@@ -59,6 +81,7 @@ const handleClick = () => {
           <StoreGallery />
         </div>
       </section>
+       <Footer />
     </main>
   )
 }

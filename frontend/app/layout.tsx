@@ -33,7 +33,7 @@ export default function RootLayout({
         <body className="min-h-screen bg-background font-sans antialiased">
           {children}
           <Toaster />
-          <Footer /> {}
+          {}
           <Toaster />
         </body>
       </html>

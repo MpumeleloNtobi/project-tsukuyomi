@@ -47,9 +47,11 @@ export function SellerSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-        <SidebarGroupLabel className="font-bold text-sm px-4 pt-4 pb-2 mb-4">
+          <div className="bg-gray-900 shadow-md">
+          <SidebarGroupLabel className="font-semibold text-lg sm:text-xl px-6 py-4 text-cyan-100 tracking-wide">
             Seller
           </SidebarGroupLabel>
+        </div>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => {

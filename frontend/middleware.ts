@@ -11,11 +11,8 @@ const isRoot = createRouteMatcher(['/'])
 export default clerkMiddleware(async (auth, req) => {
   // Fetch the user's role from the session claims
   const userRole = (await auth()).sessionClaims?.metadata?.role
-  if (isRoot(req) && userRole === 'admin') {
-    const url = new URL('/admin/dashboard', req.url);
-    return NextResponse.redirect(url);
-  }
-  else if (isRoot(req) && userRole === 'buyer') {
+  
+  if (isRoot(req)) {
     const url = new URL('/home', req.url);
     return NextResponse.redirect(url);
   }
@@ -76,7 +73,7 @@ export default clerkMiddleware(async (auth, req) => {
     default:
       // user is not logged in
       if (isAdminRoute(req) || isBuyerRoute(req) || isSellerRoute(req)) {
-        const url = new URL('/', req.url)
+        const url = new URL('/home', req.url)
         console.log('An unauthenticated user cannot access admin, buyer or seller routes. Redirecting ...:', url)
         return NextResponse.redirect(url)
       }

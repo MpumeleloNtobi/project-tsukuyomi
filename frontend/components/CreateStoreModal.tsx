@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-
+import { Store } from 'lucide-react';
 import {
   Dialog,
   DialogTrigger,
@@ -85,7 +85,7 @@ export function CreateStoreModal(): ReactElement {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="cursor-pointer" variant="outline">Become a Seller</Button>
+        <Button className="cursor-pointer" variant="outline"><Store/>Create a store</Button>
       </DialogTrigger>
       <DialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}
