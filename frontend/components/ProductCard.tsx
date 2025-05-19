@@ -8,29 +8,52 @@ import { useCart } from "@/app/hooks/use-cart"
 import { Product } from "@/types/products"
 import { Badge } from "./ui/badge"
 import Link from "next/link"
+import ProductDetails from "./ProductDetails"
+
+interface ProductCardProps extends Product {
+  onClick?: (product: Product) => void; 
+}
 
 export default function ProductCard({
-  id= 168,
-  storeId= "06e14636-f586-4b1f-bf60-96d6742d95ee",
-  name= "Smartphone Z",
-  description= "Latest generation smartphone with AI camera.",
-  price= 799.99,
-  stockQuantity= 50,
-  category= "Electronics",
-  image1url= "https://placehold.co/600x400?text=Smartphone+Z"
-}: Product) {
+  id = 168,
+  storeId = "06e14636-f586-4b1f-bf60-96d6742d95ee",
+  name = "Smartphone Z",
+  description = "Latest generation smartphone with AI camera.",
+  price = 799.99,
+  stockQuantity = 50,
+  category = "Electronics",
+  image1url = "https://placehold.co/600x400?text=Smartphone+Z",
+  onClick, 
+}: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const { addItem } = useCart()
 
-  const handleAddToCart = (id: string, name: string, description: string, price: number, quantity: number) => {
+  const handleAddToCart = () => {
     addItem({
-      id: id,
-      name: name,
-      description: description,
-      price: price,
+      id: String(id),
+      name,
+      description,
+      price,
       quantity: 1,
     })
   }
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      e.preventDefault() 
+      onClick({
+        id,
+        storeId,
+        name,
+        description,
+        price,
+        stockQuantity,
+        category,
+        image1url,
+      }) 
+    }
+  }
+  
 
   return (
     <Card
@@ -38,27 +61,51 @@ export default function ProductCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href={`/stores/${storeId}/products/${id}`}>
-      <div className="relative bg-gray-100 p-4">
-        <div className="relative h-[200px] w-full">
-          <Image
-            src={image1url || "/placeholder.svg"}
-            alt={description}
-            fill
-            className={`object-contain transition-transform duration-300 ${isHovered ? "scale-105" : ""}`}
-          />
-        </div>
+      <div onClick={handleClick}>
+        {onClick ? (
+          <div className="relative bg-gray-100 p-4 cursor-pointer">
+            <div className="relative h-[200px] w-full">
+              <Image
+                src={image1url || "/placeholder.svg"}
+                alt={description}
+                fill
+                className={`object-contain transition-transform duration-300 ${isHovered ? "scale-105" : ""}`}
+              />
+            </div>
+          </div>
+        ) : (
+          <Link href={`/stores/${storeId}/products/${id}`}>
+            <div className="relative bg-gray-100 p-4">
+              <div className="relative h-[200px] w-full">
+                <Image
+                  src={image1url || "/placeholder.svg"}
+                  alt={description}
+                  fill
+                  className={`object-contain transition-transform duration-300 ${isHovered ? "scale-105" : ""}`}
+                />
+              </div>
+            </div>
+          </Link>
+        )}
       </div>
-      </Link>
+
       <CardContent className="p-4 pt-3 pb-0">
         <h3 className="text-sm font-medium text-gray-900 mb-1">{name}</h3>
         <div className="flex items-center gap-2 mb-2">
-         <Badge className="bg-gray-300 text-black">{stockQuantity}</Badge>
+          <Badge className="bg-gray-300 text-black">{stockQuantity}</Badge>
         </div>
         <span className="text-xl font-bold">R{price}</span>
-        <Button variant={"outline"}className="float-right hover:bg-linear-to-r from-rose-500 via-pink-500 to-red-500 cursor-pointer"  onClick={() => handleAddToCart(`${id}`,name,description,price,1)}>Add to cart</Button>
+        <Button
+          variant={"outline"}
+          className="float-right hover:bg-linear-to-r from-rose-500 via-pink-500 to-red-500 cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleAddToCart()
+          }}
+        >
+          Add to cart
+        </Button>
       </CardContent>
-      
     </Card>
   )
 }
