@@ -1,11 +1,28 @@
-// File: backend/src/index.js
-// Description: This is the main entry point for the Express application.
-// It sets up the server, connects to the database, and defines the API routes everything.
+require('dotenv').config();
+
 const express = require('express')
 const cors = require('cors');
 const { config } = require('dotenv')
 const { neon, sql: neonSqlHelper } = require('@neondatabase/serverless')
 const { Clerk } = require('@clerk/backend');
+const { clerkMiddleware , getAuth } = require('@clerk/express');
+const { Parser } = require ('json2csv');
+
+
+config()
+
+
+const app = express()
+app.use(clerkMiddleware());
+app.use(express.json())
+app.use(cors());
+const port = process.env.PORT || 5000
+
+app.use((req, res, next) => {
+  const auth = getAuth(req);
+  req.userId = auth.userId;
+  next();
+
 const multer = require('multer');
 const { BlobServiceClient } = require('@azure/storage-blob');
 const { v4: uuidv4 } = require('uuid');
@@ -17,6 +34,7 @@ const clerk = new Clerk({
   secretKey: process.env.CLERK_SECRET_KEY
 });
 
+
 // Helper function to get the SQL query function
 // This ensures you're using the DATABASE_URL from your environment
 const getDb = () => {
@@ -27,11 +45,6 @@ const getDb = () => {
   return neon(process.env.DATABASE_URL)
 }
 
-// 1. Create the application + use json
-const app = express()
-app.use(express.json())
-app.use(cors());
-const port = process.env.PORT || 5000
 
 app.get('/', async (_, res) => {
   const sql = neon(`${process.env.DATABASE_URL}`)
@@ -597,6 +610,96 @@ app.delete('/products/:product_id', async (req, res) => {
 const ordersRoute = (app, dbUrl) => {
   const sql = neon(dbUrl)
 
+app.get("/orders/:storeId/csv", async (req, res)  => {
+  const storeId = req.params.storeId;
+  const { daily } = req.query;
+
+  if (!isValidUUID(storeId)) {
+    return res.status(400).json({ error: 'Invalid store ID format (must be a UUID).' });
+  }
+
+  try {
+    let orders;
+
+    if (daily === 'true') {
+      const now = new Date();
+      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+      orders = await sql`
+        SELECT
+          "storeId",
+          "buyerName",
+          "phoneNumber",
+          "deliveryMethod",
+          city,
+          town,
+          "streetName",
+          "streetNumber",
+          "postalCode",
+          "created_at",
+          status
+        FROM orders
+        WHERE "storeId" = ${storeId}
+          AND "created_at" >= ${yesterday.toISOString()}
+        ORDER BY "created_at" DESC;
+      `;
+    } else {
+      orders = await sql`
+        SELECT
+          "storeId",
+          "buyerName",
+          "phoneNumber",
+          "deliveryMethod",
+          city,
+          town,
+          "streetName",
+          "streetNumber",
+          "postalCode",
+          "created_at",
+          status
+        FROM orders
+        WHERE "storeId" = ${storeId}
+        ORDER BY "created_at" DESC;
+      `;
+    }
+
+    const fields = [
+      "storeId",
+      "buyerName",
+      "phoneNumber",
+      "deliveryMethod",
+      "city",
+      "town",
+      "streetName",
+      "streetNumber",
+      "postalCode",
+      "created_at",
+      "status",
+      "paymentStatus",
+      "paymentId"
+    ];
+
+    const parser = new Parser({fields});
+    
+    if (!orders || orders.length === 0) {
+      const emptyCsv = parser.parse([]); // empty array = empty CSV with headers only if you provide fields option
+      res.header('Content-Type', 'text/csv');
+      res.attachment(`daily_tasks_${storeId}.csv`);
+      return res.send(emptyCsv);
+    }
+    
+    const csv = parser.parse(orders);
+
+    res.header('Content-Type', 'text/csv');
+    res.attachment(`daily_tasks_${storeId}.csv`);
+    return res.send(csv);
+
+  } catch (error) {
+    console.error('Error fetching orders or generating CSV:', error);
+    res.status(500).json({ error: 'Error fetching orders or generating CSV' });
+  }
+});
+  
   /*
   GET   orders/:storeid ->Get all the orders belonging to a particular store
 
