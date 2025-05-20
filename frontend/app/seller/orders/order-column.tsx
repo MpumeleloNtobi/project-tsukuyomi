@@ -6,17 +6,73 @@ import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
 import { format, isToday, isYesterday, isThisWeek, parseISO } from "date-fns"
 import { orderAlertDialog } from "./order-dialogue"
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
 
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
+import { Check, ChevronsUpDown } from "lucide-react"
+ 
+import { cn } from "@/lib/utils"
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { useState } from "react"
+import React from "react"
+
+const orderStatuses = [
+  {
+    value: "Shipped",
+    label: "Shipped",
+  },
+  {
+    value: "Pending",
+    label: "Pending",
+  },
+  {
+    value: "Completed",
+    label: "Completed",
+  },
+  {
+    value: "Processing",
+    label: "Processing",
+  },
+]
 
 //Define the shape of an order
 export type Order = {
@@ -38,8 +94,8 @@ export type Order = {
   last_updated: string
 }
 export function getOrderColumns(
-  /*setNewOrderStatus: (order: Order | null) => void,
-  setUpdating: (updating: boolean) => void*/
+  onUpdateClick: (order: Order) => void
+
 ):  ColumnDef<Order>[] { 
  
      return [
@@ -131,30 +187,25 @@ export function getOrderColumns(
   }
   },
   {
-    id: "actions",
-    cell: ({ row }) => {
-      const order = row.original
- 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(order.order_id)}
-            >
-              Update
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  }
+      id: "actions",
+      cell: ({ row }) => {
+        const order = row.original;
+        
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => onUpdateClick(order)}>
+                Update
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    }
 ]
 }

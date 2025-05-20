@@ -787,7 +787,7 @@ app.put('/orders/:order_id', async (req, res) => {
   const queryString = `
     UPDATE orders
     SET ${setClauses.join(', ')}
-    WHERE id = $${placeholderIndex}
+    WHERE order_id = $${placeholderIndex}
     RETURNING *;
   `
 
