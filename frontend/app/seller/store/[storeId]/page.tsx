@@ -39,7 +39,9 @@ function Home() {
       } else {
         // Handle the case where storeId is not yet available or undefined
         setLoading(false);
-        setError("Store ID not found. Please ensure you are logged in and have a store associated with your account.");
+        setError(
+          "Store ID not found. Please ensure you are logged in and have a store associated with your account.",
+        );
         setProducts([]);
       }
     };

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Store, UserCog, PackageSearch, BarChart2 } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { Store, UserCog, PackageSearch, BarChart2 } from "lucide-react";
+import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -11,27 +11,27 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 
 const items = [
   {
-    title: 'Dashboard',
-    url: '/admin/dashboard',
+    title: "Dashboard",
+    url: "/admin/dashboard",
     icon: BarChart2,
   },
   {
-    title: 'Users',
-    url: '/admin/set-user-roles',
+    title: "Users",
+    url: "/admin/set-user-roles",
     icon: UserCog,
   },
   {
-    title: 'Stores',
-    url: '/admin/stores',
+    title: "Stores",
+    url: "/admin/stores",
     icon: Store,
   },
   {
-    title: 'Products',
-    url: '/admin/products',
+    title: "Products",
+    url: "/admin/products",
     icon: PackageSearch,
   },
 ];
@@ -42,7 +42,7 @@ export function AdminSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-        <SidebarGroupLabel className="font-bold text-sm px-4 pt-4 pb-2 mb-4">
+          <SidebarGroupLabel className="font-bold text-sm px-4 pt-4 pb-2 mb-4">
             Admin
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -57,8 +57,8 @@ export function AdminSidebar() {
                         className={
                           `flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ` +
                           (isActive
-                            ? 'bg-gray-200 text-black font-semibold'
-                            : 'text-gray-600 hover:bg-gray-100')
+                            ? "bg-gray-200 text-black font-semibold"
+                            : "text-gray-600 hover:bg-gray-100")
                         }
                       >
                         <item.icon className="h-5 w-5" />

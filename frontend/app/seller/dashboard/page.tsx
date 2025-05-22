@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
@@ -22,7 +22,9 @@ export default function Page() {
 
     async function fetchMetrics() {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/reporting/${storeId}/metrics`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/reporting/${storeId}/metrics`,
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch metrics");
         }

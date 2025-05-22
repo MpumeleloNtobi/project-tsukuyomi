@@ -24,7 +24,7 @@ export default function SellerReportingPage() {
     setLoadingTasks(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${storeId}/csv`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${storeId}/csv`,
       );
       if (!res.ok) {
         if (res.status === 204) {
@@ -50,34 +50,34 @@ export default function SellerReportingPage() {
   };
 
   const downloadInventoryCSV = async () => {
-  if (!storeId) {
-    setError("Store ID not found. Please log in.");
-    return;
-  }
+    if (!storeId) {
+      setError("Store ID not found. Please log in.");
+      return;
+    }
 
-  setError("");
-  setLoadingInventory(true);
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/reporting/inventory/${storeId}`
-    );
-    if (!res.ok) throw new Error(`Failed: ${res.statusText}`);
+    setError("");
+    setLoadingInventory(true);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/reporting/inventory/${storeId}`,
+      );
+      if (!res.ok) throw new Error(`Failed: ${res.statusText}`);
 
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "inventory-report.csv";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  } catch (err: any) {
-    setError(err.message || "Failed to download inventory report");
-  } finally {
-    setLoadingInventory(false);
-  }
-};
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "inventory-report.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err: any) {
+      setError(err.message || "Failed to download inventory report");
+    } finally {
+      setLoadingInventory(false);
+    }
+  };
 
   const downloadDailySalesCSV = async () => {
     if (!storeId) {
@@ -89,7 +89,7 @@ export default function SellerReportingPage() {
     setLoadingSales(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/reporting/${storeId}/daily-sales.csv`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/reporting/${storeId}/daily-sales.csv`,
       );
       if (!res.ok) throw new Error(`Failed: ${res.statusText}`);
       const blob = await res.blob();
@@ -108,16 +108,14 @@ export default function SellerReportingPage() {
     }
   };
   const [hovered, setHovered] = useState<string | null>(null);
-   const tileClasses = (key: string) =>
+  const tileClasses = (key: string) =>
     `flex-1 cursor-pointer p-8 border rounded-2xl shadow transition-all flex items-center justify-between bg-white/60 backdrop-blur-md hover:bg-white hover:shadow-xl hover:-translate-y-1 ${
       hovered === key ? "ring-2 ring-offset-2 ring-pink-500" : ""
     }`;
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold mb-10 text-center">
-        Reporting
-      </h1>
+      <h1 className="text-4xl font-bold mb-10 text-center">Reporting</h1>
       <h2 className="font-medium mb-10 text-center">
         Generate a csv of any one of the following for administritave purposes!
       </h2>
@@ -134,7 +132,9 @@ export default function SellerReportingPage() {
             <h2 className="text-2xl font-semibold flex items-center gap-2">
               <FileText className="w-6 h-6" /> Daily Tasks
             </h2>
-            <p className="text-gray-600">CSV of pending orders/tasks in last 24h.</p>
+            <p className="text-gray-600">
+              CSV of pending orders/tasks in last 24h.
+            </p>
           </div>
           {loadingTasks && <Loader2 className="animate-spin text-pink-600" />}
         </div>
@@ -152,7 +152,9 @@ export default function SellerReportingPage() {
             </h2>
             <p className="text-gray-600">CSV of all products & stock levels.</p>
           </div>
-          {loadingInventory && <Loader2 className="animate-spin text-pink-600" />}
+          {loadingInventory && (
+            <Loader2 className="animate-spin text-pink-600" />
+          )}
         </div>
 
         {/* Daily Sales Report */}
@@ -166,7 +168,9 @@ export default function SellerReportingPage() {
             <h2 className="text-2xl font-semibold flex items-center gap-2">
               <DollarSign className="w-6 h-6" /> Daily Sales
             </h2>
-            <p className="text-gray-600">CSV of daily sales for last 30 days.</p>
+            <p className="text-gray-600">
+              CSV of daily sales for last 30 days.
+            </p>
           </div>
           {loadingSales && <Loader2 className="animate-spin text-pink-600" />}
         </div>

@@ -9,7 +9,7 @@ export default async function Layout({
   params: Promise<{ storeId: string }>;
   children: ReactNode;
 }) {
-  const { storeId } = await params;  // Resolve the promise here
+  const { storeId } = await params; // Resolve the promise here
   return (
     <CartProvider storeId={storeId}>
       <Header showCart={true} />

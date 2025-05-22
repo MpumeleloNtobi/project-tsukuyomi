@@ -1,7 +1,14 @@
-'use client';
+"use client";
 
-import { BarChart2, Store, ClipboardList, Archive, PieChart } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import {
+  BarChart2,
+  Store,
+  ClipboardList,
+  Archive,
+  PieChart,
+  PackageIcon,
+} from "lucide-react";
+import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -11,32 +18,32 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 
 const items = [
   {
-    title: 'Dashboard',
-    url: '/seller/dashboard',
+    title: "Dashboard",
+    url: "/seller/dashboard",
     icon: BarChart2,
   },
   {
-    title: 'My Store',
-    url: '/seller/store',
+    title: "My Store",
+    url: "/seller/store",
     icon: Store,
   },
   {
-    title: 'View Orders',
-    url: '/seller/orders',
+    title: "My Orders",
+    url: "/seller/orders",
     icon: ClipboardList,
   },
   {
-    title: 'View Inventory',
-    url: '/seller/inventory',
-    icon: Archive,
+    title: "Inventory & products",
+    url: "/seller/products",
+    icon: PackageIcon,
   },
   {
-    title: 'Reporting',
-    url: '/seller/reporting',
+    title: "Reporting",
+    url: "/seller/reporting",
     icon: PieChart,
   },
 ];
@@ -47,11 +54,11 @@ export function SellerSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <div className="bg-gray-900 shadow-md">
-          <SidebarGroupLabel className="font-semibold text-lg sm:text-xl px-6 py-4 text-cyan-100 tracking-wide">
-            Seller
-          </SidebarGroupLabel>
-        </div>
+          <div className="space-x-2 px-4 py-2 rounded-md bg-gray-950 to-45%">
+            <SidebarGroupLabel className="font-semibold text-lg sm:text-xl py-4 text-white">
+              Seller
+            </SidebarGroupLabel>
+          </div>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => {
@@ -64,8 +71,8 @@ export function SellerSidebar() {
                         className={
                           `flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ` +
                           (isActive
-                            ? 'bg-gray-200 text-black font-semibold'
-                            : 'text-gray-600 hover:bg-gray-100')
+                            ? "bg-gray-800 text-white font-semibold"
+                            : "text-gray-600 hover:bg-pink-800")
                         }
                       >
                         <item.icon className="h-5 w-5" />

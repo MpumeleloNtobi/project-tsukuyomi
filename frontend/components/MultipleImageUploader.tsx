@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  AlertCircleIcon,
-  ImageIcon,
-  UploadIcon,
-  XIcon,
-} from "lucide-react";
+import { AlertCircleIcon, ImageIcon, UploadIcon, XIcon } from "lucide-react";
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
@@ -121,12 +116,18 @@ export default function MultipleImageUploader({
             <div className="bg-background mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border">
               <ImageIcon className="size-4 opacity-60" />
             </div>
-            <p className="mb-1.5 text-sm font-medium">Drag and drop images here or click to browser and select</p>
-            <p className="text-muted-foreground text-xs">
-              (SVG, PNG, JPG, GIF –
-              max. {maxSizeMB}MB each)
+            <p className="mb-1.5 text-sm font-medium">
+              Drag and drop images here or click to browser and select
             </p>
-            <Button variant="outline" className="mt-4" onClick={openFileDialog}>
+            <p className="text-muted-foreground text-xs">
+              (SVG, PNG, JPG, GIF – max. {maxSizeMB}MB each)
+            </p>
+            <Button
+              variant="outline"
+              className="mt-4"
+              onClick={openFileDialog}
+              type="button"
+            >
               <UploadIcon className="-ms-1 opacity-60" />
               Select images
             </Button>

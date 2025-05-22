@@ -21,11 +21,11 @@ function Home() {
       if (storeId) {
         try {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/products?storeId=${storeId}`
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/products?storeId=${storeId}`,
           ); // Use the storeId in the fetch URL
           if (!response.ok) {
             throw new Error(
-              `Failed to fetch products: ${response.status} ${response.statusText}`
+              `Failed to fetch products: ${response.status} ${response.statusText}`,
             );
           }
           const data: Product[] = await response.json();
@@ -40,7 +40,7 @@ function Home() {
         // Handle the case where storeId is not yet available or undefined
         setLoading(false);
         setError(
-          "Store ID not found. Please ensure you are logged in and have a store associated with your account."
+          "Store ID not found. Please ensure you are logged in and have a store associated with your account.",
         );
         setProducts([]);
       }

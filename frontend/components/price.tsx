@@ -1,4 +1,3 @@
-
 // components/Price.tsx
 "use client";
 

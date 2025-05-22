@@ -33,14 +33,14 @@ export default function Page() {
         body: formData,
       });
 
-      const contentType = response.headers.get('content-type');
+      const contentType = response.headers.get("content-type");
       let data: any;
-      
-      if (contentType?.includes('application/json')) {
+
+      if (contentType?.includes("application/json")) {
         data = await response.json();
       } else {
         const text = await response.text();
-        throw new Error(text || 'Unexpected server response');
+        throw new Error(text || "Unexpected server response");
       }
 
       if (!response.ok) {
@@ -50,26 +50,28 @@ export default function Page() {
 
       setImages([]);
       setError(null);
-      
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to upload images");
       console.error("Upload error:", err);
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }
 
   return (
     <section>
-      <form onSubmit={handleSubmit} className="grid w-full max-w-sm items-center gap-1.5">
+      <form
+        onSubmit={handleSubmit}
+        className="grid w-full max-w-sm items-center gap-1.5"
+      >
         <Label>Product Images (3 required)</Label>
-        <MultipleImageUploader 
+        <MultipleImageUploader
           onFilesChange={setImages}
           requiredCount={requiredFiles}
         />
-        <Button 
-          type="submit" 
-          className="mt-4" 
+        <Button
+          type="submit"
+          className="mt-4"
           disabled={images.length !== requiredFiles || isSubmitting}
         >
           {isSubmitting ? "Uploading..." : "Upload All Images"}

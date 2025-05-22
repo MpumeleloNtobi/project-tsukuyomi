@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-import { useIsMobile } from "@/hooks/use-mobile"
+import * as React from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Card,
   CardAction,
@@ -10,23 +10,23 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { useUser } from "@clerk/nextjs"
+} from "@/components/ui/select";
+import { useUser } from "@clerk/nextjs";
 
-export const description = "An interactive area chart"
+export const description = "An interactive area chart";
 
 const chartConfig = {
   visitors: {
@@ -36,54 +36,54 @@ const chartConfig = {
     label: "total orders",
     color: "#C11C84",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 export function ChartAreaInteractive() {
-  const { user } = useUser()
-  const storeId = user?.publicMetadata.storeId as string | undefined
-  const isMobile = useIsMobile()
+  const { user } = useUser();
+  const storeId = user?.publicMetadata.storeId as string | undefined;
+  const isMobile = useIsMobile();
 
-  const [timeRange, setTimeRange] = React.useState("90d")
+  const [timeRange, setTimeRange] = React.useState("90d");
   const [chartData, setChartData] = React.useState<
     { order_date: string; total_orders: number; total_sales: number }[]
-  >([])
+  >([]);
 
   React.useEffect(() => {
     if (isMobile) {
-      setTimeRange("7d")
+      setTimeRange("7d");
     }
-  }, [isMobile])
+  }, [isMobile]);
 
   React.useEffect(() => {
-    if (!storeId) return // 🚫 Don't fetch without storeId
+    if (!storeId) return; // 🚫 Don't fetch without storeId
 
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/reporting/${storeId}/daily-sales`
-        )
-        const data = await res.json()
-        console.log("Fetched chart data:", data)
-        setChartData(data)
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/reporting/${storeId}/daily-sales`,
+        );
+        const data = await res.json();
+        console.log("Fetched chart data:", data);
+        setChartData(data);
       } catch (error) {
-        console.error("Failed to fetch chart data", error)
+        console.error("Failed to fetch chart data", error);
       }
-    }
+    };
 
-    fetchData()
-  }, [storeId])
+    fetchData();
+  }, [storeId]);
 
   const filteredData = chartData.filter((item) => {
-    const date = new Date(item.order_date)
-    const referenceDate = new Date()
-    let daysToSubtract = 90
-    if (timeRange === "30d") daysToSubtract = 30
-    else if (timeRange === "7d") daysToSubtract = 7
+    const date = new Date(item.order_date);
+    const referenceDate = new Date();
+    let daysToSubtract = 90;
+    if (timeRange === "30d") daysToSubtract = 30;
+    else if (timeRange === "7d") daysToSubtract = 7;
 
-    const startDate = new Date(referenceDate)
-    startDate.setDate(referenceDate.getDate() - daysToSubtract)
-    return date >= startDate
-  })
+    const startDate = new Date(referenceDate);
+    startDate.setDate(referenceDate.getDate() - daysToSubtract);
+    return date >= startDate;
+  });
 
   return (
     <Card className="@container/card">
@@ -146,11 +146,11 @@ export function ChartAreaInteractive() {
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value)
+                const date = new Date(value);
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                })
+                });
               }}
             />
             <ChartTooltip
@@ -179,5 +179,5 @@ export function ChartAreaInteractive() {
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }

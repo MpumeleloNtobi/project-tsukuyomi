@@ -1,41 +1,45 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ShoppingCart, Check, AlertCircle, X } from "lucide-react"
-import { useState } from "react"
-import { useCart } from "@/app/hooks/use-cart"
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ShoppingCart, Check, AlertCircle, X } from "lucide-react";
+import { useState } from "react";
+import { useCart } from "@/app/hooks/use-cart";
 
 export type Product = {
-  id: number
-  storeId: string
-  name: string
-  description: string
-  price: number
-  stockQuantity: number
-  category: string
-  image1url?: string | null
-  image2url?: string | null
-  image3url?: string | null
-}
+  id: number;
+  storeId: string;
+  name: string;
+  description: string;
+  price: number;
+  stockQuantity: number;
+  category: string;
+  image1url?: string | null;
+  image2url?: string | null;
+  image3url?: string | null;
+};
 
 interface ProductDetailsProps {
-  product: Product
-  onAddToCart?: (product: Product) => void
-  onClose?: () => void 
+  product: Product;
+  onAddToCart?: (product: Product) => void;
+  onClose?: () => void;
 }
 
-export default function ProductDetails({ product, onAddToCart = () => {}, onClose }: ProductDetailsProps) {
-  const [activeImage, setActiveImage] = useState(0)
-  const { addItem } = useCart()
-  const isInStock = product.stockQuantity > 0
+export default function ProductDetails({
+  product,
+  onAddToCart = () => {},
+  onClose,
+}: ProductDetailsProps) {
+  const [activeImage, setActiveImage] = useState(0);
+  const { addItem } = useCart();
+  const isInStock = product.stockQuantity > 0;
 
   const images = [
     product.image1url || "/placeholder.svg?height=600&width=600",
     product.image2url || "/placeholder.svg?height=600&width=600",
     product.image3url || "/placeholder.svg?height=600&width=600",
-  ]
+  ];
 
   const handleAddToCart = () => {
     addItem({
@@ -44,9 +48,9 @@ export default function ProductDetails({ product, onAddToCart = () => {}, onClos
       description: product.description,
       price: product.price,
       quantity: 1,
-    })
-    onAddToCart(product)
-  }
+    });
+    onAddToCart(product);
+  };
 
   return (
     <div className="relative w-full max-w-5xl bg-white rounded-xl shadow-lg p-6 mx-auto">
@@ -79,7 +83,9 @@ export default function ProductDetails({ product, onAddToCart = () => {}, onClos
                 key={index}
                 onClick={() => setActiveImage(index)}
                 className={`relative overflow-hidden rounded-md aspect-square border-2 transition-all ${
-                  activeImage === index ? "border-rose-500 scale-105" : "border-transparent"
+                  activeImage === index
+                    ? "border-rose-500 scale-105"
+                    : "border-transparent"
                 }`}
               >
                 <Image
@@ -102,9 +108,13 @@ export default function ProductDetails({ product, onAddToCart = () => {}, onClos
                 <Badge className="bg-rose-100 text-rose-700 hover:bg-rose-200 rounded-full px-3 py-1 text-xs font-medium">
                   {product.category}
                 </Badge>
-                <span className="text-2xl font-bold text-rose-600">R{product.price.toFixed(2)}</span>
+                <span className="text-2xl font-bold text-rose-600">
+                  R{product.price.toFixed(2)}
+                </span>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 mt-3">{product.name}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 mt-3">
+                {product.name}
+              </h1>
             </div>
 
             <div className="flex items-center gap-2">
@@ -117,7 +127,9 @@ export default function ProductDetails({ product, onAddToCart = () => {}, onClos
                     <Check className="w-3.5 h-3.5" />
                     <span>In Stock</span>
                   </Badge>
-                  <span className="text-sm text-gray-500">{product.stockQuantity} available</span>
+                  <span className="text-sm text-gray-500">
+                    {product.stockQuantity} available
+                  </span>
                 </>
               ) : (
                 <Badge
@@ -130,7 +142,9 @@ export default function ProductDetails({ product, onAddToCart = () => {}, onClos
               )}
             </div>
 
-            <p className="text-gray-600 leading-relaxed">{product.description}</p>
+            <p className="text-gray-600 leading-relaxed">
+              {product.description}
+            </p>
           </div>
 
           <div className="mt-8">
@@ -146,5 +160,5 @@ export default function ProductDetails({ product, onAddToCart = () => {}, onClos
         </div>
       </div>
     </div>
-  )
+  );
 }
