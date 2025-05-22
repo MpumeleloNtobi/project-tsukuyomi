@@ -19,7 +19,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import ProductDetails from "@/components/ProductDetails"; 
+import ProductDetails from "@/components/ProductDetails";
 
 interface ProductGalleryProps {
   title?: string;
@@ -35,7 +35,7 @@ function ProductGallery({
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); 
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const categories = [
     "all",
@@ -112,22 +112,23 @@ function ProductGallery({
               stockQuantity={product.stockQuantity}
               category={product.category}
               storeId={product.storeId}
-              image1url={product.imageUrl}
-              onClick={() => setSelectedProduct(product)} 
+              image1url={product.image1url}
+              onClick={() => setSelectedProduct(product)}
             />
           ))}
         </div>
       )}
 
       {/* Modal for Product Details */}
-      <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
+      <Dialog
+        open={!!selectedProduct}
+        onOpenChange={() => setSelectedProduct(null)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{selectedProduct?.name}</DialogTitle>
           </DialogHeader>
-          {selectedProduct && (
-            <ProductDetails product={selectedProduct} />
-          )}
+          {selectedProduct && <ProductDetails product={selectedProduct} />}
         </DialogContent>
       </Dialog>
     </div>

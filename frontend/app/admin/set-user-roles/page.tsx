@@ -1,16 +1,16 @@
 // import { SearchUsers } from "./SearchUsers";
-import { clerkClient } from '@clerk/nextjs/server'
-import { removeRole, setRole } from './actions'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { clerkClient } from "@clerk/nextjs/server";
+import { removeRole, setRole } from "./actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default async function AdminDashboard(params: {
-  searchParams: Promise<{ search?: string }>
+  searchParams: Promise<{ search?: string }>;
 }) {
-  const query = (await params.searchParams).search
+  const query = (await params.searchParams).search;
 
-  const client = await clerkClient()
-  const users = query ? (await client.users.getUserList({ query })).data : []
+  const client = await clerkClient();
+  const users = query ? (await client.users.getUserList({ query })).data : [];
 
   return (
     <div className="w-full p-8 py-4 pt-0 space-y-16">
@@ -19,7 +19,12 @@ export default async function AdminDashboard(params: {
           <div className="flex flex-col gap-2">
             <label htmlFor="search">Search for users</label>
             <div className="flex gap-2">
-              <Input id="search" name="search" type="text" className="flex-grow" />
+              <Input
+                id="search"
+                name="search"
+                type="text"
+                className="flex-grow"
+              />
               <Button type="submit">Submit</Button>
             </div>
           </div>
@@ -33,8 +38,9 @@ export default async function AdminDashboard(params: {
 
               <div className="text-sm text-gray-600">
                 {
-                  user.emailAddresses.find((email) => email.id === user.primaryEmailAddressId)
-                    ?.emailAddress
+                  user.emailAddresses.find(
+                    (email) => email.id === user.primaryEmailAddressId,
+                  )?.emailAddress
                 }
               </div>
 
@@ -75,5 +81,5 @@ export default async function AdminDashboard(params: {
         ))}
       </main>
     </div>
-  )
+  );
 }

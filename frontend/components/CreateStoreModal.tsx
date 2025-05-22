@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, ReactElement } from 'react';
-import { useAuth } from '@clerk/nextjs';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
-
+import { useState, ReactElement } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { Store } from "lucide-react";
 import {
   Dialog,
   DialogTrigger,
@@ -16,8 +16,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -25,8 +25,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { AddressAutocomplete } from '@/components/AddressAutocomplete';
+} from "@/components/ui/form";
+import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 
 const storeSchema = z.object({
   storeName: z.string().min(2),
@@ -51,41 +51,47 @@ export function CreateStoreModal(): ReactElement {
   const form = useForm<StoreForm>({
     resolver: zodResolver(storeSchema),
     defaultValues: {
-      storeName: '',
-      storeDescription: '',
-      stitchClientKey: '',
-      stitchClientSecret: '',
-      streetAddress: '',
-      streetNumber: '',
-      streetName: '',
-      town: '',
-      province: '',
-      postalCode: '',
-      country: '',
+      storeName: "",
+      storeDescription: "",
+      stitchClientKey: "",
+      stitchClientSecret: "",
+      streetAddress: "",
+      streetNumber: "",
+      streetName: "",
+      town: "",
+      province: "",
+      postalCode: "",
+      country: "",
     },
   });
 
   const onSubmit = async (values: StoreForm) => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/stores/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...values, clerkId: clerk_id }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/stores/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...values, clerkId: clerk_id }),
+        },
+      );
 
-      if (!res.ok) throw new Error('Create failed');
-      toast.success('Store created!');
+      if (!res.ok) throw new Error("Create failed");
+      toast.success("Store created!");
       setOpen(false);
-      router.push('/');
+      router.push("/");
     } catch {
-      toast.error('Something went wrong');
+      toast.error("Something went wrong");
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="cursor-pointer" variant="outline">Become a Seller</Button>
+        <Button className="cursor-pointer" variant="outline">
+          <Store />
+          Create a store
+        </Button>
       </DialogTrigger>
       <DialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}
@@ -154,7 +160,6 @@ export function CreateStoreModal(): ReactElement {
               )}
             />
 
-
             <FormField
               control={form.control}
               name="stitchClientSecret"
@@ -184,26 +189,30 @@ export function CreateStoreModal(): ReactElement {
                       value={field.value}
                       onChange={field.onChange}
                       onSelect={(place) => {
-                        const addr = place.formatted_address || '';
+                        const addr = place.formatted_address || "";
                         field.onChange(addr);
                         const comps: Record<string, string> = {};
                         (place.address_components || []).forEach((c) =>
                           c.types.forEach((t) => {
-                            if (t === 'street_number') comps.streetNumber = c.long_name;
-                            else if (t === 'route') comps.streetName = c.long_name;
-                            else if (t === 'locality') comps.town = c.long_name;
-                            else if (t === 'administrative_area_level_1')
+                            if (t === "street_number")
+                              comps.streetNumber = c.long_name;
+                            else if (t === "route")
+                              comps.streetName = c.long_name;
+                            else if (t === "locality") comps.town = c.long_name;
+                            else if (t === "administrative_area_level_1")
                               comps.province = c.short_name;
-                            else if (t === 'postal_code') comps.postalCode = c.long_name;
-                            else if (t === 'country') comps.country = c.long_name;
-                          })
+                            else if (t === "postal_code")
+                              comps.postalCode = c.long_name;
+                            else if (t === "country")
+                              comps.country = c.long_name;
+                          }),
                         );
-                        form.setValue('streetNumber', comps.streetNumber || '');
-                        form.setValue('streetName', comps.streetName || '');
-                        form.setValue('town', comps.town || '');
-                        form.setValue('province', comps.province || '');
-                        form.setValue('postalCode', comps.postalCode || '');
-                        form.setValue('country', comps.country || '');
+                        form.setValue("streetNumber", comps.streetNumber || "");
+                        form.setValue("streetName", comps.streetName || "");
+                        form.setValue("town", comps.town || "");
+                        form.setValue("province", comps.province || "");
+                        form.setValue("postalCode", comps.postalCode || "");
+                        form.setValue("country", comps.country || "");
                       }}
                     />
                   </FormControl>
@@ -218,7 +227,7 @@ export function CreateStoreModal(): ReactElement {
                 type="submit"
                 disabled={form.formState.isSubmitting}
               >
-                {form.formState.isSubmitting ? 'Creating...' : 'Create'}
+                {form.formState.isSubmitting ? "Creating..." : "Create"}
               </Button>
             </DialogFooter>
           </form>

@@ -1,1 +1,1 @@
-type Roles = 'admin' | 'buyer' | 'seller' 
+type Roles = "admin" | "buyer" | "seller";

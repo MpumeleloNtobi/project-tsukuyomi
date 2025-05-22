@@ -1,6 +1,6 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
+import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react";
 
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardAction,
@@ -8,7 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
 export interface kpiCardProps {
   storeRevenue: number;
@@ -26,28 +26,22 @@ export function SectionCards(kpiCardProps: kpiCardProps) {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             R{kpiCardProps.storeRevenue}
           </CardTitle>
-          <CardAction>
-           
-          </CardAction>
+          <CardAction></CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
             Your stores total revenue
           </div>
-          <div className="text-muted-foreground">
-            Since the day you started
-          </div>
+          <div className="text-muted-foreground">Since the day you started</div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
           <CardDescription>Total Products</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-           {kpiCardProps.totalProducts}
+            {kpiCardProps.totalProducts}
           </CardTitle>
-          <CardAction>
-           
-          </CardAction>
+          <CardAction></CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
@@ -64,13 +58,11 @@ export function SectionCards(kpiCardProps: kpiCardProps) {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {kpiCardProps.orders30Days}
           </CardTitle>
-          <CardAction>
-           
-          </CardAction>
+          <CardAction></CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-           How many orders were placed
+            How many orders were placed
           </div>
           <div className="text-muted-foreground">In the last 30 days</div>
         </CardFooter>
@@ -81,16 +73,17 @@ export function SectionCards(kpiCardProps: kpiCardProps) {
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             {kpiCardProps.growth30Days}%
           </CardTitle>
-          <CardAction>
-          </CardAction>
+          <CardAction></CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Rate of increase or decrease
+            Rate of growth
           </div>
-          <div className="text-muted-foreground">in sales revenue for last 30 days</div>
+          <div className="text-muted-foreground">
+            in sales revenue for last 30 days
+          </div>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }

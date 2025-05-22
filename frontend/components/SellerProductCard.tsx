@@ -1,17 +1,17 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Image from "next/image"
+import { useState } from "react";
+import Image from "next/image";
 //import { Star } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 //import { Badge } from "@/components/ui/badge"
 
 interface ProductCardProps {
-  name: string
-  price: number
-  image: string
-  alt: string
+  name: string;
+  price: number;
+  image: string;
+  alt: string;
 }
 
 export default function SellerProductCard({
@@ -20,7 +20,7 @@ export default function SellerProductCard({
   image = "/placeholder.svg?height=300&width=300",
   alt = "Product image",
 }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Card
@@ -29,7 +29,6 @@ export default function SellerProductCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative bg-gray-100 p-4">
-      
         <div className="relative h-[200px] w-full">
           <Image
             src={image || "/placeholder.svg"}
@@ -44,10 +43,9 @@ export default function SellerProductCard({
         <div className="flex items-center gap-2">
           <span className="text-xl font-bold">R{price}</span>
         </div>
-        
       </CardContent>
     </Card>
-  )
+  );
 }
 
 /**
@@ -60,4 +58,4 @@ export default function SellerProductCard({
           ))}
           <span className="ml-1 text-sm text-gray-700">{rating.toFixed(1)}</span>
         </div>
-*/ 
+*/

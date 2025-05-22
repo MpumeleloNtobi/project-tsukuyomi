@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server"
+import { NextResponse } from "next/server";
 
 // Mock data for demonstration
 // In a real app, this would come from your database
@@ -33,11 +33,11 @@ const stores = [
     name: "Gourmet Delights",
     status: "awaiting approval",
   },
-]
+];
 
 export async function GET() {
   // Simulate network delay for realism
-  await new Promise((resolve) => setTimeout(resolve, 800))
+  await new Promise((resolve) => setTimeout(resolve, 800));
 
-  return NextResponse.json(stores)
+  return NextResponse.json(stores);
 }

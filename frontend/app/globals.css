@@ -115,9 +115,11 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    pointer-events: auto !important;
   }
   body {
     @apply bg-background text-foreground;
+    pointer-events: auto !important;
   }
 }
 

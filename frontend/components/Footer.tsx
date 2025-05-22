@@ -1,10 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import {
-  Dribbble,
-  Github,
-  Twitch,
-  Twitter,
-} from "lucide-react";
+import { Dribbble, Github, Twitch, Twitter } from "lucide-react";
 import Link from "next/link";
 
 const footerLinks = [
@@ -46,7 +41,11 @@ const Footer = () => {
           <Link href="https://twitter.com" target="_blank" aria-label="Twitter">
             <Twitter className="w-5 h-5 text-pink-500 hover:text-fuchsia-600 transition-colors" />
           </Link>
-          <Link href="https://dribbble.com" target="_blank" aria-label="Dribbble">
+          <Link
+            href="https://dribbble.com"
+            target="_blank"
+            aria-label="Dribbble"
+          >
             <Dribbble className="w-5 h-5 text-pink-500 hover:text-fuchsia-600 transition-colors" />
           </Link>
           <Link href="https://twitch.tv" target="_blank" aria-label="Twitch">

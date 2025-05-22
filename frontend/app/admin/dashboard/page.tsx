@@ -1,35 +1,36 @@
-'use client';
+"use client";
 
-import { ReactElement } from 'react';
+import { ReactElement } from "react";
 import {
   UserCog,
   Store,
   PackageSearch,
   ChartBar,
   ShieldCheck,
-} from 'lucide-react';
+} from "lucide-react";
 
 export default function AdminHome(): ReactElement {
   const stats = [
-    { 
-        label: 'Users',    
-        value: 1284,  
-        Icon: UserCog,       
-        bg: 'bg-blue-50',   
-        color: 'text-blue-600' 
+    {
+      label: "Users",
+      value: 1284,
+      Icon: UserCog,
+      bg: "bg-blue-50",
+      color: "text-blue-600",
     },
-    { 
-        label: 'Stores',   
-        value: 256,   
-        Icon: Store,         
-        bg: 'bg-green-50',  
-        color: 'text-green-600' },
-    { 
-        label: 'Products', 
-        value: 10240, 
-        Icon: PackageSearch, 
-        bg: 'bg-purple-50', 
-        color: 'text-purple-600' 
+    {
+      label: "Stores",
+      value: 256,
+      Icon: Store,
+      bg: "bg-green-50",
+      color: "text-green-600",
+    },
+    {
+      label: "Products",
+      value: 10240,
+      Icon: PackageSearch,
+      bg: "bg-purple-50",
+      color: "text-purple-600",
     },
   ];
 
@@ -40,7 +41,9 @@ export default function AdminHome(): ReactElement {
           Welcome to the Admin Dashboard
         </h1>
         <p className="text-lg text-gray-600">
-          With great power comes great responsibility. As an administrator, you are entrusted to manage users, oversee stores, curate products, and ensure the platform runs smoothly and securely.
+          With great power comes great responsibility. As an administrator, you
+          are entrusted to manage users, oversee stores, curate products, and
+          ensure the platform runs smoothly and securely.
         </p>
       </div>
 
@@ -70,7 +73,8 @@ export default function AdminHome(): ReactElement {
             User & Role Management
           </h3>
           <p className="mt-2 text-gray-600">
-            Create, update, and assign roles to users, ensuring appropriate access control.
+            Create, update, and assign roles to users, ensuring appropriate
+            access control.
           </p>
         </div>
 
@@ -80,7 +84,8 @@ export default function AdminHome(): ReactElement {
             Store Oversight
           </h3>
           <p className="mt-2 text-gray-600">
-            Approve, suspend, or review seller stores to maintain platform quality.
+            Approve, suspend, or review seller stores to maintain platform
+            quality.
           </p>
         </div>
 
@@ -90,7 +95,8 @@ export default function AdminHome(): ReactElement {
             Product Oversight
           </h3>
           <p className="mt-2 text-gray-600">
-            Review and approve product listings to ensure catalog consistency and quality.
+            Review and approve product listings to ensure catalog consistency
+            and quality.
           </p>
         </div>
 
@@ -100,7 +106,8 @@ export default function AdminHome(): ReactElement {
             Audit & Compliance
           </h3>
           <p className="mt-2 text-gray-600">
-            Monitor audit logs and user activity to enforce security and compliance policies.
+            Monitor audit logs and user activity to enforce security and
+            compliance policies.
           </p>
         </div>
       </div>

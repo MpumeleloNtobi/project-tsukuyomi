@@ -24,14 +24,14 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import MultipleImageUploader from "@/components/MultipleImageUploader";
 import { Plus } from "lucide-react";
@@ -52,7 +52,7 @@ export default function ProductForm({ onSuccess }: Props) {
       description: "",
       price: 1,
       stockQuantity: 1,
-      category: ""
+      category: "",
     },
   });
 
@@ -78,13 +78,16 @@ export default function ProductForm({ onSuccess }: Props) {
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/products`,
-        { method: "POST", body: data }
+        { method: "POST", body: data },
       );
       const text = await res.text();
       if (!res.ok) {
         let err;
-        try { err = JSON.parse(text).error; }
-        catch { err = text; }
+        try {
+          err = JSON.parse(text).error;
+        } catch {
+          err = text;
+        }
         throw new Error(err || `Status ${res.status}`);
       }
 
@@ -157,7 +160,11 @@ export default function ProductForm({ onSuccess }: Props) {
                 <FormItem>
                   <FormLabel>Quantity</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Stock quantity" {...field} />
+                    <Input
+                      type="number"
+                      placeholder="Stock quantity"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -191,7 +198,10 @@ export default function ProductForm({ onSuccess }: Props) {
 
           <div className="space-y-2">
             <FormLabel>Product Images (3 required)</FormLabel>
-            <MultipleImageUploader onFilesChange={setImages} requiredCount={3} />
+            <MultipleImageUploader
+              onFilesChange={setImages}
+              requiredCount={3}
+            />
           </div>
         </form>
       </Form>

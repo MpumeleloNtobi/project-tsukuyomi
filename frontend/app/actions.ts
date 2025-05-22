@@ -1,19 +1,26 @@
 // src/app/actions.ts (or your relevant actions file)
-"use server"
+"use server";
 
-import { revalidatePath } from "next/cache"
+import { revalidatePath } from "next/cache";
 
 // --- Action to update ONLY the status ---
 export async function updateStoreStatus(id: string, status: string) {
   // (Keep your existing updateStoreStatus function as it is)
   // ... see previous correct version ...
-  const allowedStatuses = ["awaiting approval", "approved", "watchlist", "banned"];
-  if (!id || typeof id !== 'string' ) {
+  const allowedStatuses = [
+    "awaiting approval",
+    "approved",
+    "watchlist",
+    "banned",
+  ];
+  if (!id || typeof id !== "string") {
     throw new Error("Invalid Store ID provided.");
   }
-   if (!status || !allowedStatuses.includes(status)) {
-      throw new Error(`Invalid status value. Allowed statuses are: ${allowedStatuses.join(', ')}.`);
-   }
+  if (!status || !allowedStatuses.includes(status)) {
+    throw new Error(
+      `Invalid status value. Allowed statuses are: ${allowedStatuses.join(", ")}.`,
+    );
+  }
 
   try {
     const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/stores/${id}`;
@@ -24,13 +31,17 @@ export async function updateStoreStatus(id: string, status: string) {
       body: JSON.stringify({ status: status }),
     });
     if (!response.ok) {
-        let errorDetails = '';
-        try {
-            const errorText = await response.text();
-            errorDetails = `: ${errorText}`;
-            console.error(`API Error Response (${response.status}):`, errorText);
-        } catch (parseError) { console.error("Could not parse error response body:", parseError); }
-        throw new Error(`API Error: ${response.status} ${response.statusText}${errorDetails}`);
+      let errorDetails = "";
+      try {
+        const errorText = await response.text();
+        errorDetails = `: ${errorText}`;
+        console.error(`API Error Response (${response.status}):`, errorText);
+      } catch (parseError) {
+        console.error("Could not parse error response body:", parseError);
+      }
+      throw new Error(
+        `API Error: ${response.status} ${response.statusText}${errorDetails}`,
+      );
     }
     const data = await response.json();
     console.log(`Server Action: Store ${id} status updated successfully.`);
@@ -42,14 +53,13 @@ export async function updateStoreStatus(id: string, status: string) {
   }
 }
 
-
 // --- NEW Action to update ONLY the name ---
 export async function updateStoreName(id: string, name: string) {
   // Basic validation
-  if (!id || typeof id !== 'string') {
-      throw new Error("Invalid Store ID provided.");
+  if (!id || typeof id !== "string") {
+    throw new Error("Invalid Store ID provided.");
   }
-  if (!name || typeof name !== 'string' || name.trim() === '') {
+  if (!name || typeof name !== "string" || name.trim() === "") {
     throw new Error("Store name cannot be empty.");
   }
 
@@ -64,13 +74,17 @@ export async function updateStoreName(id: string, name: string) {
     });
 
     if (!response.ok) {
-        let errorDetails = '';
-        try {
-            const errorText = await response.text();
-            errorDetails = `: ${errorText}`;
-            console.error(`API Error Response (${response.status}):`, errorText);
-        } catch (parseError) { console.error("Could not parse error response body:", parseError); }
-        throw new Error(`API Error: ${response.status} ${response.statusText}${errorDetails}`);
+      let errorDetails = "";
+      try {
+        const errorText = await response.text();
+        errorDetails = `: ${errorText}`;
+        console.error(`API Error Response (${response.status}):`, errorText);
+      } catch (parseError) {
+        console.error("Could not parse error response body:", parseError);
+      }
+      throw new Error(
+        `API Error: ${response.status} ${response.statusText}${errorDetails}`,
+      );
     }
 
     const data = await response.json();

@@ -19,12 +19,18 @@ interface ProductGalleryProps {
   products: Product[]; // Now products is a required prop
 }
 
-function SellerProductGallery({ title = "Product Gallery", products: initialProducts }: ProductGalleryProps) {
+function SellerProductGallery({
+  title = "Product Gallery",
+  products: initialProducts,
+}: ProductGalleryProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState<Product[]>(initialProducts); // Initialize with the passed-in products
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  const categories = ["all", ...Array.from(new Set(initialProducts.map((product) => product.category)))];
+  const categories = [
+    "all",
+    ...Array.from(new Set(initialProducts.map((product) => product.category))),
+  ];
 
   useEffect(() => {
     let filteredProducts = initialProducts; // Start filtering from the initial products
@@ -46,9 +52,8 @@ function SellerProductGallery({ title = "Product Gallery", products: initialProd
 
   return (
     <div className="container mx-auto px-4 py-8">
-         <h1 className="text-2xl font-bold mb-6">{title}</h1>
+      <h1 className="text-2xl font-bold mb-6">{title}</h1>
       <div className="flex flex-col md:flex-row gap-4 mb-8">
-     
         <div className="relative flex-1">
           <Search
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"

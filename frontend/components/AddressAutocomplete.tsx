@@ -1,10 +1,10 @@
 // components/AddressAutocomplete.tsx
-'use client';
+"use client";
 
-import { useRef, useCallback } from 'react';
-import { useLoadScript, Autocomplete } from '@react-google-maps/api';
+import { useRef, useCallback } from "react";
+import { useLoadScript, Autocomplete } from "@react-google-maps/api";
 
-const libraries = ['places'] as const;
+const libraries = ["places"] as const;
 
 interface AddressAutocompleteProps {
   value: string;
@@ -24,10 +24,13 @@ export function AddressAutocomplete({
     libraries: [...libraries],
   });
 
-  const handleLoad = useCallback((autocomplete: google.maps.places.Autocomplete) => {
-    autocomplete.setFields(['address_components', 'formatted_address']);
-    autoRef.current = autocomplete;
-  }, []);
+  const handleLoad = useCallback(
+    (autocomplete: google.maps.places.Autocomplete) => {
+      autocomplete.setFields(["address_components", "formatted_address"]);
+      autoRef.current = autocomplete;
+    },
+    [],
+  );
 
   const handlePlaceChanged = useCallback(() => {
     const ac = autoRef.current;
