@@ -146,23 +146,18 @@ const storesRoute = (app, dbUrl) => {
         return res.status(400).json({ error: "Status must be a string." });
       }
       if (!allowedStatuses.includes(status)) {
-        return res
-          .status(400)
-          .json({
-            error: `Invalid status. Allowed: ${allowedStatuses.join(", ")}`,
-          });
+        return res.status(400).json({
+          error: `Invalid status. Allowed: ${allowedStatuses.join(", ")}`,
+        });
       }
       updates.status = status;
     }
 
     const updateFields = Object.keys(updates);
     if (updateFields.length === 0) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "No valid fields provided for update (provide name or status).",
-        });
+      return res.status(400).json({
+        error: "No valid fields provided for update (provide name or status).",
+      });
     }
 
     const setClauses = [];

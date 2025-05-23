@@ -111,12 +111,10 @@ const paymentsRoute = (app, dbUrl) => {
 
         if (!paymentRes.ok) {
           console.error("[Stitch] Payment link creation failed:", paymentData);
-          return res
-            .status(500)
-            .json({
-              error: "Failed to create payment link",
-              details: paymentData,
-            });
+          return res.status(500).json({
+            error: "Failed to create payment link",
+            details: paymentData,
+          });
         }
 
         const redirectUrl = paymentData?.data?.payment?.link;

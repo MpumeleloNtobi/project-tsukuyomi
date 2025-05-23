@@ -1,646 +1,549 @@
 {
-	"info": {
-		"_postman_id": "c135d807-d4b7-4a50-a08a-90906d61230f",
-		"name": "Backend",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25416265",
-		"_collection_link": "https://helm-engine.postman.co/workspace/storify~fa757f7f-ed98-4f3e-a311-15d0df215e54/collection/25416265-c135d807-d4b7-4a50-a08a-90906d61230f?action=share&source=collection_link&creator=25416265"
-	},
-	"item": [
-		{
-			"name": "products",
-			"item": [
-				{
-					"name": "create product",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"storeId\": \"69d45244-fa6d-4dec-9c0e-2a6374fc401a\",\n  \"name\": \"Super Widget\",\n  \"description\": \"An amazing widget that does things.\",\n  \"price\": 29.95,\n  \"stockQuantity\": 50,\n  \"category\": \"Widgets\",\n  \"imageUrl\": \"http://example.com/images/superwidget.png\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/products",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"products"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "all products",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/products",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"products"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "specific product",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/products/2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"products",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "all products for a store",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/products?storeId=69d45244-fa6d-4dec-9c0e-2a6374fc401a",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"products"
-							],
-							"query": [
-								{
-									"key": "storeId",
-									"value": "69d45244-fa6d-4dec-9c0e-2a6374fc401a"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete product",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/products/2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"products",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update product",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Super Widget Deluxe\",\n  \"price\": 34.99,\n  \"stockQuantity\": 45\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/products/3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"products",
-								"3"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "stores",
-			"item": [
-				{
-					"name": "all stores",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/stores",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"stores"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "specific store",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/stores/fce687ef-cbb4-4545-8333-0f1371f93b10",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"stores",
-								"fce687ef-cbb4-4545-8333-0f1371f93b10"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create store",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"clerkId\": \"user_2weIquySWssq85GcSQenYQ0ZQKa\",\n    \"storeName\": \"Test Store\",\n    \"storeDescription\": \"Test description\",\n    \"stitchClientKey\": \"client_key_123\",\n    \"stitchClientSecret\": \"client_secret_123\",\n    \"town\": \"Test Town\",\n    \"postalCode\": \"12345\",\n    \"streetName\": \"Main St\",\n    \"streetNumber\": \"12\"\n  }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/stores",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"stores"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update store",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"name\": \"Updated Store Name\"}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/stores/fce687ef-cbb4-4545-8333-0f1371f93b10",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"stores",
-								"fce687ef-cbb4-4545-8333-0f1371f93b10"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete store",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/stores/fce687ef-cbb4-4545-8333-0f1371f93b10",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"stores",
-								"fce687ef-cbb4-4545-8333-0f1371f93b10"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "payments",
-			"item": [
-				{
-					"name": "STITCH: get stitch token",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"clientId\": \"test-bfd0ab2c-0258-4973-8f4c-06e0e0ad97a3\",\n  \"clientSecret\": \"PQZn85k9I2P2DqbhifL0h3C0VhLLJhaXWimS6JAmqGWw3AixZ54f0nR1reGL6J/2\",\n  \"scope\": \"client_paymentrequest\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://express.stitch.money/api/v1/token",
-							"protocol": "https",
-							"host": [
-								"express",
-								"stitch",
-								"money"
-							],
-							"path": [
-								"api",
-								"v1",
-								"token"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create payment link",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"storeId\": \"06e14636-f586-4b1f-bf60-96d6742d95ee\",\n    \"amount\": 5000,\n    \"orderId\": \"abc-1234\",\n    \"payerName\": \"Ali\",\n    \"deliveryFee\": 0\n  }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/stitch/payment-link",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"stitch",
-								"payment-link"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get stitch token",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/auth/token?storeId=06e14636-f586-4b1f-bf60-96d6742d95ee",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"auth",
-								"token"
-							],
-							"query": [
-								{
-									"key": "storeId",
-									"value": "06e14636-f586-4b1f-bf60-96d6742d95ee"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "orders",
-			"item": [
-				{
-					"name": "specific order",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/orders/d1a345b2-c998-49f9-8d77-c69dc9f71002",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orders",
-								"d1a345b2-c998-49f9-8d77-c69dc9f71002"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update order",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"status\": \"fulfilled\",\n    \"paymentStatus\": \"paid\",\n    \"buyerName\": \"John Doe\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/orders/d1a345b2-c998-49f9-8d77-c69dc9f71002",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orders",
-								"d1a345b2-c998-49f9-8d77-c69dc9f71002"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create order",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"storeId\": \"06e14636-f586-4b1f-bf60-96d6742d95ee\",\n    \"buyerName\": \"John Doe\",\n    \"phoneNumber\": \"1234567890\",\n    \"deliveryMethod\": \"delivery\",\n    \"city\": \"Lahore\",\n    \"town\": \"Gulberg\",\n    \"streetName\": \"Main Blvd\",\n    \"streetNumber\": \"42A\",\n    \"postalCode\": \"54000\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:5000/orders",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orders"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get all orders for a store",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:5000/orders/store/7c60f6ad-5fec-4eca-a329-50d0cd6a7585",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"orders",
-								"store",
-								"7c60f6ad-5fec-4eca-a329-50d0cd6a7585"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "upload",
-			"item": [
-				{
-					"name": "upload image",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/home/uncle-guspacho/Pictures/Screenshots/Screenshot from 2025-05-21 09-52-15.png"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:5000/upload",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"upload"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "upload multiple files",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "files",
-									"type": "file",
-									"src": "/home/uncle-guspacho/Pictures/Screenshots/Screenshot from 2025-05-21 09-11-33.png"
-								},
-								{
-									"key": "files",
-									"type": "file",
-									"src": "/home/uncle-guspacho/Pictures/Screenshots/Screenshot from 2025-05-21 09-52-01.png"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:5000/upload-multiple",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"upload-multiple"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "get health",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:5000/api/health",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"health"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "c135d807-d4b7-4a50-a08a-90906d61230f",
+    "name": "Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25416265",
+    "_collection_link": "https://helm-engine.postman.co/workspace/storify~fa757f7f-ed98-4f3e-a311-15d0df215e54/collection/25416265-c135d807-d4b7-4a50-a08a-90906d61230f?action=share&source=collection_link&creator=25416265"
+  },
+  "item": [
+    {
+      "name": "products",
+      "item": [
+        {
+          "name": "create product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": \"69d45244-fa6d-4dec-9c0e-2a6374fc401a\",\n  \"name\": \"Super Widget\",\n  \"description\": \"An amazing widget that does things.\",\n  \"price\": 29.95,\n  \"stockQuantity\": 50,\n  \"category\": \"Widgets\",\n  \"imageUrl\": \"http://example.com/images/superwidget.png\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["products"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "all products",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/products",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["products"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "specific product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/products/2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["products", "2"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "all products for a store",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/products?storeId=69d45244-fa6d-4dec-9c0e-2a6374fc401a",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["products"],
+              "query": [
+                {
+                  "key": "storeId",
+                  "value": "69d45244-fa6d-4dec-9c0e-2a6374fc401a"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/products/2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["products", "2"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update product",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Super Widget Deluxe\",\n  \"price\": 34.99,\n  \"stockQuantity\": 45\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/products/3",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["products", "3"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "stores",
+      "item": [
+        {
+          "name": "all stores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/stores",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["stores"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "specific store",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/stores/fce687ef-cbb4-4545-8333-0f1371f93b10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["stores", "fce687ef-cbb4-4545-8333-0f1371f93b10"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create store",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"clerkId\": \"user_2weIquySWssq85GcSQenYQ0ZQKa\",\n    \"storeName\": \"Test Store\",\n    \"storeDescription\": \"Test description\",\n    \"stitchClientKey\": \"client_key_123\",\n    \"stitchClientSecret\": \"client_secret_123\",\n    \"town\": \"Test Town\",\n    \"postalCode\": \"12345\",\n    \"streetName\": \"Main St\",\n    \"streetNumber\": \"12\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/stores",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["stores"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update store",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Updated Store Name\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/stores/fce687ef-cbb4-4545-8333-0f1371f93b10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["stores", "fce687ef-cbb4-4545-8333-0f1371f93b10"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete store",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/stores/fce687ef-cbb4-4545-8333-0f1371f93b10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["stores", "fce687ef-cbb4-4545-8333-0f1371f93b10"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "payments",
+      "item": [
+        {
+          "name": "STITCH: get stitch token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": \"test-bfd0ab2c-0258-4973-8f4c-06e0e0ad97a3\",\n  \"clientSecret\": \"PQZn85k9I2P2DqbhifL0h3C0VhLLJhaXWimS6JAmqGWw3AixZ54f0nR1reGL6J/2\",\n  \"scope\": \"client_paymentrequest\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://express.stitch.money/api/v1/token",
+              "protocol": "https",
+              "host": ["express", "stitch", "money"],
+              "path": ["api", "v1", "token"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create payment link",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"storeId\": \"06e14636-f586-4b1f-bf60-96d6742d95ee\",\n    \"amount\": 5000,\n    \"orderId\": \"abc-1234\",\n    \"payerName\": \"Ali\",\n    \"deliveryFee\": 0\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/stitch/payment-link",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["stitch", "payment-link"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get stitch token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/auth/token?storeId=06e14636-f586-4b1f-bf60-96d6742d95ee",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["auth", "token"],
+              "query": [
+                {
+                  "key": "storeId",
+                  "value": "06e14636-f586-4b1f-bf60-96d6742d95ee"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "orders",
+      "item": [
+        {
+          "name": "specific order",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/orders/d1a345b2-c998-49f9-8d77-c69dc9f71002",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["orders", "d1a345b2-c998-49f9-8d77-c69dc9f71002"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update order",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"fulfilled\",\n    \"paymentStatus\": \"paid\",\n    \"buyerName\": \"John Doe\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/orders/d1a345b2-c998-49f9-8d77-c69dc9f71002",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["orders", "d1a345b2-c998-49f9-8d77-c69dc9f71002"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create order",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"storeId\": \"06e14636-f586-4b1f-bf60-96d6742d95ee\",\n    \"buyerName\": \"John Doe\",\n    \"phoneNumber\": \"1234567890\",\n    \"deliveryMethod\": \"delivery\",\n    \"city\": \"Lahore\",\n    \"town\": \"Gulberg\",\n    \"streetName\": \"Main Blvd\",\n    \"streetNumber\": \"42A\",\n    \"postalCode\": \"54000\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/orders",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["orders"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all orders for a store",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/orders/store/7c60f6ad-5fec-4eca-a329-50d0cd6a7585",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": [
+                "orders",
+                "store",
+                "7c60f6ad-5fec-4eca-a329-50d0cd6a7585"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "upload",
+      "item": [
+        {
+          "name": "upload image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "/home/uncle-guspacho/Pictures/Screenshots/Screenshot from 2025-05-21 09-52-15.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/upload",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["upload"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "upload multiple files",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": "/home/uncle-guspacho/Pictures/Screenshots/Screenshot from 2025-05-21 09-11-33.png"
+                },
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": "/home/uncle-guspacho/Pictures/Screenshots/Screenshot from 2025-05-21 09-52-01.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/upload-multiple",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["upload-multiple"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "get health",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "health"]
+        }
+      },
+      "response": []
+    }
+  ]
 }
