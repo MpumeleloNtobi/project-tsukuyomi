@@ -69,7 +69,6 @@ export function OrdersTable() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [note, setNote] = useState("");
 
   const { user, isLoaded: isUserLoaded } = useUser();
   const storeId = user?.publicMetadata?.storeId as string | undefined;
@@ -130,25 +129,14 @@ export function OrdersTable() {
     }
   };
 
-  const sendNotification = async () => {
-    if (!selectedOrder) return;
-    try {
-      toast.promise(new Promise((resolve) => setTimeout(resolve, 1500)), {
-        loading: "Sending notification to customer...",
-        success: "Notification sent successfully!",
-        error: "Failed to send notification",
-      });
-    } catch (error) {
-      console.error("Error sending notification:", error);
-    }
-  };
-
   const handlePrintOrder = () => {
     window.print();
   };
 
   const getStatusSteps = () => {
     if (!selectedOrder) return null;
+
+    const isPickup = selectedOrder.deliveryMethod === "Pickup";
 
     const steps = [
       {
@@ -161,16 +149,31 @@ export function OrdersTable() {
         label: "In Progress",
         icon: <Package className="h-4 w-4" />,
       },
-      {
-        status: "Out for Delivery",
-        label: "Out for Delivery",
-        icon: <Truck className="h-4 w-4" />,
-      },
-      {
-        status: "Delivered",
-        label: "Delivered",
-        icon: <CheckCircle className="h-4 w-4" />,
-      },
+      ...(isPickup
+        ? [
+            {
+              status: "Ready for Pickup",
+              label: "Ready for Pickup",
+              icon: <MapPin className="h-4 w-4" />,
+            },
+            {
+              status: "Picked Up",
+              label: "Picked Up",
+              icon: <CheckCircle className="h-4 w-4" />,
+            },
+          ]
+        : [
+            {
+              status: "Out for Delivery",
+              label: "Out for Delivery",
+              icon: <Truck className="h-4 w-4" />,
+            },
+            {
+              status: "Delivered",
+              label: "Delivered",
+              icon: <CheckCircle className="h-4 w-4" />,
+            },
+          ]),
     ];
 
     const current = steps.findIndex(
@@ -200,16 +203,6 @@ export function OrdersTable() {
               >
                 {step.label}
               </p>
-              {index === current && selectedOrder.status !== "Cancelled" && (
-                <p className="text-sm text-muted-foreground">
-                  {{
-                    "Seller Received": "Order received by seller",
-                    "In progress": "Preparing your order",
-                    "Out for Delivery": "On the way",
-                    Delivered: "Delivered to customer",
-                  }[selectedOrder.status] || ""}
-                </p>
-              )}
             </div>
           </div>
         ))}
@@ -230,7 +223,6 @@ export function OrdersTable() {
       </div>
     );
   };
-
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "Seller Received":
@@ -266,6 +258,20 @@ export function OrdersTable() {
           <Badge className="bg-red-100 text-red-800 font-medium">
             <Ban className="mr-1 h-3 w-3" />
             Cancelled
+          </Badge>
+        );
+      case "Ready for Pickup":
+        return (
+          <Badge className="bg-yellow-100 text-yellow-800 font-medium">
+            <MapPin className="mr-1 h-3 w-3" />
+            Ready for Pickup
+          </Badge>
+        );
+      case "Picked Up":
+        return (
+          <Badge className="bg-green-100 text-green-800 font-medium">
+            <CheckCircle className="mr-1 h-3 w-3" />
+            Picked Up
           </Badge>
         );
       default:
@@ -312,6 +318,22 @@ export function OrdersTable() {
     setIsModalOpen(true);
   };
 
+  const pickupStatuses: OrderStatus[] = [
+    "Seller Received",
+    "In progress",
+    "Ready for Pickup",
+    "Picked Up",
+    "Cancelled",
+  ];
+
+  const deliveryStatuses: OrderStatus[] = [
+    "Seller Received",
+    "In progress",
+    "Out for Delivery",
+    "Delivered",
+    "Cancelled",
+  ];
+
   return (
     <>
       <div className="rounded-xl border bg-card shadow-sm">
@@ -324,7 +346,6 @@ export function OrdersTable() {
               <TableHead>Status</TableHead>
               <TableHead>Payment</TableHead>
               <TableHead className="text-right">Amount</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -375,65 +396,6 @@ export function OrdersTable() {
                   </TableCell>
                   <TableCell className="text-right font-medium">
                     {formatCurrency(order.total_price)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger
-                        asChild
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Open menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[180px]">
-                        <DropdownMenuItem
-                          onClick={() => handleViewOrder(order)}
-                        >
-                          <Eye className="mr-2 h-4 w-4" />
-                          View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() =>
-                            updateOrderStatus(order.order_id, "In progress")
-                          }
-                          disabled={
-                            order.status === "In progress" ||
-                            order.status === "Delivered" ||
-                            order.status === "Cancelled"
-                          }
-                        >
-                          <Package className="mr-2 h-4 w-4" />
-                          Mark Processing
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() =>
-                            updateOrderStatus(order.order_id, "Delivered")
-                          }
-                          disabled={
-                            order.status === "Delivered" ||
-                            order.status === "Cancelled"
-                          }
-                        >
-                          <CheckCircle className="mr-2 h-4 w-4" />
-                          Mark Delivered
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() =>
-                            updateOrderStatus(order.order_id, "Cancelled")
-                          }
-                          disabled={
-                            order.status === "Cancelled" ||
-                            order.status === "Delivered"
-                          }
-                          className="text-red-600"
-                        >
-                          <Ban className="mr-2 h-4 w-4" />
-                          Cancel Order
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))
@@ -493,17 +455,14 @@ export function OrdersTable() {
                           <SelectValue placeholder="Update Status" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Seller Received">
-                            Seller Received
-                          </SelectItem>
-                          <SelectItem value="In progress">
-                            In Progress
-                          </SelectItem>
-                          <SelectItem value="Out for Delivery">
-                            Out for Delivery
-                          </SelectItem>
-                          <SelectItem value="Delivered">Delivered</SelectItem>
-                          <SelectItem value="Cancelled">Cancelled</SelectItem>
+                          {(selectedOrder.deliveryMethod === "Pickup"
+                            ? pickupStatuses
+                            : deliveryStatuses
+                          ).map((status) => (
+                            <SelectItem key={status} value={status}>
+                              {status}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
 
@@ -627,7 +586,6 @@ export function OrdersTable() {
                 </Card>
 
                 {/* Delivery Details */}
-
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -660,6 +618,24 @@ export function OrdersTable() {
                             <p>{selectedOrder.postalCode}</p>
                           </div>
                         </div>
+                      </div>
+                    )}
+                    {selectedOrder.deliveryMethod === "Pickup" && (
+                      <div className="space-y-2">
+                        <Label>Pickup Information</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Customer will pick up the order from your store.
+                        </p>
+                        {/* You might want to add your store's pickup address here if available */}
+                        {/* Example:
+                        <div className="flex items-start gap-2 text-sm">
+                          <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
+                          <div>
+                            <p>Your Store Address Line 1</p>
+                            <p>Your Store Address Line 2</p>
+                          </div>
+                        </div>
+                        */}
                       </div>
                     )}
                   </CardContent>

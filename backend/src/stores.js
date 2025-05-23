@@ -110,85 +110,59 @@ const storesRoute = (app, dbUrl) => {
   /*
    * PUT update a store
    */
-  app.put("/stores/:store_id", async (req, res) => {
-    const storeId = req.params.store_id;
+app.put("/stores/:store_id", async (req, res) => {
+  const storeId = req.params.store_id;
 
-    if (!isValidUUID(storeId)) {
-      return res
-        .status(400)
-        .json({ error: "Invalid store ID format (must be a UUID)." });
-    }
+  if (!isValidUUID(storeId)) {
+    return res
+      .status(400)
+      .json({ error: "Invalid store ID format (must be a UUID)." });
+  }
 
-    const { name, status } = req.body;
-    const updates = {};
-    const columnMappings = {
-      name: "name",
-      status: "status",
-    };
-    const allowedStatuses = [
-      "awaiting approval",
-      "approved",
-      "watchlist",
-      "banned",
-    ];
+  const updates = req.body;
 
-    if (name !== undefined) {
-      if (typeof name !== "string" || name.trim() === "") {
-        return res
-          .status(400)
-          .json({ error: "Name must be a non-empty string." });
-      }
-      updates.name = name;
-    }
+  if (
+    typeof updates !== "object" ||
+    updates === null ||
+    Array.isArray(updates)
+  ) {
+    return res.status(400).json({ error: "Request body must be an object." });
+  }
 
-    if (status !== undefined) {
-      if (typeof status !== "string") {
-        return res.status(400).json({ error: "Status must be a string." });
-      }
-      if (!allowedStatuses.includes(status)) {
-        return res.status(400).json({
-          error: `Invalid status. Allowed: ${allowedStatuses.join(", ")}`,
-        });
-      }
-      updates.status = status;
-    }
-
-    const updateFields = Object.keys(updates);
-    if (updateFields.length === 0) {
-      return res.status(400).json({
-        error: "No valid fields provided for update (provide name or status).",
-      });
-    }
-
-    const setClauses = [];
-    const values = [];
-    let i = 1;
-    updateFields.forEach((field) => {
-      const column = columnMappings[field];
-      setClauses.push(`${column} = $${i}`);
-      values.push(updates[field]);
-      i++;
+  const updateFields = Object.keys(updates);
+  if (updateFields.length === 0) {
+    return res.status(400).json({
+      error: "No fields provided for update.",
     });
+  }
 
-    values.push(storeId);
-    const query = `
-      UPDATE stores
-      SET ${setClauses.join(", ")}
-      WHERE id = $${i}
-      RETURNING *;
-    `;
+  const setClauses = [];
+  const values = [];
 
-    try {
-      const result = await sql(query, values);
-      if (result.length === 0) {
-        return res.status(404).json({ error: "Store not found." });
-      }
-      res.json(result[0]);
-    } catch (error) {
-      console.error("Error updating store:", error);
-      res.status(500).json({ error: "Error updating store" });
-    }
+  updateFields.forEach((field, index) => {
+    setClauses.push(`${field} = $${index + 1}`);
+    values.push(updates[field]);
   });
+
+  values.push(storeId); // For WHERE clause
+  const query = `
+    UPDATE stores
+    SET ${setClauses.join(", ")}
+    WHERE id = $${updateFields.length + 1}
+    RETURNING *;
+  `;
+
+  try {
+    const result = await sql(query, values);
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Store not found." });
+    }
+    res.json(result[0]);
+  } catch (error) {
+    console.error("Error updating store:", error);
+    res.status(500).json({ error: "Error updating store" });
+  }
+});
 
   /*
    * DELETE a store
