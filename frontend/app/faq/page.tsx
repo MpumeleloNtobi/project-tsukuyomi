@@ -11,10 +11,10 @@ export type QuestionType = {
 
 const FAQPage = () => {
   return (
-    <main className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50">
+    <main className="min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900 text-gray-900 dark:text-gray-100">
       <Header showCart={false} />
       <section className="w-full max-w-4xl px-6 pt-16 md:py-16 mx-auto">
-        <h1 className="text-4xl font-bold mb-12 text-gray-900 text-center">
+        <h1 className="text-4xl font-bold mb-12 text-center">
           Frequently Asked Questions
         </h1>
 
@@ -68,21 +68,21 @@ const SectionComponent: React.FC<SectionProps> = ({ id, heading, color, question
 
   return (
     <section id={id} className="w-full">
-      <h2 className={`text-2xl font-semibold mb-8`}>
-        {heading}
-      </h2>
+      <h2 className="text-2xl font-semibold mb-8">{heading}</h2>
 
-      <div className="space-y-4">
+      <div className="space-y-4 rounded-lg">
         {questions.map(({ value, question, answer }) => (
-          <div key={value} className="border rounded-lg bg-white shadow-sm">
+          <div key={value} className="border rounded-lg bg-white shadow-sm dark:bg-gray-900 dark:border-gray-700">
             <button
               onClick={() => toggle(value)}
-              className={`w-full flex justify-between items-center px-6 py-4 text-left hover:bg-gray-50 transition-colors cursor-pointer ${
-                openValue === value ? `bg-gray-50` : ""
+              className={`w-full flex justify-between items-center px-6 py-4 text-left transition-colors cursor-pointer rounded-lg ${
+                openValue === value
+                  ? "bg-gray-50 dark:bg-gray-800"
+                  : "hover:bg-gray-50 dark:hover:bg-gray-800"
               }`}
               aria-expanded={openValue === value}
             >
-              <span className="font-medium text-gray-900">{question}</span>
+              <span className="font-medium">{question}</span>
               <svg
                 className={`w-5 h-5 transform transition-transform ${
                   openValue === value ? "rotate-180" : ""
@@ -94,9 +94,9 @@ const SectionComponent: React.FC<SectionProps> = ({ id, heading, color, question
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            
+
             {openValue === value && (
-              <div className="px-6 pb-6 pt-2 text-gray-600">
+              <div className="px-6 pb-6 pt-2 text-gray-700 dark:text-gray-300">
                 {answer}
               </div>
             )}
