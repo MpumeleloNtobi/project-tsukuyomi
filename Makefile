@@ -13,6 +13,9 @@ backend:
 frontend-lint:
 	@cd ./frontend && npx prettier . --write
 
+backend-lint:
+	@cd ./backend && npx prettier . --write
+
 clean:
 	@echo "🧹 Cleaning up..."
 	@pkill -f "npm run dev"

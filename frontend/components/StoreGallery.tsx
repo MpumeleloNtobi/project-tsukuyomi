@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import StoreCard from "@/components/StoreCard";
 import { Store } from "@/types/stores";
+import Spinner from "@/components/ldr-spinner";
 
 export default function StoreGallery() {
   const [stores, setStores] = useState<Store[] | undefined>(undefined); // Initialize with undefined
@@ -35,7 +36,7 @@ export default function StoreGallery() {
   }, []); // Empty dependency array ensures this runs once when the component mounts
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Spinner/>
   }
 
   if (error) {
