@@ -6,7 +6,7 @@ import ProductGallery from "@/components/ProductGallery";
 import { useParams } from "next/navigation";
 import Header from "@/components/Header";
 import { CartProvider } from "@/app/hooks/use-cart";
-
+import Spinner from "@/components/ldr-spinner";
 interface storeDetails {
   name: string;
   description: string;
@@ -71,7 +71,7 @@ function Home() {
   }, [params.storeId]);
 
   if (loading) {
-    return <p>Loading products...</p>;
+    return <Spinner/>
   }
 
   if (error) {

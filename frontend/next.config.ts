@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
         hostname: "sdprojectimages2.blob.core.windows.net",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+        pathname: "**",
+      },
     ],
   },
 };
