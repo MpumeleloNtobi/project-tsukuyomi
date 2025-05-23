@@ -6,7 +6,7 @@ export type OrderStatus =
   | "Ready for Pickup"
   | "Picked Up"
   | "Cancelled";
-  
+
 export type PaymentStatus = "Pending" | "Paid" | "Refunded";
 
 export interface OrderItem {

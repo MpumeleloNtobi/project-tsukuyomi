@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Import useRef
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import ProductCard from "@/components/ProductCard";
@@ -13,12 +13,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import ProductDetails from "@/components/ProductDetails";
 
 interface ProductGalleryProps {
@@ -36,6 +30,9 @@ function ProductGallery({
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  // Create a ref for the dialog element
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const categories = [
     "all",
@@ -59,6 +56,15 @@ function ProductGallery({
 
     setProducts(filteredProducts);
   }, [searchTerm, selectedCategory, initialProducts]);
+
+  // Effect to handle opening/closing the native dialog
+  useEffect(() => {
+    if (selectedProduct) {
+      dialogRef.current?.showModal(); // Use showModal() to open the dialog
+    } else {
+      dialogRef.current?.close(); // Use close() to close the dialog
+    }
+  }, [selectedProduct]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -119,18 +125,23 @@ function ProductGallery({
         </div>
       )}
 
-      {/* Modal for Product Details */}
-      <Dialog
-        open={!!selectedProduct}
-        onOpenChange={() => setSelectedProduct(null)}
+      {/* Native HTML Dialog for Product Details */}
+      <dialog
+        ref={dialogRef}
+        className="p-6 rounded-lg shadow-lg backdrop:bg-black backdrop:opacity-70"
+        onClose={() => setSelectedProduct(null)} // Handle closing when user dismisses with Escape key
       >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{selectedProduct?.name}</DialogTitle>
-          </DialogHeader>
-          {selectedProduct && <ProductDetails product={selectedProduct} />}
-        </DialogContent>
-      </Dialog>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">Product Details</h2>
+          <button
+            onClick={() => setSelectedProduct(null)}
+            className="text-gray-500 hover:text-gray-700 text-2xl"
+          >
+            &times;
+          </button>
+        </div>
+        {selectedProduct && <ProductDetails product={selectedProduct} />}
+      </dialog>
     </div>
   );
 }

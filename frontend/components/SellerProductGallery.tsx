@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Import useRef
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import ProductCard from "@/components/ProductCard";
+import SellerProductCard from "@/components/SellerProductCard";
 import { type Product } from "@/app/data/product";
 import {
   Select,
@@ -12,20 +12,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import SellerProductCard from "./SellerProductCard";
+
+import SellerProductDetails from "@/components/SellerProductDetails";
 
 interface ProductGalleryProps {
   title?: string;
-  products: Product[]; // Now products is a required prop
+  products: Product[];
+  description?: string;
 }
 
 function SellerProductGallery({
   title = "Product Gallery",
   products: initialProducts,
+  description = "",
 }: ProductGalleryProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [products, setProducts] = useState<Product[]>(initialProducts); // Initialize with the passed-in products
+  const [products, setProducts] = useState<Product[]>(initialProducts);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  // Create a ref for the dialog element
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const categories = [
     "all",
@@ -33,7 +40,7 @@ function SellerProductGallery({
   ];
 
   useEffect(() => {
-    let filteredProducts = initialProducts; // Start filtering from the initial products
+    let filteredProducts = initialProducts;
 
     if (searchTerm) {
       filteredProducts = filteredProducts.filter((product) =>
@@ -48,11 +55,22 @@ function SellerProductGallery({
     }
 
     setProducts(filteredProducts);
-  }, [searchTerm, selectedCategory, initialProducts]); // Re-filter when search, category, or initial products change
+  }, [searchTerm, selectedCategory, initialProducts]);
+
+  // Effect to handle opening/closing the native dialog
+  useEffect(() => {
+    if (selectedProduct) {
+      dialogRef.current?.showModal(); // Use showModal() to open the dialog
+    } else {
+      dialogRef.current?.close(); // Use close() to close the dialog
+    }
+  }, [selectedProduct]);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-6">{title}</h1>
+      <h2 className="text-xl font-bold mb-6">{description}</h2>
+
       <div className="flex flex-col md:flex-row gap-4 mb-8">
         <div className="relative flex-1">
           <Search
@@ -89,18 +107,41 @@ function SellerProductGallery({
           <p className="text-gray-500">No products found.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {products.map((product) => (
             <SellerProductCard
               key={product.id}
+              id={product.id}
+              description={product.description}
               name={product.name}
               price={product.price}
-              image={product.imageUrl}
-              alt={product.name}
+              stockQuantity={product.stockQuantity}
+              category={product.category}
+              storeId={product.storeId}
+              image1url={product.image1url}
+              onClick={() => setSelectedProduct(product)}
             />
           ))}
         </div>
       )}
+
+      {/* Native HTML Dialog for Product Details */}
+      <dialog
+        ref={dialogRef}
+        className="p-6 rounded-lg shadow-lg backdrop:bg-black backdrop:opacity-70"
+        onClose={() => setSelectedProduct(null)} // Handle closing when user dismisses with Escape key
+      >
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">Product Details</h2>
+          <button
+            onClick={() => setSelectedProduct(null)}
+            className="text-gray-500 hover:text-gray-700 text-2xl"
+          >
+            &times;
+          </button>
+        </div>
+        {selectedProduct && <SellerProductDetails product={selectedProduct} />}
+      </dialog>
     </div>
   );
 }
