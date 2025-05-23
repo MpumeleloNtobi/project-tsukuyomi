@@ -1,15 +1,15 @@
-//import Link from 'next/link'
-//import { Button } from '@/components/ui/button'
 "use client";
 
 import { useState, useEffect } from "react";
 import { type Product } from "@/app/data/product";
 import SellerProductGallery from "@/components/SellerProductGallery";
 import { useUser } from "@clerk/nextjs";
+import HotPinkLineSpinner from "@/components/pink-spinner";
+import Spinner from "@/components/ldr-spinner";
 
 function Home() {
   const { user } = useUser();
-  const storeId = user?.publicMetadata?.storeId as string | undefined; // Explicitly type storeId
+  const storeId = user?.publicMetadata?.storeId as string | undefined;
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +22,7 @@ function Home() {
         try {
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/products?storeId=${storeId}`,
-          ); // Use the storeId in the fetch URL
+          );
           if (!response.ok) {
             throw new Error(
               `Failed to fetch products: ${response.status} ${response.statusText}`,
@@ -37,41 +37,36 @@ function Home() {
           setLoading(false);
         }
       } else {
-        // Handle the case where storeId is not yet available or undefined
         setLoading(false);
-        setError(
-          "Store ID not found. Please ensure you are logged in and have a store associated with your account.",
-        );
         setProducts([]);
       }
     };
 
-    fetchProducts();
-  }, [storeId]); // Re-run the effect when storeId changes
+    const timer = setTimeout(() => {
+      fetchProducts();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [storeId]);
 
   if (loading) {
-    return <p>Loading products...</p>;
+    return <Spinner />; // Render our custom spinner
   }
 
   if (error) {
-    return <p>Error loading products: {error}</p>;
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-600 font-medium">
+          Error loading products: {error}
+        </p>
+      </div>
+    );
   }
 
   return (
     <>
-      <div className="flex min-h-screen flex-col">
-        <main className="flex-grow">
-          <div>
-            <SellerProductGallery products={products} title="My Store" />
-          </div>
-        </main>
-        <footer className="flex w-full items-center justify-center bg-gray-100 py-6 dark:bg-gray-800">
-          <div className="container px-4 md:px-6">
-            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-              (c) 2024 Q&A platform. All rights reserved.
-            </p>
-          </div>
-        </footer>
+      <div className="p-6">
+        <SellerProductGallery products={products} title="My Store" />
       </div>
     </>
   );

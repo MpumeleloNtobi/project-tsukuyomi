@@ -7,6 +7,7 @@ import {
   Archive,
   PieChart,
   PackageIcon,
+  Truck,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import {
@@ -45,6 +46,11 @@ const items = [
     title: "Reporting",
     url: "/seller/reporting",
     icon: PieChart,
+  },
+  {
+    title: "Delivery Options",
+    url: "/seller/delivery-options",
+    icon: Truck,
   },
 ];
 

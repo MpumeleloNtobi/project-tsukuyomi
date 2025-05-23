@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Check, AlertCircle, X } from "lucide-react";
 import { useState } from "react";
-import { useCart } from "@/app/hooks/use-cart";
 
 export type Product = {
   id: number;
@@ -32,7 +31,6 @@ export default function ProductDetails({
   onClose,
 }: ProductDetailsProps) {
   const [activeImage, setActiveImage] = useState(0);
-  const { addItem } = useCart();
   const isInStock = product.stockQuantity > 0;
 
   const images = [
@@ -40,17 +38,6 @@ export default function ProductDetails({
     product.image2url || "/placeholder.svg?height=600&width=600",
     product.image3url || "/placeholder.svg?height=600&width=600",
   ];
-
-  const handleAddToCart = () => {
-    addItem({
-      id: `${product.id}`,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      quantity: 1,
-    });
-    onAddToCart(product);
-  };
 
   return (
     <div className="w-full bg-white rounded-xl shadow-lg p-6 mx-auto align-middle">
@@ -146,12 +133,7 @@ export default function ProductDetails({
           </div>
 
           <div className="mt-8">
-            <Button
-              onClick={handleAddToCart}
-              disabled={!isInStock}
-              className="w-full"
-              variant={"default"}
-            >
+            <Button disabled={true} className="w-full" variant={"default"}>
               <ShoppingCart className="w-5 h-5" />
               Add to Cart
             </Button>
