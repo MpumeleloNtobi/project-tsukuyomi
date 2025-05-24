@@ -1,6 +1,6 @@
 "use client";
 
-import { Store, UserCog, PackageSearch, BarChart2 } from "lucide-react";
+import { Store, UserCog, PackageSearch, BarChart2, Home } from "lucide-react";
 import { usePathname } from "next/navigation";
 import {
   Sidebar,
@@ -15,9 +15,9 @@ import {
 
 const items = [
   {
-    title: "Dashboard",
-    url: "/admin/dashboard",
-    icon: BarChart2,
+    title: "Home",
+    url: "/admin/home",
+    icon: Home,
   },
   {
     title: "Users",
@@ -28,11 +28,6 @@ const items = [
     title: "Stores",
     url: "/admin/stores",
     icon: Store,
-  },
-  {
-    title: "Products",
-    url: "/admin/products",
-    icon: PackageSearch,
   },
 ];
 

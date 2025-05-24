@@ -6,7 +6,6 @@ export default function OrdersPage() {
   return (
     <div className="gap-6 p-6">
       <OrdersHeader />
-      <OrderStats />
       <OrdersTable />
     </div>
   );

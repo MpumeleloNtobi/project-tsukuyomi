@@ -1,5 +1,6 @@
 const { neon } = require("@neondatabase/serverless");
 const { isValidUUID } = require("./utils");
+const Clerk = require('@clerk/express')
 /*
 /            _                      
 /        ___| |_ ___  _ __ ___  ___ 
@@ -9,7 +10,8 @@ const { isValidUUID } = require("./utils");
 /       
 */
 
-const storesRoute = (app, dbUrl) => {
+
+const storesRoute = (app, dbUrl, clerkClient) => {
   const sql = neon(dbUrl);
 
   /*
@@ -92,13 +94,14 @@ const storesRoute = (app, dbUrl) => {
           (${clerkId}, ${storeName}, ${storeDescription}, ${stitchClientKey},  ${stitchClientSecret}, ${town}, ${postalCode}, ${streetName}, ${streetNumber})
         RETURNING *;
       `;
+      const clerkClient = Clerk.createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
 
-      await clerk.users.updateUserMetadata(clerkId, {
+      await clerkClient.users.updateUserMetadata(clerkId, {
         publicMetadata: {
           role: "seller",
           storeId: newStores[0].id,
         },
-      });
+      })
 
       res.status(201).json(newStores[0]);
     } catch (error) {

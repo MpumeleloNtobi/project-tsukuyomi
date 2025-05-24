@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <ClerkProvider>
           <ThemeProvider
-            attribute="class" // applies dark/light class to <html>
+            attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange

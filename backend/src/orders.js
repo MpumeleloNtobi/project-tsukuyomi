@@ -130,6 +130,27 @@ const ordersRoute = (app, dbUrl) => {
         .json({ Error: "Database query failed", Details: error.message });
     }
   });
+  app.get("/orders/buyer/:buyerId", async (req, res) => {
+    const buyerId = req.params.buyerId;
+
+    if (!buyerId) {
+      return res.status(400).json({ Error: "The buyer ID is not valid" });
+    }
+
+    try {
+      const orders =
+        await sql`SELECT * FROM orders WHERE buyer_id = ${buyerId}`;
+      if (orders.length === 0) {
+        return res.json({ Error: "You Currently have No orders." });
+      }
+
+      return res.json(orders);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ Error: "Database query failed", Details: error.message });
+    }
+  });
   /*
   GET   orders/:storeid ->Get all the orders belonging to a particular store
 
@@ -171,8 +192,11 @@ const ordersRoute = (app, dbUrl) => {
       streetName,
       streetNumber,
       postalCode,
+      buyer_id,
+      order_items,
+      total_price,
     } = req.body;
-
+    console.log(order_items)
     // --- Required Field Validation ---
     if (!storeId || !buyerName || !deliveryMethod) {
       return res.status(400).json({
@@ -214,6 +238,9 @@ const ordersRoute = (app, dbUrl) => {
         "streetName",
         "streetNumber",
         "postalCode",
+        "buyer_id",
+        "order_items",
+        "total_price",
         "paymentStatus",
         status
       )
@@ -227,7 +254,10 @@ const ordersRoute = (app, dbUrl) => {
         ${streetName || ""},
         ${streetNumber || ""},
         ${postalCode || ""},
-        'unpaid',
+        ${buyer_id},
+        ${JSON.stringify(order_items)},
+        ${total_price},
+        'paid',
         'pending'
       )
       RETURNING *;
@@ -275,80 +305,50 @@ const ordersRoute = (app, dbUrl) => {
       res.status(500).send({ error: "Error fetching order" });
     }
   });
-
   /*
-   * PUT /orders/:order_id - Update a specific order by UUID
-   */ app.put("/orders/:order_id", async (req, res) => {
-    const orderId = req.params.order_id;
-    const body = req.body;
+ * PUT /orders/:order_id - Update a specific order by UUID
+ */
+app.put("/orders/:order_id", async (req, res) => {
+  const orderId = req.params.order_id;
+  const body = req.body;
 
-    // Basic UUID format validation
-    const uuidRegex =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(orderId)) {
-      return res
-        .status(400)
-        .json({ error: "Invalid order ID format (must be a UUID)." });
+  const fields = Object.keys(body);
+  const values = fields.map((field) => {
+    const value = body[field];
+    // If it's an object or array, stringify it for JSONB column
+    if (field === "order_items") {
+      return JSON.stringify(value);
     }
+    return value;
+  });
 
-    // Allowed columns and expected types
-    const schema = {
-      phoneNumber: "string",
-      deliveryMethod: "string",
-      status: "string",
-      paymentStatus: "string",
-      city: "string",
-      town: "string",
-      streetName: "string",
-      streetNumber: "string",
-      postalCode: "string",
-      buyerName: "string",
-      paymentId: "string",
-    };
-
-    const updates = {};
-    for (const key in schema) {
-      if (key in body) {
-        if (typeof body[key] !== schema[key]) {
-          return res.status(400).json({
-            error: `${key} must be a ${schema[key]}.`,
-          });
-        }
-        updates[key] = body[key];
-      }
+  const setClauses = fields.map((field, i) => {
+    if (field === "order_items") {
+      return `"${field}" = $${i + 1}::jsonb`;
     }
+    return `"${field}" = $${i + 1}`;
+  });
 
-    const fields = Object.keys(updates);
-    if (fields.length === 0) {
-      return res
-        .status(400)
-        .json({ error: "No valid fields provided for update." });
-    }
-
-    // Dynamically construct SET clauses
-    const setClauses = fields.map((field, i) => `"${field}" = $${i + 1}`);
-    const values = fields.map((field) => updates[field]);
-    values.push(orderId); // Add orderId as the final param for WHERE clause
-
-    const query = `
+  const query = `
     UPDATE orders
     SET ${setClauses.join(", ")}
-    WHERE order_id = $${values.length}
+    WHERE order_id = $${fields.length + 1}
     RETURNING *;
   `;
 
-    try {
-      const result = await sql(query, values);
-      if (result.length === 0) {
-        return res.status(404).json({ error: "Order not found" });
-      }
-
-      res.json(result[0]);
-    } catch (error) {
-      console.error("Error updating order:", error);
-      res.status(500).json({ error: "Internal server error" });
+  try {
+    const result = await sql(query, [...values, orderId]);
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Order not found" });
     }
-  });
+    res.json(result[0]);
+  } catch (error) {
+    console.error("Error updating order:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
 };
 
 module.exports = { ordersRoute };

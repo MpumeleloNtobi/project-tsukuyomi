@@ -36,7 +36,7 @@ import {
   ShoppingBag,
   AlertCircle,
   ChevronLeft,
-  PackageSearch,
+  Car,
   CreditCard,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,89 +71,33 @@ export function OrdersTable() {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const { user, isLoaded: isUserLoaded } = useUser();
-  const storeId = user?.publicMetadata?.storeId as string | undefined;
+  const buyerId= user?.id;
 
   useEffect(() => {
-  if (isUserLoaded && storeId) {
-    const fetchOrders = async () => {
-      try {
-        setLoading(true);
-        setError(null); // Clear previous errors
-
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/store/${storeId}`, // Assuming this is the correct endpoint for storeId
-          // IMPORTANT: Your backend code shows /orders/buyer/:buyerId, but your frontend is calling /orders/store/:storeId.
-          // Please ensure the frontend call matches the backend route you intend to use.
-          // If you intended to use /orders/buyer/:buyerId, replace the above with:
-          // `${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/buyer/${storeId}`, // Assuming storeId acts as buyerId for this purpose
-        );
-
-        if (!res.ok) {
-          // If the HTTP status is not 2xx, it's an error.
-          const errorData = await res.json();
-          throw new Error(errorData.Error || "Failed to fetch orders");
+    if (isUserLoaded && buyerId) {
+      const fetchOrders = async () => {
+        try {
+          setLoading(true);
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/buyer/${buyerId}`,
+          );
+          if (!res.ok) throw new Error("Failed to fetch orders");
+          const data = await res.json();
+          setOrders(data || []);
+        } catch (err) {
+          console.error("Error fetching orders:", err);
+          setError("Failed to load orders");
+        } finally {
+          setLoading(false);
         }
+      };
 
-        const data = await res.json();
-
-        // Check if the response is an object with an 'Error' property (indicating no orders)
-        if (data && typeof data === 'object' && 'Error' in data) {
-          console.warn("API returned no orders:", data.Error);
-          setOrders([]); // Set orders to an empty array
-          // Optionally, set a user-friendly message for no orders
-          // setError(data.Error); // If you want to show the specific "No orders" message
-        } else if (Array.isArray(data)) {
-          setOrders(data); // If it's an array, set it directly
-        } else {
-          // Fallback for unexpected data format (e.g., single object without 'Error')
-          console.error("Unexpected data format from API:", data);
-          setOrders([]);
-          setError("Received unexpected data format from server.");
-        }
-      } catch (err: any) {
-        console.error("Error fetching orders:", err);
-        setError(err.message || "Failed to load orders");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrders();
-  } else if (isUserLoaded && !storeId) {
-    setLoading(false);
-    setError("No store associated with this account");
-  }
-}, [isUserLoaded, storeId]);
-
-  const updateOrderStatus = async (orderId: string, newStatus: OrderStatus) => {
-    setIsUpdating(true);
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/orders/${orderId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: newStatus }),
-        },
-      );
-
-      if (!res.ok) throw new Error("Failed to update status");
-
-      const updated = await res.json();
-      setOrders(
-        orders.map((order) => (order.order_id === orderId ? updated : order)),
-      );
-      if (selectedOrder?.order_id === orderId) {
-        setSelectedOrder(updated);
-      }
-      toast.success(`Order status updated to ${newStatus}`);
-    } catch (error) {
-      console.error("Error updating order status:", error);
-      toast.error("Error updating order status");
-    } finally {
-      setIsUpdating(false);
+      fetchOrders();
+    } else if (isUserLoaded && !buyerId) {
+      setLoading(false);
+      setError("No store associated with this account");
     }
-  };
+  }, [isUserLoaded, buyerId]);
 
   const handlePrintOrder = () => {
     window.print();
@@ -364,80 +308,70 @@ export function OrdersTable() {
     <>
       <div className="rounded-xl border bg-card shadow-sm mt-2">
         <Table>
-  <TableHeader>
-    <TableRow className="bg-muted/50">
-      <TableHead className="w-[100px]">Order ID</TableHead>
-      <TableHead>Customer</TableHead>
-      <TableHead>Date</TableHead>
-      <TableHead>Status</TableHead>
-      <TableHead>Payment</TableHead>
-      <TableHead className="text-right">Amount</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody>
-    {loading ? (
-      <TableRow>
-        <TableCell colSpan={7} className="text-center">
-          <div className="flex justify-center py-8">
-            <Skeleton className="h-8 w-8 rounded-full" />
-          </div>
-        </TableCell>
-      </TableRow>
-    ) : error ? (
-      <TableRow>
-        <TableCell colSpan={7} className="text-center py-8">
-          <div className="flex flex-col items-center gap-2">
-            <AlertCircle className="h-8 w-8 text-red-500" />
-            <p className="text-red-500">{error}</p>
-          </div>
-        </TableCell>
-      </TableRow>
-    ) : orders.length === 0 ? ( // New condition for empty orders array
-      <TableRow>
-        <TableCell colSpan={7} className="text-center py-8">
-          <div className="flex flex-col items-center gap-2">
-            <PackageSearch className="h-8 w-8 text-gray-400" /> {/* Icon for empty state */}
-            <p className="text-gray-500">No orders found.</p>
-            <p className="text-sm text-muted-foreground">It looks like there are no orders to display yet.</p>
-          </div>
-        </TableCell>
-      </TableRow>
-    ) : (
-      orders.map((order) => (
-        <TableRow
-          key={order.order_id}
-          className="hover:bg-muted/50 cursor-pointer transition-colors"
-          onClick={() => handleViewOrder(order)}
-        >
-          <TableCell className="font-medium">
-            #{order.order_id.substring(0, 8)}
-          </TableCell>
-          <TableCell>
-            <div className="font-medium">{order.buyerName}</div>
-            <div className="text-xs text-muted-foreground">
-              {order.city}
-            </div>
-          </TableCell>
-          <TableCell>
-            <div>{formatDate(order.created_at)}</div>
-            <div className="text-xs text-muted-foreground">
-              {order.deliveryMethod}
-            </div>
-          </TableCell>
+          <TableHeader>
+            <TableRow className="bg-muted/50">
+              <TableHead className="w-[100px]">Order ID</TableHead>
+              <TableHead>Customer</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Payment</TableHead>
+              <TableHead className="text-right">Amount</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center">
+                  <div className="flex justify-center py-8">
+                    <Skeleton className="h-8 w-8 rounded-full" />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : error ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-8">
+                  <div className="flex flex-col items-center gap-2">
+                    <AlertCircle className="h-8 w-8 text-red-500" />
+                    <p className="text-red-500">{error}</p>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : (
+              orders.map((order) => (
+                <TableRow
+                  key={order.order_id}
+                  className="hover:bg-muted/50 cursor-pointer transition-colors"
+                  onClick={() => handleViewOrder(order)}
+                >
+                  <TableCell className="font-medium">
+                    #{order.order_id.substring(0, 8)}
+                  </TableCell>
+                  <TableCell>
+                    <div className="font-medium">{order.buyerName}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {order.city}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>{formatDate(order.created_at)}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {order.deliveryMethod}
+                    </div>
+                  </TableCell>
 
-          <TableCell>{getStatusBadge(order.status)}</TableCell>
+                  <TableCell>{getStatusBadge(order.status)}</TableCell>
 
-          <TableCell>
-            {getPaymentStatusBadge(order.paymentStatus)}
-          </TableCell>
-          <TableCell className="text-right font-medium">
-            {formatCurrency(order.total_price)}
-          </TableCell>
-        </TableRow>
-      ))
-    )}
-  </TableBody>
-</Table>
+                  <TableCell>
+                    {getPaymentStatusBadge(order.paymentStatus)}
+                  </TableCell>
+                  <TableCell className="text-right font-medium">
+                    {formatCurrency(order.total_price)}
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </div>
 
       {/* Order Details Modal */}
@@ -477,31 +411,6 @@ export function OrdersTable() {
                     </div>
 
                     <div className="flex flex-wrap gap-2">
-                      <Select
-                        value={selectedOrder.status}
-                        onValueChange={(value) =>
-                          updateOrderStatus(
-                            selectedOrder.order_id,
-                            value as OrderStatus,
-                          )
-                        }
-                        disabled={isUpdating}
-                      >
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Update Status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {(selectedOrder.deliveryMethod === "Pickup"
-                            ? pickupStatuses
-                            : deliveryStatuses
-                          ).map((status) => (
-                            <SelectItem key={status} value={status}>
-                              {status}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-
                       <Button
                         variant="outline"
                         size="icon"

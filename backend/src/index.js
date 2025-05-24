@@ -1,8 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const { neon } = require("@neondatabase/serverless");
-const { Clerk } = require("@clerk/backend");
-const { clerkMiddleware, getAuth } = require("@clerk/express");
 
 require("dotenv").config();
 
@@ -22,10 +20,6 @@ const { paymentsRoute } = require("./payments");
 const { productsRoute } = require("./products");
 const { storesRoute } = require("./stores");
 const { reportsRoute } = require("./reports");
-
-const clerk = new Clerk({
-  secretKey: process.env.CLERK_SECRET_KEY,
-});
 
 app.get("/", async (_, res) => {
   const sql = neon(`${process.env.DATABASE_URL}`);
