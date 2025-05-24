@@ -1,18 +1,24 @@
+// app/components/Footer.tsx
 import { Separator } from "@/components/ui/separator";
-import { Dribbble, Github, Twitch, Twitter } from "lucide-react";
+import {
+  Dribbble,
+  Github,
+  Twitch,
+  Twitter,
+} from "lucide-react";
 import Link from "next/link";
 
 const footerLinks = [
-  { title: "Overview", href: "#" },
-  { title: "Features", href: "#" },
-  { title: "Pricing", href: "#" },
-  { title: "Help", href: "#" },
-  { title: "Privacy", href: "#" },
+  { title: "Overview", href: "/guideline#overview" },
+  { title: "Buyer", href: "/guideline#buyer" },
+  { title: "Seller", href: "/guideline#seller" },
+  { title: "Admin", href: "/guideline#admin" },
+  { title: "Payment", href: "/guideline#payment" },
 ];
 
-const Footer = () => {
+export default function Footer() {
   return (
-    <footer className="w-full bg-gradient-to-t from-[#0f0f10] to-[#1a1a1d] text-white mt-24">
+    <footer className="bg-gradient-to-t from-[#0f0f10] to-[#1a1a1d] text-white w-full mt-24">
       <Separator className="bg-zinc-700" />
       <div className="max-w-screen-xl mx-auto px-4 py-16 flex flex-col items-center gap-8 text-center">
         {/* Logo Title */}
@@ -20,7 +26,7 @@ const Footer = () => {
           Storify
         </div>
 
-        {/* Navigation Links */}
+        {/* Navigation Links (only the ones with actual FAQ anchors) */}
         <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
           {footerLinks.map((link) => (
             <Link
@@ -41,11 +47,7 @@ const Footer = () => {
           <Link href="https://twitter.com" target="_blank" aria-label="Twitter">
             <Twitter className="w-5 h-5 text-pink-500 hover:text-fuchsia-600 transition-colors" />
           </Link>
-          <Link
-            href="https://dribbble.com"
-            target="_blank"
-            aria-label="Dribbble"
-          >
+          <Link href="https://dribbble.com" target="_blank" aria-label="Dribbble">
             <Dribbble className="w-5 h-5 text-pink-500 hover:text-fuchsia-600 transition-colors" />
           </Link>
           <Link href="https://twitch.tv" target="_blank" aria-label="Twitch">
@@ -53,13 +55,11 @@ const Footer = () => {
           </Link>
         </div>
 
-        {}
+        {/* Footer Note */}
         <p className="text-xs text-gray-500 mt-4">
           © 2025 Storify. All rights reserved.
         </p>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}
