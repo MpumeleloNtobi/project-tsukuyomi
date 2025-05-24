@@ -68,7 +68,18 @@ export default function Home() {
                 My Store
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-            ) : (
+            ) : role === "admin" ? (
+              /* 2. Signed in as seller */
+              <Button
+                size="lg"
+                onClick={() => router.push("/admin/home")}
+                className="bg-gradient-to-r from-slate-900 to-slate-700 hover:from-slate-800 hover:to-slate-600 text-white font-medium px-8
+                           dark:from-slate-700 dark:to-slate-500 dark:hover:from-slate-600 dark:hover:to-slate-400"
+              >
+                Admin Home
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            ): (
               /* 3. Signed in as buyer */
               <CreateStoreModal />
             )}

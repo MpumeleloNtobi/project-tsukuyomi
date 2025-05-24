@@ -10,6 +10,7 @@ import { CartProvider } from "@/app/hooks/use-cart";
 import Image from "next/image";
 import storify from "@/public/storify.png";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { NotepadText } from 'lucide-react';
 interface headerInterface {
   showCart: boolean;
 }
@@ -29,6 +30,10 @@ const Header = ({ showCart = false }: headerInterface) => {
               {role === "buyer" ? (
                 <>
                   <CreateStoreModal />
+                  <Link href={"/orders"}>
+                    
+                  <Button variant={"outline"}>  <NotepadText />My Orders</Button>
+                  </Link>
                 </>
               ) : role === "seller" ? (
                 <>

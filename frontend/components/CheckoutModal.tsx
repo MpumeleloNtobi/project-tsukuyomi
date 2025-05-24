@@ -28,6 +28,7 @@ import {
 import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 import { CreditCard } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import { BADQUERY } from "dns";
 interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -56,9 +57,11 @@ function getExpiryTimestamp(): string {
 export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const { storeId, items, clearCart, totalPrice } = useCart();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  console.log(items)
 
   const { user } = useUser();
-  const role = user?.publicMetadata.role;
+  const buyerId = user?.id;
+
   const form = useForm<OrderForm>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
@@ -84,7 +87,12 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   const handleCheckout = async (values: OrderForm) => {
     try {
       setIsSubmitting(true);
+      console.log(buyerId);
+      console.log(items);
 
+      const total = items.reduce((sum, item) => {
+        return sum + item.price * item.quantity;
+      }, 0);
       // 1. Create the order
       const orderRes = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/orders`,
@@ -94,10 +102,13 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           body: JSON.stringify({
             storeId: storeId,
             buyerName: values.buyerName,
+            buyer_id: buyerId,
             phoneNumber: values.phoneNumber,
             deliveryMethod: values.deliveryMethod,
             city: values.town,
             town: values.town,
+            order_items: items,
+            total_price: total,
             streetName: values.streetName,
             streetNumber: values.streetNumber,
             postalCode: values.postalCode,
@@ -108,24 +119,9 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       if (!orderRes.ok) throw new Error("Failed to create order");
 
       const order = await orderRes.json();
-      console.log(orderRes.json());
-      // 2. Create order items
-      //   await Promise.all(
-      //     items.map((item) =>
-      //       fetch('/api/order-items', {
-      //         method: 'POST',
-      //         headers: { 'Content-Type': 'application/json' },
-      //         body: JSON.stringify({
-      //           orderId: order.id,
-      //           productId: item.id,
-      //           quantity: item.quantity,
-      //           price: item.price,
-      //         }),
-      //       })
-      //     )
-      //   )
+      console.log('order created')
 
-      // 3. Create payment request
+      // 2. Create payment request
       const paymentRes = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/stitch/payment-link`,
         {
@@ -135,16 +131,17 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
             storeId: storeId,
             amount: Number(totalPrice) * 100,
             orderId: order.order_id,
-            payerName: "muaaz",
+            payerName: values.buyerName,
             deliveryFee: 0,
           }),
         },
       );
+      console.log(paymentRes);
 
       if (!paymentRes.ok) throw new Error("Failed to create payment");
-      const json = await paymentRes.json();
-      console.log(json.redirectUrl);
-      const paymentUrl = `${json.redirectUrl}?redirect_url=http://localhost:3000/orders`;
+      const data = await paymentRes.json();
+      
+      const paymentUrl = `${data.redirectUrl}?redirect_url=${process.env.NEXT_PUBLIC_PAYMENT_REDIRECT_URL}`;
 
       clearCart();
       onClose();

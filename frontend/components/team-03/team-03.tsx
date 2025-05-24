@@ -5,46 +5,46 @@ import Link from "next/link";
 
 const teamMembers = [
   {
+    name: "Mpumelelo",
+    title: "Backend",
+    bio: "BSc in Computer Science Student at Wits | Aspiring Software Engineer",
+    imageUrl:
+      "https://sdprojectimages2.blob.core.windows.net/product-images/mpumelelo.jpg",
+  },
+  {
     name: "Muaaz Bayat",
     title: "Project Lead & Design",
     bio: "Full Stack Software Engineer at Helm. | Co-founder at Sebenzo",
     imageUrl:
-      "https://images.pexels.com/photos/3785079/pexels-photo-3785079.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://sdprojectimages2.blob.core.windows.net/product-images/muaaz.jpeg",
   },
   {
-    name: "Jane Doe",
-    title: "Engineering Manager",
-    bio: "Lead engineering teams at Figma, Pitch, and Protocol Labs.",
+    name: "Suhail Seedat",
+    title: "Frontend & Admin",
+    bio: "BSc Computer science at Wits | Exploring a future in tech.",
     imageUrl:
-      "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://sdprojectimages2.blob.core.windows.net/product-images/suhail.jpg",
   },
   {
-    name: "Bob Smith",
-    title: "Product Manager",
-    bio: "Former PM for Linear, Lambda School, and On Deck.",
+    name: "Yanga",
+    title: "Frontend",
+    bio: "Computer Science student with a strong interest in software development & system architecture.",
     imageUrl:
-      "https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://sdprojectimages2.blob.core.windows.net/product-images/yanga.jpg",
   },
   {
-    name: "Peter Johnson",
-    title: "Frontend Developer",
-    bio: "Former frontend dev for Linear, Coinbase, and Postscript.",
+    name: "Bongani",
+    title: "Backend",
+    bio: "BSc Computer science at Wits | Aspiring ML Engineer",
     imageUrl:
-      "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://sdprojectimages2.blob.core.windows.net/product-images/bongani.jpeg",
   },
   {
-    name: "David Lee",
-    title: "Backend Developer",
-    bio: "Lead backend dev at Clearbit. Former Clearbit and Loom.",
+    name: "Phuteho",
+    title: "Frontend & Database",
+    bio: "BSc in Computer Science Student at Wits | Aspiring Software Engineer",
     imageUrl:
-      "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=600",
-  },
-  {
-    name: "Sarah Williams",
-    title: "Product Designer",
-    bio: "Founding design team at Figma. Former Pleo, Stripe, and Tile.",
-    imageUrl:
-      "https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://sdprojectimages2.blob.core.windows.net/product-images/phuteho.jpg",
   },
 ];
 
@@ -56,10 +56,6 @@ const Team03Page = () => {
         <h2 className="mt-3 text-3xl md:text-4xl font-bold tracking-tight">
          Group 35
         </h2>
-        <p className="mt-4 text-base sm:text-lg">
-          We&apos;re a cross-disciplinary team that loves to create great
-          experiences for our customers.
-        </p>
       </div>
 
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-10 gap-y-12">

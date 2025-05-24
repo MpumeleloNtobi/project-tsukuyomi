@@ -33,7 +33,8 @@ export interface Order {
   paymentId: string | null;
   total_price: number;
   last_updated: string;
-  items?: OrderItem[];
+  buyer_id: string;
+  order_items?: OrderItem[];
   shipping?: number;
   tax?: number;
   email?: string;

@@ -79,7 +79,7 @@ export function CreateStoreModal(): ReactElement {
       if (!res.ok) throw new Error("Create failed");
       toast.success("Store created!");
       setOpen(false);
-      router.push("/");
+      router.push("/seller/products");
     } catch {
       toast.error("Something went wrong");
     }
