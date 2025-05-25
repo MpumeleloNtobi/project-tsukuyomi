@@ -1,0 +1,98 @@
+"ID","Team","Title","Description","Status","Estimate","Priority","Project ID","Project","Creator","Assignee","Labels","Cycle Number","Cycle Name","Cycle Start","Cycle End","Created","Updated","Started","Triaged","Completed","Canceled","Archived","Due Date","Parent issue","Initiatives","Project Milestone ID","Project Milestone","SLA Status","Roadmaps"
+"SD-22","SD Project","setup auth","","Done",,"Medium",,,"2555154@students.wits.ac.za",,"",2,"Sprint 1","2025-04-12T22:00:00.000Z","2025-04-14T22:00:34.140Z","2025-04-07T20:02:46.304Z","2025-04-14T12:44:22.285Z","2025-04-14T12:43:21.919Z",,"2025-04-14T12:44:22.265Z",,,,"SD-5","",,,
+"SD-4","SD Project","Connect GitHub or GitLab","Connect your account to link issues to pull/merge requests and automate your workflow:
+
+* Link Linear issues to pull requests.
+* Automatically update an issue's status when PRs are created or merged.
+* Connect one or multiple repos.
+
+[Connect GitHub or GitLab →](https://linear.app/settings/integrations/github)
+
+## Setup tips
+
+#### How to link a Linear issue to a PR
+
+* **Branch name** (e.g. ""LIN-123"" or ""username/LIN-123""). To quickly copy branch name for an issue to your clipboard, press `Cmd/Ctrl` `Shift` `.`
+* **Pull request title** (e.g. ""GitHub Workflow LIN-123"")
+* **Pull request description** (e.g. *Fixes LIN-123, Resolves LIN-123*) – it will not work if entered in commits or comments.
+
+#### When you link a Linear issue to a PR, Linear will:
+
+* Create a link to the PR in the Linear issue.
+* Comment on the PR with a link back to the Linear issue.
+* Once PR has been opened, Linear will change the status of the issue to ""In Progress"".
+* Once PR has been merged, Linear will change the status of the issue as ""Done"".
+
+#### Suggested Workflow
+
+1. Select or create the issue you want to work on next.
+2. Open the command menu (`Cmd` `K` on Mac, or `Ctrl` `K` on Windows) and select **Copy git branch name,** or use the shortcut `Cmd/Ctrl` `Shift` `.`
+3. This will copy the git branch name to your clipboard (e.g. `username/LIN-123-github-workflow`
+4. Paste the branch name to your git checkout command to create a new branch: `git checkout -b username/LIN-123-github-workflow`
+5. Make your changes and push the branch to GitHub and open a pull request
+6. Once the pull request is open, Linear will comment on the PR and change the issue state to **In Progress***.* 
+7. Once the PR merged, Linear will change the status to Done.
+
+Read full integration instructions for [GitHub](https://linear.app/docs/github) and [GitLab →](https://linear.app/docs/gitlab)","Done",,"Medium",,,,,"",2,"Sprint 1","2025-04-12T22:00:00.000Z","2025-04-14T22:00:34.140Z","2025-03-27T22:51:46.729Z","2025-04-14T12:43:51.641Z",,,"2025-04-14T12:43:51.629Z",,,,,"",,,
+"SD-5","SD Project","Customize settings","Go to [settings](https://linear.app/settings) to enable features such as initiatives, explore features and add integrations. Use `G` then `S` to get there.
+
+Visit individual [team settings](https://linear.app/settings/teams/) to customize features on a team level.
+
+* Configure automated issue workflows for issues linked to PRs
+* Add or edit *workflow statuses*, and *labels*
+* Add team Slack notifications
+* Create reusable *templates*. Use the keyboard shortcut `Alt` `C` to quickly create new issues from templates
+* Set your *estimate* scale and enable *cycles*
+* Configure time-saving features such as *Auto-close* and *Auto-archive*
+
+![image.png](https://uploads.linear.app/fe63b3e2-bf87-46c0-8784-cd7d639287c8/9fc1632b-893e-422c-939f-0cdc9d009b37/image.png)","Done",,"Medium",,,,,"",2,"Sprint 1","2025-04-12T22:00:00.000Z","2025-04-14T22:00:34.140Z","2025-03-27T22:51:46.729Z","2025-04-14T12:43:43.607Z",,,"2025-04-14T12:43:43.591Z",,,,,"",,,
+"SD-3","SD Project","Connect to Slack","If your team uses Slack, enable this integration to keep your workflow and communication in sync. 
+
+* See issue updates in a dedicated channel.
+* Use the `/linear` command to create new issues from Slack messages.
+* Sync comments between Slack and Linear.
+* Set up personal Slack notifications.
+* Import custom emoji 🥳 to your Linear workspace.
+
+[Connect Slack →](https://linear.app/settings/integrations/slack)","Done",,"Medium",,,,,"",2,"Sprint 1","2025-04-12T22:00:00.000Z","2025-04-14T22:00:34.140Z","2025-03-27T22:51:46.729Z","2025-04-14T12:43:40.781Z",,,"2025-04-14T12:43:40.769Z",,,,,"",,,
+"SD-19","SD Project","Setup CI/CD build process","Acceptance Criteria
+
+* github action builds when pull request is created
+* github action builds when subsequent commits are pushed to PR
+* action runs front end test suite
+* action run backend test suite","Done",3,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","housekeeping",2,"Sprint 1","2025-04-12T22:00:00.000Z","2025-04-14T22:00:34.140Z","2025-03-27T23:21:20.573Z","2025-04-07T16:56:21.192Z","2025-03-29T12:56:58.761Z",,"2025-04-07T16:56:21.180Z",,,,,"",,,
+"SD-34","SD Project","setup the protection rules for all seller routes","Acceptance Criteria:
+
+* Given I'm a seller
+* when I sign up/ login
+* then I can access my account","Done",,"No priority",,,"2555154@students.wits.ac.za","capit1088@gmail.com","",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-08T18:39:23.443Z","2025-04-16T18:54:56.573Z","2025-04-14T12:42:59.818Z",,"2025-04-16T18:54:56.562Z",,,,"SD-24","",,,
+"SD-35","SD Project","create the sign up and sign in pages and routes","","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-08T18:39:39.704Z","2025-04-16T18:55:03.430Z","2025-04-14T12:42:26.448Z",,"2025-04-16T18:55:03.415Z",,,,"SD-24","",,,
+"SD-31","SD Project","setup the protection rules for all buyer routes","","Done",,"No priority",,,"2555154@students.wits.ac.za","peteryanga6@gmail.com","",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-08T18:35:57.894Z","2025-04-16T18:55:33.299Z","2025-04-14T12:43:03.617Z",,"2025-04-16T18:55:33.285Z",,,,"SD-25","",,,
+"SD-30","SD Project","create the sign up and sign in pages and routes","","Done",,"No priority",,,"2555154@students.wits.ac.za","peteryanga6@gmail.com","",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-08T18:35:45.612Z","2025-04-16T18:55:33.260Z","2025-04-14T12:43:08.886Z",,"2025-04-16T18:55:33.247Z",,,,"SD-25","",,,
+"SD-26","SD Project","As a User, I want to be able to access the application via a memorable URL, so that I can easily remember and share the web address with others.","Acceptance Criteria:
+
+* Given that I am a user
+* When I nagivate to a persistant url
+* Then I should be rerouted to the application home page","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-08T18:27:59.617Z","2025-04-16T18:55:15.787Z","2025-04-14T13:09:51.974Z",,"2025-04-16T18:55:15.775Z",,,,,"",,,
+"SD-25","SD Project","As a buyer, I want to sign up and login to my account, so that I can buy items from local artisans.","Acceptance Criteria:
+
+* Given that I am logged in as a buyer
+* When I nagivate to seller pages or admin pages
+* Then I should be rerouted to my buyer home page since i dont have the neccessary role","Done",,"No priority",,,"2555154@students.wits.ac.za","peteryanga6@gmail.com","",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-08T18:27:43.335Z","2025-04-16T20:56:11.555Z","2025-04-14T12:42:21.037Z",,"2025-04-16T18:55:32.355Z",,,,,"",,,
+"SD-24","SD Project","As a seller, I want to signup and login, so that I can be able to access my account.","Acceptance Criteria:
+
+* Given that I am logged in as a seller
+* When I nagivate  to admin pages
+* Then I should be rerouted to my seller home page since i dont have the neccessary role","Done",,"No priority",,,"2555154@students.wits.ac.za","suhailseedat10@gmail.com","",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-08T18:27:29.756Z","2025-04-16T20:56:11.555Z","2025-04-14T13:11:11.646Z",,"2025-04-16T18:55:01.940Z",,,,,"",,,
+"SD-23","SD Project","As a user, I want to be able to become an admin so that I can manage admins, buyers and sellers.","Acceptance Criteria:
+
+* Given I am a user
+* When I sign up as an admin 
+* Then I'll get a verification code so that I can manage admins, buyers and sellers","Done",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-08T18:27:10.328Z","2025-04-17T21:10:54.361Z","2025-04-14T12:43:20.235Z",,"2025-04-16T18:55:23.576Z",,,,,"",,,
+"SD-36","SD Project","As an admin I want to be able to escalate privileges so that the approved sellers can become admins and buyers can become sellers","Acceptance criteria:
+
+* Given I'm a logged in admin
+* when I go to a certain page
+* then i can select a user 
+* and change his/her role","Done",,"No priority",,,"suhailseedat10@gmail.com",,"",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-14T12:59:22.172Z","2025-04-16T21:51:31.282Z","2025-04-14T13:07:04.842Z",,"2025-04-16T18:55:47.999Z",,,,,"",,,
+"SD-27","SD Project","create the sign up and sign in pages and routes","","Done",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","",3,"Sprint 2","2025-04-15T22:00:00.000Z","2025-04-21T22:00:00.000Z","2025-04-08T18:29:08.299Z","2025-04-16T18:55:24.966Z","2025-04-14T12:43:26.042Z",,"2025-04-16T18:55:24.953Z",,,,"SD-23","",,,
