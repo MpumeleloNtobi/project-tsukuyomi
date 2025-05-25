@@ -196,7 +196,7 @@ const ordersRoute = (app, dbUrl) => {
       order_items,
       total_price,
     } = req.body;
-    console.log(order_items)
+    console.log(order_items);
     // --- Required Field Validation ---
     if (!storeId || !buyerName || !deliveryMethod) {
       return res.status(400).json({
@@ -306,49 +306,47 @@ const ordersRoute = (app, dbUrl) => {
     }
   });
   /*
- * PUT /orders/:order_id - Update a specific order by UUID
- */
-app.put("/orders/:order_id", async (req, res) => {
-  const orderId = req.params.order_id;
-  const body = req.body;
+   * PUT /orders/:order_id - Update a specific order by UUID
+   */
+  app.put("/orders/:order_id", async (req, res) => {
+    const orderId = req.params.order_id;
+    const body = req.body;
 
-  const fields = Object.keys(body);
-  const values = fields.map((field) => {
-    const value = body[field];
-    // If it's an object or array, stringify it for JSONB column
-    if (field === "order_items") {
-      return JSON.stringify(value);
-    }
-    return value;
-  });
+    const fields = Object.keys(body);
+    const values = fields.map((field) => {
+      const value = body[field];
+      // If it's an object or array, stringify it for JSONB column
+      if (field === "order_items") {
+        return JSON.stringify(value);
+      }
+      return value;
+    });
 
-  const setClauses = fields.map((field, i) => {
-    if (field === "order_items") {
-      return `"${field}" = $${i + 1}::jsonb`;
-    }
-    return `"${field}" = $${i + 1}`;
-  });
+    const setClauses = fields.map((field, i) => {
+      if (field === "order_items") {
+        return `"${field}" = $${i + 1}::jsonb`;
+      }
+      return `"${field}" = $${i + 1}`;
+    });
 
-  const query = `
+    const query = `
     UPDATE orders
     SET ${setClauses.join(", ")}
     WHERE order_id = $${fields.length + 1}
     RETURNING *;
   `;
 
-  try {
-    const result = await sql(query, [...values, orderId]);
-    if (result.length === 0) {
-      return res.status(404).json({ error: "Order not found" });
+    try {
+      const result = await sql(query, [...values, orderId]);
+      if (result.length === 0) {
+        return res.status(404).json({ error: "Order not found" });
+      }
+      res.json(result[0]);
+    } catch (error) {
+      console.error("Error updating order:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
-    res.json(result[0]);
-  } catch (error) {
-    console.error("Error updating order:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-
+  });
 };
 
 module.exports = { ordersRoute };

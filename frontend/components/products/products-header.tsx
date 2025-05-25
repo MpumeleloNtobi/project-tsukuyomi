@@ -49,7 +49,7 @@ export function ProductsHeader() {
               Add a new product to your store.
             </DialogDescription>
           </DialogHeader>
-          <ProductForm storeId={storeId} onSuccess={handleSuccess} />
+          <ProductForm storeId={storeId || ""} onSuccess={handleSuccess} />
         </DialogContent>
       </Dialog>
     </div>

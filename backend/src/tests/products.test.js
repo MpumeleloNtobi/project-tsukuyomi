@@ -1,16 +1,33 @@
 const request = require("supertest");
-const { app, productsRoute, storesRoute } = require("../index");
+const app = require("../index");
 const { v4: uuidv4 } = require("uuid");
 
-const testDbUrl =
-  "postgresql://neondb_owner:npg_ZUgQeMX64rTm@ep-dry-term-a8pxk2za-pooler.eastus2.azure.neon.tech/neondb?sslmode=require";
+const testDbUrl = process.env.DATABASE_URL;
+const CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY; // Needed for Clerk API call in POST /stores
+
+// Basic validation for essential environment variables
+if (!testDbUrl || !CLERK_SECRET_KEY) {
+  console.error(
+    "❌ ERROR: Missing required environment variables for stores tests.",
+  );
+  console.error(
+    "Ensure DATABASE_URL and CLERK_SECRET_KEY are set in your .env",
+  );
+  throw new Error("Missing environment variables for stores tests."); // Fail early if not configured
+}
 
 let storeId;
 let productId;
+const uniqueClerkId = "user_2wff1xBHeuz3rY4DnIhg4R8qfNe";
 
 beforeAll(async () => {
-  productsRoute(app, testDbUrl);
-  storesRoute(app, testDbUrl);
+  console.log(`🧹 Attempting to delete store with ID`);
+  const delRes = await request(app).delete(`/stores/clerk/${uniqueClerkId}`);
+  if (delRes.statusCode === 204) {
+    console.log(`✅ Successfully deleted store`);
+  } else {
+    console.error(`❌ Failed to delete store`, delRes.statusCode, delRes.body);
+  }
   const storeRes = await request(app).post("/stores").send({
     clerkId: "user_2wff1xBHeuz3rY4DnIhg4R8qfNe",
     storeName: "Product Store",
@@ -36,9 +53,12 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  // Delete the store after all tests
-  if (storeId) {
-    await request(app).delete(`/stores/${storeId}`);
+  console.log(`🧹 Attempting to delete store with ID`);
+  const delRes = await request(app).delete(`/stores/clerk/${uniqueClerkId}`);
+  if (delRes.statusCode === 204) {
+    console.log(`✅ Successfully deleted store`);
+  } else {
+    console.error(`❌ Failed to delete store`, delRes.statusCode, delRes.body);
   }
 });
 

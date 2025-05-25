@@ -22,13 +22,6 @@ const { storesRoute } = require("./stores");
 const { reportsRoute } = require("./reports");
 
 app.get("/", async (_, res) => {
-  const sql = neon(`${process.env.DATABASE_URL}`);
-  const response = await sql`SELECT version()`;
-  const { version } = response[0];
-  res.json({ version });
-});
-
-app.get("/health", async (_, res) => {
   res.json({ status: "UP" });
 });
 
@@ -45,6 +38,12 @@ productsRoute(app, DATABASE_URL);
 reportsRoute(app, DATABASE_URL);
 storesRoute(app, DATABASE_URL);
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+// LAST STEP: Start the server
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+}
+
+// Export app for testing purposes
+module.exports = app;
