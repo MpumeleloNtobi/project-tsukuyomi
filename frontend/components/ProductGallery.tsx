@@ -119,6 +119,8 @@ function ProductGallery({
               category={product.category}
               storeId={product.storeId}
               image1url={product.image1url}
+              image2url={product.image2url}
+              image3url={product.image3url}
               onClick={() => setSelectedProduct(product)}
             />
           ))}

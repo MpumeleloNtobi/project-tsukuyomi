@@ -46,8 +46,6 @@ interface Product {
   image3url: string | null;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
 export function ProductsTable() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -64,7 +62,7 @@ export function ProductsTable() {
         try {
           setLoading(true);
           const response = await fetch(
-            `${API_URL}/products?storeId=${storeId}`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/products?storeId=${storeId}`,
           );
 
           if (!response.ok) {
@@ -112,7 +110,7 @@ export function ProductsTable() {
 
   const handleDelete = async (productId: number) => {
     try {
-      const response = await fetch(`${API_URL}/products/${productId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products/${productId}`, {
         method: "DELETE",
       });
 
@@ -327,7 +325,7 @@ export function ProductsTable() {
             storeId={storeId}
             onSuccess={() => {
               handleCloseEdit();
-              fetch(`${API_URL}/products?storeId=${storeId}`)
+              fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/products?storeId=${storeId}`)
                 .then((res) => res.json())
                 .then((data) => setProducts(data))
                 .catch((err) => {

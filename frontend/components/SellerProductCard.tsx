@@ -24,6 +24,8 @@ export default function SellerProductCard({
   stockQuantity = 50,
   category = "Electronics",
   image1url = "https://placehold.co/600x400?text=Smartphone+Z",
+  image2url = "https://placehold.co/600x400?text=Smartphone+Z",
+  image3url = "https://placehold.co/600x400?text=Smartphone+Z",
   onClick,
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -40,6 +42,8 @@ export default function SellerProductCard({
         stockQuantity,
         category,
         image1url,
+        image2url,
+        image3url
       });
     }
   };

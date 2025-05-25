@@ -1,4 +1,4 @@
-"use client";
+"use client"; // This directive correctly marks the entire file as a Client Component
 
 import React, { useState } from "react";
 import Header from "@/components/Header";

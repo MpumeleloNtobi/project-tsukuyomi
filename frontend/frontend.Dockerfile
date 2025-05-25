@@ -12,6 +12,14 @@ RUN npm install
 # Cppy all the files
 COPY . .
 
+ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_d29ydGh5LXN0dWQtMjguY2xlcmsuYWNjb3VudHMuZGV2JA \
+    CLERK_SECRET_KEY=sk_test_Lo9YZO4TWhU0veJ5K5L71oYYLJM8nrVNrOo2QhWHv8 \
+    NEXT_PUBLIC_CLERK_SECRET_KEY=sk_test_Lo9YZO4TWhU0veJ5K5L71oYYLJM8nrVNrOo2QhWHv8 \
+    NEXT_PUBLIC_BACKEND_URL='https://qa-backend-storify.calmcoast-a309bc31.eastus.azurecontainerapps.io'\
+    NEXT_PUBLIC_GOOGLE_API_KEY='AIzaSyA7Q0ZQH8zHu5Nnuk1V2vF1ipcrag8nGSQ' \
+    NEXT_PUBLIC_STITCH_ROOT_URL='https://express.stitch.money/api/v1/' \
+    NEXT_PUBLIC_PAYMENT_REDIRECT_URL='https://qa-frontend-storify--0000013.calmcoast-a309bc31.eastus.azurecontainerapps.io/orders'
+
 # Build the Next.js app
 RUN npm run build
 

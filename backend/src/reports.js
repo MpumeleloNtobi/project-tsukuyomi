@@ -19,7 +19,7 @@ const reportsRoute = (app, dbUrl) => {
       const csv = parser.parse(result);
       res.status(200).send(csv);
     } catch (error) {
-      console.error("Error generating inventory report:", error);
+      console.log("Error generating inventory report:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
@@ -68,7 +68,7 @@ const reportsRoute = (app, dbUrl) => {
       res.attachment(`daily-sales-${storeId}.csv`);
       res.send(csv);
     } catch (err) {
-      console.error("Failed to generate CSV", err);
+      console.log("Failed to generate CSV", err);
       res.status(500).json({ error: "Internal server error" });
     }
   });
@@ -112,7 +112,7 @@ const reportsRoute = (app, dbUrl) => {
       res.json(result);
       //console.log(result.rows)
     } catch (err) {
-      console.error("Failed to fetch daily sales report", err);
+      console.log("Failed to fetch daily sales report", err);
       res.status(500).json({ error: "Internal server error" });
     }
   });
@@ -190,7 +190,7 @@ const reportsRoute = (app, dbUrl) => {
 
       return res.json(metrics); // ✅ Always return after sending a response
     } catch (err) {
-      console.error("Failed to fetch metrics", err);
+      console.log("Failed to fetch metrics", err);
       return res.status(500).json({ error: "Internal server error" }); // ✅ Return here too
     }
   });

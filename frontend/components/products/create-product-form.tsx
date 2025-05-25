@@ -128,7 +128,6 @@ export function ProductForm({ storeId, onSuccess }: ProductFormProps) {
         <Label>Product Images</Label>
         <MultiImageUploader
           onImagesUploaded={handleImagesUploaded}
-          onFilesSelected={handleFilesSelected}
         />
       </div>
 
