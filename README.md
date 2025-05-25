@@ -68,7 +68,37 @@ This README provides a unified presentation of our project, summarizing the desi
 <div style="background-color: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
 
 ### Demo Video
-We have included a demo of the application in use and what to expect as a user.The demo highlights and walks through services available to users of various roles.[Watch the video here📹](videourl).A publicly hosted version that is ready for use is available in this through this [link](deploymentsite) ,this is the demo site.You can try the app Yourself in the official site [#officialUrl](url).
+We have included a demo of the application in use and what to expect as a user.The demo highlights and walks through services available to users of various roles.[Watch the video here📹](https://youtu.be/mgVTPLUt3QU?si=_Y9Y60Awh5yh9cX0).A publicly hosted version that is ready for use is available in this through this [link](https://prd-frontend-storify.calmcoast-a309bc31.eastus.azurecontainerapps.io/home) ,this is the demo site.You can try the app Yourself in the official site [https://prd-frontend-storify.calmcoast-a309bc31.eastus.azurecontainerapps.io/home](https://prd-frontend-storify.calmcoast-a309bc31.eastus.azurecontainerapps.io/home).
+
+
+#### 🧪 Test Data & User Login Credentials
+
+To assist in testing the application, the following sample user accounts have been created. Use these credentials to log in and test various user flows (Buyer, Seller, Admin).
+
+#### 🔐 Test User Accounts
+
+| Role   | Email              | Password     |
+|--------|--------------------|--------------|
+| Buyer  | buyer@gmail.com    | b123uyer     |
+| Seller | gadget@gmail.com   | s123eller    |
+| Admin  | admin@gmail.com    | a123d123min  |
+
+> 🔑 These accounts can be used to test different role-based views and functionalities in the application.
+
+### 💳 Test Card
+
+Use the following card details when prompted during the checkout or payment simulation phase:
+
+- **Card Number**: `4032 0354 2108 8592`  
+- **Expiration**: Any valid future date  
+- **CVV**: Any 3-digit number
+- **Stitch Client Key**:
+test-bfd0ab2c-0258-4973-8f4c-06e0e0ad97a3
+
+> This test card simulates a successful transaction in test mode.
+
+
+
 </div>
 
 <div style="background-color: #f3e5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -100,6 +130,8 @@ npm install
 
 # 4 Run the development server
 npm run dev
+
+#Need to specify how to setup the Stitch client key,
 ```
 
 
@@ -107,16 +139,16 @@ npm run dev
 
 ### Project Management
 
-We followed **Scrum** to organize weekly work. The project was divided into four sprints with defined goals, tasks, and deliverables.We used a great collaborative platform called [Linear](#linearurl) to achieve convenient collaboration and delegation of tasks.For each sprint:
+We followed **Scrum** to organize weekly work. The project was divided into four sprints with defined goals, tasks, and deliverables.We used a great collaborative platform called [Linear](https://linear.app/sd-project/team/SD/cycles) to achieve convenient collaboration and delegation of tasks.For each sprint:
 
 - **Product Backlog :**  All planned feautures broken down into tasks
 - **Sprint Planning:** Goals and tasks chosen.
-- **Sprint board:** We used a Linear board to manage our sprints and tasks. See the Sprint Board for the Kanban-style view of our development workflow [here](#sprintboardviewUrl).
-- **Burndown Chart:** Track progress each sprint (e.g., see Sprint 1 Burndown ).
+- **Sprint board:** We used a Linear board to manage our sprints and tasks. See the Sprint Board for the Kanban-style view of our development workflow [here](https://linear.app/sd-project/team/SD/cycles).
+- **Burndown Chart:** Track progress each sprint (e.g., see Sprint 1 Burndown ).**More information and images of all the burndown charts see `/docs/burndowncharts` which shows images of charts for each sprint**
 - **Reviews/Retrospectives:** Demo sessions and feedback after each sprint
 
 
-To access our full records of all these on Linear and follow-up on this [See here](#ourlinearurl).
+To access our full records of all these on Linear and follow-up on this [See here](https://linear.app/sd-project/team/SD/cycles).
 
 </div><div style="background-color: #f1f8e9; padding: 20px; border-radius: 8px; margin: 20px 0;">
 
@@ -138,11 +170,11 @@ The project repository contains:
 </div><div style="background-color: #ffebee; padding: 20px; border-radius: 8px; margin: 20px 0;">
 
 ### ✅ Final Submission Checklist
-- 📹 [Screen Recording Demo](#videoLink)
-- 🌐 [Publicly Hosted Application](#officialAccesslink)
+- 📹 [Screen Recording Demo](https://youtu.be/mgVTPLUt3QU?si=_Y9Y60Awh5yh9cX0)
+- 🌐 [Publicly Hosted Application](https://prd-frontend-storify.calmcoast-a309bc31.eastus.azurecontainerapps.io/home)
 - 💻 [GitHub Repository](https://github.com/MpumeleloNtobi/project-tsukuyomi)
 - 📌 [Scrum Board & Evidence](https://linear.app/sd-project/team/SD/cycles)
-- 📄 Documentation: See `/docs`, `/uml`, and `/Meetings`
+- 📄 Documentation: See `/docs`, `/uml`, and `/Meetings` and for a Comprehensive guide of the Code documentation see `docs/architecture.md`.
 
 </div><div style="background-color: #fce4ec; padding: 20px; border-radius: 8px; margin: 20px 0;">
 
@@ -150,10 +182,10 @@ The project repository contains:
 Below are all group members for this project dubbed "Project Tsukuyomi".We provided the names along with student numbers for school purposes.For further communication with indivisuals of the group,emails can be found in the **Contributors tab on the github repo**.
 
 - **Muaaz Bayat :** 2555154
-- **Bongani Ofentse Nhlapho:**
-- **Suhail Seedat:**
+- **Bongani Ofentse Nhlapho:** 2707410
+- **Suhail Seedat:** 2586153
 - **Mpumelelo Ntobi:**
-- **Yanga Peter:**
+- **Yanga Peter:** 2617090
 - **Phutheho Mtloung:** 2689983
 
 </div><div style="text-align: center; margin-top: 30px;"> <p align="center"> <img src="https://img.shields.io/badge/Made%20with-%E2%9D%A4%EF%B8%8F%20in%20Johannesburg-red" /> <img src="https://img.shields.io/badge/University-Witwatersrand-blue" /> </p> </div></div> ```
