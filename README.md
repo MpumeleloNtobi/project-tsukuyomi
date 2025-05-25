@@ -41,7 +41,7 @@ Following best practices, we include an overview and links to all relevant resou
     - [Installation](#installation)
     - [Project Management(Scrum)](#project-management)
     - [Navigation and resources](#-navigation--resources)
-    - [Final submission checklist](#-final-submission-checklist)
+    - [Final submission checklist](#final-submission-checklist)
     - [Group Contributors](#group-contributors)
 </div>
 
@@ -174,7 +174,7 @@ The project repository contains:
 - 📁 `/docs/Meetings` -All proofs of daily scrum meetings in the form of pictures and minutes for the meetings
 </div><div style="background-color: #; padding: 20px; border-radius: 8px; margin: 20px 0;">
 
-### ✅ Final Submission Checklist
+### Final Submission Checklist
 - 📹 [Screen Recording Demo](https://youtu.be/mgVTPLUt3QU?si=_Y9Y60Awh5yh9cX0)
 - 🌐 [Publicly Hosted Application](https://prd-frontend-storify.calmcoast-a309bc31.eastus.azurecontainerapps.io/home)
 - 💻 [GitHub Repository](https://github.com/MpumeleloNtobi/project-tsukuyomi)
