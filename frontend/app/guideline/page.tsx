@@ -7,7 +7,7 @@ const sections = [
     id: "what-is-storify",
     title: "What is Storify?",
     content:
-      "Storify is a digital marketplace that connects skilled local individuals with customers. Whether you're an artisan, designer, or seller, Storify empowers you to showcase and sell your products with ease.",
+      "Storify is a digital marketplace that connects skilled local individuals with customers. As an artisan, Storify empowers you to showcase and sell your products with ease.",
    
   },
   {
@@ -28,14 +28,14 @@ const sections = [
     id: "seller",
     title: "Seller",
     content:
-      "As a seller (artisan), you can create and manage your own shop, list products, set pricing, and process orders. Use your dashboard to track sales, handle returns, and communicate with customers.",
+      "As a seller (artisan), you can create and manage your own shop, list products, set pricing, and process orders. Sellers must also set up a Stitch Express account to handle all incoming payments and payouts—Stitch securely processes credit/debit card transactions and transfers funds directly to your linked bank account (usually on a weekly schedule). Use your dashboard to view your Stitch payout history, track orders, update stock levels, and manage delivery options.",
     faqHref: "/faq#artisan",
   },
   {
     id: "admin",
     title: "Admin",
     content:
-      "Admin users oversee the platform: approve artisan registrations, manage disputes, monitor performance metrics, and update site-wide policies. Admin tools ensure everything runs smoothly behind the scenes.",
+      "Admin users oversee the platform: approve artisan registrations, ban/remove sellers who might sell counterfeit goods or violate the integrity of the platform and update site-wide policies. Admin tools ensure everything runs smoothly behind the scenes.",
     faqHref: "/faq#admin",
   },
   {
@@ -49,7 +49,7 @@ const sections = [
     id: "payment",
     title: "Payment",
     content:
-      "We support multiple secure payment options including credit/debit cards, mobile money, and PayPal. Payments are processed instantly and safely — learn more about refunds and disputes below.",
+      "We use Stitch Express, a trusted third‐party payments platform—to handle secure credit/debit card transactions and other payment options. Payments are processed instantly and safely via Stitch Express—learn more about refunds and disputes below.",
     faqHref: "/faq#payment",
   },
 ];
