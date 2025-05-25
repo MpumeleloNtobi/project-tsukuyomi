@@ -1,0 +1,77 @@
+"ID","Team","Title","Description","Status","Estimate","Priority","Project ID","Project","Creator","Assignee","Labels","Cycle Number","Cycle Name","Cycle Start","Cycle End","Created","Updated","Started","Triaged","Completed","Canceled","Archived","Due Date","Parent issue","Initiatives","Project Milestone ID","Project Milestone","SLA Status","Roadmaps"
+"SD-100","SD Project","As a seller, I want to generate an inventory report of my current stock holding, so that I don't have a stockout","Acceptance Criteria:
+Given that I am a seller
+When I navigate to 'seller/reporting' and click on the big inventory report card
+Then a csv of all my current products, their details and their stockholding gets generated and downloaded","In Review",,"No priority",,,"2555154@students.wits.ac.za","suhailseedat10@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T18:17:47.490Z","2025-05-18T09:47:27.828Z","2025-05-18T09:47:27.811Z",,,,,,,"",,,
+"SD-98","SD Project","As a seller, I want to see my store and the products in it, so that I can know what it looks like to a buyer.","Acceptance Criteria:
+When I visit the 'seller/store' route,
+I can see all of the products in my store
+
+use clerks useUser hook and metadata to get the storeId","In Review",,"No priority",,,"2555154@students.wits.ac.za","capit1088@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T18:13:12.328Z","2025-05-12T17:29:26.318Z","2025-05-07T16:03:28.743Z",,,,,,,"",,,
+"SD-88","SD Project","Create Account with Stitch Payments","[Stitch Money | Online payments South Africa | Payment gateway and API](https://www.stitch.money/?utm_term=stitch%2520payments_e&utm_campaign=JC+%257C+SA+%257C+Search+%257C+Branded+Terms+%257C+E+%2526+P&utm_source=google&utm_medium=ppc&utm_content=719471851417&hsa_acc=3806469535&hsa_cam=19660232147&hsa_grp=154438042748&hsa_ad=719471851417&hsa_src=g&hsa_tgt=kwd-1065298859665&hsa_kw=stitch%2520payments&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=19660232147&gclid=Cj0KCQjwoNzABhDbARIsALfY8VP7RA0E4HPdmzuwg7--k40LkEBoxrn0Hqc9rfQInMtwN35xCZSMxgQaApyDEALw_wcB)","In Review",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:30:50.632Z","2025-05-05T13:16:01.941Z","2025-05-05T13:16:01.928Z",,,,,,"SD-77","",,,
+"SD-82","SD Project","As admin , I can view my dashboard, so that I can have a glance at the performance of my store","Given that I am a seller,
+When I navigate to 'seller/dashboard'
+I should see a graph of my stores performance, and other KPIs according to wireframe
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/b99cbab2-b765-47af-9ab8-917c5720c1b9/00890b25-e238-4637-af86-4b4a7c155580)","In Review",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:01:03.518Z","2025-05-05T14:57:31.242Z","2025-05-05T14:57:31.219Z",,,,,,,"",,,
+"SD-91","SD Project","As a store owner, I want to add products to my store, so that I can sell.","","In Review",,"No priority",,,"ntobimpumelelo@gmail.com",,"",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T13:20:39.890Z","2025-05-05T13:20:39.890Z","2025-05-05T13:20:39.920Z",,,,,,,"",,,
+"SD-101","SD Project","As a seller, I want to generate a Daily List so that I have an itemised task list for my store","Acceptance Criteria:
+Given that I am a seller
+When I navigate to 'seller/reporting' and click on the big daily tasks report card
+Then a csv of any unfulfilled orders, their details, and delivery methods gets generated and downloaded
+
+the task list is from the perspective of driver or mailman. it give any information around orders that need to be shipped or prepped for collection","In Progress",,"No priority",,,"2555154@students.wits.ac.za","capit1088@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T18:20:22.972Z","2025-05-19T14:01:06.534Z","2025-05-15T16:55:51.714Z",,,,,,,"",,,
+"SD-97","SD Project","As a seller, I want to manage my inventory, so that I can avoid stockouts.","Acceptance Criteria:
+Abitlity to create, read, update, and delete products and inventory counts
+via datatable.","In Progress",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T18:09:48.363Z","2025-05-14T10:25:03.390Z","2025-05-14T10:25:03.369Z",,,,,,,"",,,
+"SD-96","SD Project","As a seller, I want to manage my orders, so that I can fulfill them.","Acceptance Criteria:
+CRUD on orders datatable","In Progress",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T18:07:49.952Z","2025-05-14T10:25:15.679Z","2025-05-14T10:25:15.655Z",,,,,,,"",,,
+"SD-106","SD Project","if logged in as a seller the mystore btn on /home needs to route to /seller/store","","Todo",,"No priority",,,"2555154@students.wits.ac.za","suhailseedat10@gmail.com","task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T18:27:57.004Z","2025-05-05T18:34:38.048Z",,,,,,,,"",,,
+"SD-104","SD Project","A nice looking footer component that goes on every page","A footer component needs to be designed and added to the route layout, every page must display the footer. ","Todo",,"No priority",,,"2555154@students.wits.ac.za","peteryanga6@gmail.com","task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T18:24:58.393Z","2025-05-05T18:32:37.138Z",,,,,,,,"",,,
+"SD-87","SD Project","Create page in /stores/[id]/products/[id]","use FullCardComponent","Todo",,"No priority",,,"2555154@students.wits.ac.za",,"task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:29:37.111Z","2025-05-04T17:29:37.111Z",,,,,,,"SD-76","",,,
+"SD-86","SD Project","Create FullProductCard component","Must match the wireframe","Todo",,"No priority",,,"2555154@students.wits.ac.za",,"task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:28:50.020Z","2025-05-04T17:28:50.020Z",,,,,,,"SD-76","",,,
+"SD-85","SD Project","Graph component backend logic","An aggregate query needs to be created. 
+For a particular store, for each day, get orders where status = paid. sum order totals","Todo",,"No priority",,,"2555154@students.wits.ac.za",,"task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:28:03.117Z","2025-05-04T17:28:03.117Z",,,,,,,"SD-82","",,,
+"SD-77","SD Project","As a seller, I can create a store with my own stitch payment credentials so that I can get paid for my sales","AC:
+Given that I am a buyer, 
+When I navigate to any page with the 'become a seller' button and click it
+Then I can create a store with my stitch credentials
+
+Every Seller must add their stitch credentials to create a store.","Todo",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","Improvement",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T16:37:30.386Z","2025-05-04T17:31:33.120Z",,,,,,,,"",,,
+"SD-94","SD Project","As any user, I can view all the stores on storify, so that I can see what they are selling","","Done",,"No priority",,,"mtloungphutheho@gmail.com","mtloungphutheho@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T14:22:52.698Z","2025-05-19T09:18:36.508Z","2025-05-05T14:22:52.731Z",,"2025-05-19T09:18:36.495Z",,,,,"",,,
+"SD-84","SD Project","Add API Routes in backend","Create the following routes:
+
+* /orders/today/:storeId
+* /products/count/:storeId
+* /orders/sales/:storeId","Done",,"No priority",,,"2555154@students.wits.ac.za",,"task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:26:26.052Z","2025-05-19T09:18:11.772Z","2025-05-05T13:14:30.629Z",,"2025-05-19T09:18:11.757Z",,,,"SD-82","",,,
+"SD-93","SD Project","As any authenticated user, I can pay for an order securely with my credit card, so that I can have piece of mind","","Done",,"No priority",,,"mtloungphutheho@gmail.com","ntobimpumelelo@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T14:22:28.034Z","2025-05-19T09:17:16.790Z","2025-05-05T14:22:28.070Z",,"2025-05-19T09:17:16.770Z",,,,,"",,,
+"SD-83","SD Project","Create Order Success Components","After an order is created and the checkout process happens the payment gateway will route us back to 'orders/\[id\]' with 2 parameters: order-id, payment-id
+based on 
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/a1b4d752-cc34-4127-8b30-042c02344864/bc66c0c0-f519-4527-8e21-9bce13ea9d7c)
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/30e15626-a8c7-421e-b7af-66fb72b17598/52f04f64-d96a-4985-b928-8e3179d82cd4)","Done",,"No priority",,,"2555154@students.wits.ac.za","suhailseedat10@gmail.com","task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:22:53.252Z","2025-05-19T09:17:20.673Z","2025-05-05T13:14:17.654Z",,"2025-05-19T09:17:20.657Z",,,,,"",,,
+"SD-92","SD Project","As any authenticated user, I get auto-completion when entering my address, so that I can have a better user experience","","Done",,"No priority",,,"mtloungphutheho@gmail.com","suhailseedat10@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T14:22:05.797Z","2025-05-19T09:17:24.138Z","2025-05-05T14:22:05.840Z",,"2025-05-19T09:17:24.119Z",,,,,"",,,
+"SD-79","SD Project","As any authenticated user, I can manage my cart for each store, so that I can quickly put together an order","Given that I am an authenticated user (buyer/seller/admin),
+When I navigate to either a store view 'home/stores/\[id\]' or a product view 'home/stores/\[id\]/product/\[id\]' AND click `add to cart` ,
+Then the cart for ONLY that store gets updated
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/8c7304d2-a274-4b80-9fe5-ca401eefd5c9/320c31f2-043f-4ce5-b488-2aaa8f02c6b1)","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T16:52:42.834Z","2025-05-19T09:17:12.375Z","2025-05-05T13:13:45.981Z",,"2025-05-19T09:17:12.358Z",,,,,"",,,
+"SD-76","SD Project","As any user, I can view details and images of a product, so that I can know if it is what I want to buy","**Acceptence Criteria:**
+Given that I am any user (buyer/seller/admin/unauthenticated) 
+When I navigate to '/home/stores/\[id\]/products/\[id\]'
+Then I can see 3 Images of a product, the price, the stock quantity, the description etc.
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/39a05688-b575-4c5b-940d-910c1903a0cb/29205deb-c312-4c8f-bdae-d9fc58d33f64)","Done",,"No priority",,,"2555154@students.wits.ac.za","peteryanga6@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T16:34:24.286Z","2025-05-19T09:17:01.863Z","2025-05-05T13:11:36.402Z",,"2025-05-19T09:17:01.845Z",,,,,"",,,
+"SD-102","SD Project","Backend endpoint that uploads images or documents to azure blobstorage","Basically I want to supply a file and receive a url to where that file is stored.","In Review",,"Medium",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","task",6,"Sprint 5","2025-05-26T22:00:00.000Z","2025-06-09T22:00:00.000Z","2025-05-05T18:22:39.240Z","2025-05-25T13:35:52.098Z","2025-05-19T09:18:46.298Z",,,,,,,"",,,
+"SD-107","SD Project","product creation needs to allow images to be uploaded","","In Review",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","task",6,"Sprint 5","2025-05-26T22:00:00.000Z","2025-06-09T22:00:00.000Z","2025-05-05T18:29:11.712Z","2025-05-19T09:18:55.224Z","2025-05-19T09:18:55.201Z",,,,,,,"",,,
+"SD-105","SD Project","product details needs to be shifted into a modal and not a page","","In Review",,"No priority",,,"2555154@students.wits.ac.za","peteryanga6@gmail.com","Improvement, task",6,"Sprint 5","2025-05-26T22:00:00.000Z","2025-06-09T22:00:00.000Z","2025-05-05T18:26:14.988Z","2025-05-19T09:19:01.859Z","2025-05-19T09:19:01.834Z",,,,,,,"",,,
+"SD-99","SD Project","As a seller, I want to generate a sales report of the last 30 days, so that I can see the sales.","Acceptance Criteria:
+Given that I am a seller
+When I navigate to 'seller/reporting' and click on the big sales report card
+Then a csv of my last 30 days gets generated and downloaded","In Review",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","user story",6,"Sprint 5","2025-05-26T22:00:00.000Z","2025-06-09T22:00:00.000Z","2025-05-05T18:16:00.713Z","2025-05-19T09:19:22.323Z","2025-05-19T09:19:22.288Z",,,,,,,"",,,
+"SD-95","SD Project","As a seller, I want to view my dashboard, so that I can see the progress of my store at a glance.","","In Review",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","user story",6,"Sprint 5","2025-05-26T22:00:00.000Z","2025-06-09T22:00:00.000Z","2025-05-05T18:06:25.427Z","2025-05-19T09:19:29.767Z","2025-05-19T09:19:29.736Z",,,,,,,"",,,
+"SD-81","SD Project","As any authenticated user, I can pay for an order securely with my credit card, so that I can have piece of mind","Given that I am an authenticated user (buyer/seller/admin),
+When I am paying for my order, 
+Then I get routed to and back from the Stitch Payment Processor.","In Review",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","Feature",6,"Sprint 5","2025-05-26T22:00:00.000Z","2025-06-09T22:00:00.000Z","2025-05-04T16:58:30.141Z","2025-05-19T14:21:45.507Z","2025-05-19T09:19:38.915Z",,,,,,,"",,,
+"SD-103","SD Project","After SD-102: Another backend endpoint, strictly for images, it must resize to 500px x 500px before uplaoding.","","Todo",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","task",6,"Sprint 5","2025-05-26T22:00:00.000Z","2025-06-09T22:00:00.000Z","2025-05-05T18:23:29.482Z","2025-05-25T13:35:52.054Z",,,,,,,"SD-102","",,,

@@ -1,0 +1,221 @@
+"ID","Team","Title","Description","Status","Estimate","Priority","Project ID","Project","Creator","Assignee","Labels","Cycle Number","Cycle Name","Cycle Start","Cycle End","Created","Updated","Started","Triaged","Completed","Canceled","Archived","Due Date","Parent issue","Initiatives","Project Milestone ID","Project Milestone","SLA Status","Roadmaps"
+"SD-75","SD Project","write tests for backend endpoints 2/2","write tests for store endpoints ","Done",,"No priority",,,"2555154@students.wits.ac.za","peteryanga6@gmail.com","",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-19T19:07:48.293Z","2025-04-23T12:20:52.280Z",,,"2025-04-23T12:20:52.263Z",,,,,"",,,
+"SD-73","SD Project","Create Physical View - Deployment Schema","Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T22:03:27.559Z","2025-04-23T12:20:55.910Z",,,"2025-04-23T12:20:55.896Z",,,,,"",,,
+"SD-72","SD Project","Create Development View - component schema","Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram","Done",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T22:02:55.227Z","2025-04-23T12:20:59.273Z",,,"2025-04-23T12:20:59.247Z",,,,,"",,,
+"SD-71","SD Project","Create Logical View - Class Diagram and all interactions","Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class and look at DB Schema [SD-69](https://linear.app/sd-project/issue/SD-69/finalise-db-schema) 
+See how our code works and create the diagram","Done",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T22:01:16.020Z","2025-04-23T12:21:16.461Z","2025-04-19T19:01:27.722Z",,"2025-04-23T12:21:16.446Z",,,,,"",,,
+"SD-68","SD Project","Create DB instances QA + Prd","","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T22:00:07.282Z","2025-04-23T12:26:15.459Z","2025-04-19T08:20:19.371Z",,"2025-04-23T12:26:15.444Z",,,,"SD-67","",,,
+"SD-69","SD Project","Finalise DB schema","","Done",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T22:00:07.282Z","2025-04-23T12:21:19.057Z","2025-04-19T19:01:47.130Z",,"2025-04-23T12:21:19.041Z",,,,"SD-67","",,,
+"SD-70","SD Project","populate tables with sample data","","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T22:00:07.282Z","2025-04-23T12:26:38.782Z","2025-04-19T08:20:12.648Z",,"2025-04-23T12:26:38.730Z",,,,"SD-67","",,,
+"SD-66","SD Project","Create a sequence diagram for SD-56","[SD-56](https://linear.app/sd-project/issue/SD-56/as-an-admin-i-can-manage-stores-on-the-platform-so-that-i-can-ensure)
+
+Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:55:09.400Z","2025-04-23T12:21:12.126Z","2025-04-20T14:14:06.933Z",,"2025-04-23T12:21:12.110Z",,,,,"",,,
+"SD-65","SD Project","Create a sequence diagram for SD-54","[SD-54](https://linear.app/sd-project/issue/SD-54/as-a-seller-i-can-view-the-products-in-my-store-so-that-i-can-know)
+
+Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+[SD54-SellerViewProducts.drawio](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/bd5ea6a8-a7c3-4335-ac03-bd6b4f638d7c/a4ab638d-f0dd-4878-a2e5-0fdad96b7713)
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram","Done",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:54:17.962Z","2025-04-22T22:56:39.698Z","2025-04-19T10:31:31.419Z",,"2025-04-22T22:56:39.660Z",,,,,"",,,
+"SD-64","SD Project","Create a sequence diagram for SD-50","[SD-50](https://linear.app/sd-project/issue/SD-50/as-a-seller-i-can-create-a-store-so-that-i-may-begin-to-sell-online)
+
+Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+# 
+
+[SD-50SellerCreateStore.drawio](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/8474ebd9-802b-4368-8409-58882301ccd1/fb91caae-f465-4f7f-8a95-2f95b229395b)
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram","Done",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:53:52.508Z","2025-04-22T22:55:02.327Z","2025-04-19T11:39:54.031Z",,"2025-04-22T22:55:02.309Z",,,,,"",,,
+"SD-63","SD Project","Create a sequence diagram for SD-49","[SD-49](https://linear.app/sd-project/issue/SD-49/as-an-unauthenticated-user-i-can-search-for-a-product-so-that-i-can)
+
+Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+[SD49-UserSearchProducts.drawio](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/8061abca-d069-44f0-b09f-f20f07938840/126e16cf-2d9a-457a-bb74-5002cc08367c)
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram","Done",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:53:27.396Z","2025-04-22T22:52:49.182Z","2025-04-19T14:00:34.128Z",,"2025-04-22T22:52:49.171Z",,,,,"",,,
+"SD-90","SD Project","Create StoreCard component","","Done",,"No priority",,,"2555154@students.wits.ac.za","capit1088@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-05-04T17:32:16.479Z","2025-05-05T11:49:19.547Z",,,"2025-05-05T11:49:19.506Z",,,,"SD-78","",,,
+"SD-62","SD Project","Create a sequence diagram for SD-47","[SD-47](https://linear.app/sd-project/issue/SD-47/as-an-unauthenticated-user-i-can-view-all-the-products-available-on) 
+Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram
+
+[SD47-UserViewProducts.drawio](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/1ae2be24-365c-4458-9e35-e9bd7be29e06/a6ad34da-913b-462d-b155-2da3f4d04c7d)","Done",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:52:44.155Z","2025-04-22T22:50:21.217Z","2025-04-19T12:23:19.492Z",,"2025-04-22T22:50:21.204Z",,,,,"",,,
+"SD-89","SD Project","Create StoreGallery Component","","Done",,"No priority",,,"2555154@students.wits.ac.za","capit1088@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-05-04T17:32:05.810Z","2025-05-05T11:49:21.487Z",,,"2025-05-05T11:49:21.464Z",,,,"SD-78","",,,
+"SD-61","SD Project","Create a sequence diagram for SD-52","[SD-52](https://linear.app/sd-project/issue/SD-52/as-a-seller-i-can-add-a-product-to-my-store-so-that-people-can-find-it)
+
+Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram
+
+[SellerAddProduct (1).drawio](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/4e800bf3-ac58-4b36-ba03-6916d4f6973e/0fe6a39c-0d0a-40fd-ba9d-a3f2ac885db1)","Done",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:52:10.146Z","2025-04-22T22:45:06.196Z","2025-04-19T11:48:03.103Z",,"2025-04-22T22:45:06.184Z",,,,,"",,,
+"SD-60","SD Project","Create a sequence diagram for SD-36","[SD-36](https://linear.app/sd-project/issue/SD-36/as-an-admin-i-want-to-be-able-to-escalate-privileges-so-that-the) 
+
+Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram
+
+[AdminEscPrivileges (1).drawio](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/65960c87-c619-4804-9f44-63eddde16dc1/78ef4b45-b8f3-4160-a891-c27e41287342)","Done",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:51:31.282Z","2025-04-22T22:41:44.218Z","2025-04-17T17:42:43.335Z",,"2025-04-22T22:41:44.203Z",,,,,"",,,
+"SD-59","SD Project","Create a sequence diagram for SD-25","Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram
+
+[BuyerSign-up (2).drawio](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/0c197db0-18ae-4906-bc2b-77e143a7ef03/772a502e-b8ab-4687-acce-9bd8e0e3ed69)","Done",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:50:57.529Z","2025-04-22T22:37:12.148Z","2025-04-17T17:43:46.504Z",,"2025-04-22T22:37:12.136Z",,,,,"",,,
+"SD-58","SD Project","Create a sequence diagram for SD-24","Acceptance Criteria:
+The sequence diagram accurately represents the logic in the software
+The UML syntax is correct
+The draw.io file is attached
+
+What you need to do:
+Use draw.io and UML syntax to create a sequence diagram
+Read the notes in class
+See how our code works and create the diagram
+
+[SellerSign.drawio](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/c69deec7-1c7d-4410-aa99-2756afe1051d/d85008f6-3f83-496a-84a8-0d57ff49328b)","Done",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:49:11.650Z","2025-04-22T22:29:26.547Z","2025-04-17T17:43:04.873Z",,"2025-04-22T22:29:26.530Z",,,,,"",,,
+"SD-48","SD Project","Add backend route to get all products","Route must be available at /products","Done",,"No priority",,,"2555154@students.wits.ac.za",,"",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:10:13.320Z","2025-04-23T12:26:30.486Z","2025-04-19T10:21:15.507Z",,"2025-04-23T12:26:30.469Z",,,,"SD-47","",,,
+"SD-46","SD Project","Create the scenario diagram for all existing and upcoming user stories","**Acceptance Criteria:**
+
+Each of the 4 user stories in sprint 1 ([SD-23](https://linear.app/sd-project/issue/SD-23/as-a-user-i-want-to-be-able-to-sign-up-as-an-admin-and-get-a), [SD-24](https://linear.app/sd-project/issue/SD-24/as-a-seller-i-want-to-signup-and-login-so-that-i-can-be-able-to-access), [SD-25](https://linear.app/sd-project/issue/SD-25/as-a-buyer-i-want-to-sign-up-and-login-to-my-account-so-that-i-can-buy) [SD-36](https://linear.app/sd-project/issue/SD-36/as-an-admin-i-want-to-be-able-to-escalate-privileges-so-that-the))  is covered in the scenario diagram.
+
+Each of the 7 user stories in sprint 2() are covered in the scenario diagram.
+
+**What you need to do:**
+
+In draw.io you need to create a scenario diagram which encompases the above. 
+Refer to slides_5 in course on what a scenario diagram is.","Done",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T20:56:11.555Z","2025-04-23T12:20:05.808Z","2025-04-19T19:01:37.875Z",,"2025-04-23T12:20:05.768Z",,,,,"",,,
+"SD-55","SD Project","Implement backend route GET /products/ which supports body param store_id to retrieve all stores products from database","","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:37:45.770Z","2025-04-23T12:21:04.562Z","2025-04-19T08:21:18.276Z",,"2025-04-23T12:21:04.546Z",,,,"SD-54","",,,
+"SD-53","SD Project","implement backend route /products/create to insert product into the database","","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:31:39.247Z","2025-04-23T12:26:18.723Z","2025-04-19T08:20:53.444Z",,"2025-04-23T12:26:18.709Z",,,,"SD-52","",,,
+"SD-51","SD Project","Implement a backend route which inserts a store into the database","","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","task",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T21:25:54.608Z","2025-04-23T12:21:37.014Z","2025-04-19T08:20:40.930Z",,"2025-04-23T12:21:36.998Z",,,,"SD-50","",,,
+"SD-80","SD Project","As any authenticated user, I get auto-completion when entering my address so that I can have a better user experience","Given that I am an authenticated user (buyer/seller/admin),
+When I am filling in the address in my checkout form ,
+Then I get auto completions with full google places addresses.
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/75b15595-3e1b-4eca-aef9-65faa892844d/64bb5824-c2c6-47bc-b56c-71f185656a3d)
+
+Use Google Places API, 
+
+Create an input that allows for autocompletion","Done",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","user story",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-05-04T16:53:48.308Z","2025-05-05T13:10:59.855Z",,,"2025-05-05T13:10:59.830Z",,,,,"",,,
+"SD-78","SD Project","As any user, I can view all the stores on storify, so that I can see what they are selling","Given that I am any user (unauthenticated/buyer/seller/admin),
+When I navigate to 'home',
+Then I can see all the stores on storify
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/739b06ff-d12c-4020-ad1f-d23855a32427/bd3b4d9a-9f33-4302-b30d-a4bcd6818707)","Done",,"No priority",,,"2555154@students.wits.ac.za",,"user story",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-05-04T16:48:27.536Z","2025-05-05T13:12:01.539Z",,,"2025-05-05T13:12:01.515Z",,,,,"",,,
+"SD-67","SD Project","Create and Setup DB","Acceptance Criteria:
+There is a db instances which use [www.neon.tech](https://www.neon.tech) .","Done",,"No priority",,,"2555154@students.wits.ac.za","mtloungphutheho@gmail.com","",4,"Sprint 3","2025-05-04T22:00:00.000Z","2025-05-06T22:00:00.000Z","2025-04-16T22:00:07.282Z","2025-04-23T12:21:52.473Z","2025-04-21T18:50:04.220Z",,"2025-04-23T12:21:52.415Z",,,,,"",,,
+"SD-88","SD Project","Create Account with Stitch Payments","[Stitch Money | Online payments South Africa | Payment gateway and API](https://www.stitch.money/?utm_term=stitch%2520payments_e&utm_campaign=JC+%257C+SA+%257C+Search+%257C+Branded+Terms+%257C+E+%2526+P&utm_source=google&utm_medium=ppc&utm_content=719471851417&hsa_acc=3806469535&hsa_cam=19660232147&hsa_grp=154438042748&hsa_ad=719471851417&hsa_src=g&hsa_tgt=kwd-1065298859665&hsa_kw=stitch%2520payments&hsa_mt=e&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=19660232147&gclid=Cj0KCQjwoNzABhDbARIsALfY8VP7RA0E4HPdmzuwg7--k40LkEBoxrn0Hqc9rfQInMtwN35xCZSMxgQaApyDEALw_wcB)","In Review",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:30:50.632Z","2025-05-05T13:16:01.941Z","2025-05-05T13:16:01.928Z",,,,,,"SD-77","",,,
+"SD-82","SD Project","As admin , I can view my dashboard, so that I can have a glance at the performance of my store","Given that I am a seller,
+When I navigate to 'seller/dashboard'
+I should see a graph of my stores performance, and other KPIs according to wireframe
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/b99cbab2-b765-47af-9ab8-917c5720c1b9/00890b25-e238-4637-af86-4b4a7c155580)","In Review",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:01:03.518Z","2025-05-05T14:57:31.242Z","2025-05-05T14:57:31.219Z",,,,,,,"",,,
+"SD-91","SD Project","As a store owner, I want to add products to my store, so that I can sell.","","In Review",,"No priority",,,"ntobimpumelelo@gmail.com",,"",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T13:20:39.890Z","2025-05-05T13:20:39.890Z","2025-05-05T13:20:39.920Z",,,,,,,"",,,
+"SD-81","SD Project","As any authenticated user, I can pay for an order securely with my credit card, so that I can have piece of mind","Given that I am an authenticated user (buyer/seller/admin),
+When I am paying for my order, 
+Then I get routed to and back from the Stitch Payment Processor.","In Review",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","Feature",6,"Sprint 5","2025-05-26T22:00:00.000Z","2025-06-09T22:00:00.000Z","2025-05-04T16:58:30.141Z","2025-05-19T14:21:45.507Z","2025-05-19T09:19:38.915Z",,,,,,,"",,,
+"SD-87","SD Project","Create page in /stores/[id]/products/[id]","use FullCardComponent","Todo",,"No priority",,,"2555154@students.wits.ac.za",,"task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:29:37.111Z","2025-05-04T17:29:37.111Z",,,,,,,"SD-76","",,,
+"SD-86","SD Project","Create FullProductCard component","Must match the wireframe","Todo",,"No priority",,,"2555154@students.wits.ac.za",,"task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:28:50.020Z","2025-05-04T17:28:50.020Z",,,,,,,"SD-76","",,,
+"SD-85","SD Project","Graph component backend logic","An aggregate query needs to be created. 
+For a particular store, for each day, get orders where status = paid. sum order totals","Todo",,"No priority",,,"2555154@students.wits.ac.za",,"task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:28:03.117Z","2025-05-04T17:28:03.117Z",,,,,,,"SD-82","",,,
+"SD-77","SD Project","As a seller, I can create a store with my own stitch payment credentials so that I can get paid for my sales","AC:
+Given that I am a buyer, 
+When I navigate to any page with the 'become a seller' button and click it
+Then I can create a store with my stitch credentials
+
+Every Seller must add their stitch credentials to create a store.","Todo",,"No priority",,,"2555154@students.wits.ac.za","ntobimpumelelo@gmail.com","Improvement",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T16:37:30.386Z","2025-05-04T17:31:33.120Z",,,,,,,,"",,,
+"SD-94","SD Project","As any user, I can view all the stores on storify, so that I can see what they are selling","","Done",,"No priority",,,"mtloungphutheho@gmail.com","mtloungphutheho@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T14:22:52.698Z","2025-05-19T09:18:36.508Z","2025-05-05T14:22:52.731Z",,"2025-05-19T09:18:36.495Z",,,,,"",,,
+"SD-84","SD Project","Add API Routes in backend","Create the following routes:
+
+* /orders/today/:storeId
+* /products/count/:storeId
+* /orders/sales/:storeId","Done",,"No priority",,,"2555154@students.wits.ac.za",,"task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:26:26.052Z","2025-05-19T09:18:11.772Z","2025-05-05T13:14:30.629Z",,"2025-05-19T09:18:11.757Z",,,,"SD-82","",,,
+"SD-93","SD Project","As any authenticated user, I can pay for an order securely with my credit card, so that I can have piece of mind","","Done",,"No priority",,,"mtloungphutheho@gmail.com","ntobimpumelelo@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T14:22:28.034Z","2025-05-19T09:17:16.790Z","2025-05-05T14:22:28.070Z",,"2025-05-19T09:17:16.770Z",,,,,"",,,
+"SD-83","SD Project","Create Order Success Components","After an order is created and the checkout process happens the payment gateway will route us back to 'orders/\[id\]' with 2 parameters: order-id, payment-id
+based on 
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/a1b4d752-cc34-4127-8b30-042c02344864/bc66c0c0-f519-4527-8e21-9bce13ea9d7c)
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/30e15626-a8c7-421e-b7af-66fb72b17598/52f04f64-d96a-4985-b928-8e3179d82cd4)","Done",,"No priority",,,"2555154@students.wits.ac.za","suhailseedat10@gmail.com","task",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T17:22:53.252Z","2025-05-19T09:17:20.673Z","2025-05-05T13:14:17.654Z",,"2025-05-19T09:17:20.657Z",,,,,"",,,
+"SD-92","SD Project","As any authenticated user, I get auto-completion when entering my address, so that I can have a better user experience","","Done",,"No priority",,,"mtloungphutheho@gmail.com","suhailseedat10@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-05T14:22:05.797Z","2025-05-19T09:17:24.138Z","2025-05-05T14:22:05.840Z",,"2025-05-19T09:17:24.119Z",,,,,"",,,
+"SD-79","SD Project","As any authenticated user, I can manage my cart for each store, so that I can quickly put together an order","Given that I am an authenticated user (buyer/seller/admin),
+When I navigate to either a store view 'home/stores/\[id\]' or a product view 'home/stores/\[id\]/product/\[id\]' AND click `add to cart` ,
+Then the cart for ONLY that store gets updated
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/8c7304d2-a274-4b80-9fe5-ca401eefd5c9/320c31f2-043f-4ce5-b488-2aaa8f02c6b1)","Done",,"No priority",,,"2555154@students.wits.ac.za","2555154@students.wits.ac.za","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T16:52:42.834Z","2025-05-19T09:17:12.375Z","2025-05-05T13:13:45.981Z",,"2025-05-19T09:17:12.358Z",,,,,"",,,
+"SD-76","SD Project","As any user, I can view details and images of a product, so that I can know if it is what I want to buy","**Acceptence Criteria:**
+Given that I am any user (buyer/seller/admin/unauthenticated) 
+When I navigate to '/home/stores/\[id\]/products/\[id\]'
+Then I can see 3 Images of a product, the price, the stock quantity, the description etc.
+
+![image.png](https://uploads.linear.app/b65fc42d-9509-4d42-9c28-e3168ed370e9/39a05688-b575-4c5b-940d-910c1903a0cb/29205deb-c312-4c8f-bdae-d9fc58d33f64)","Done",,"No priority",,,"2555154@students.wits.ac.za","peteryanga6@gmail.com","user story",5,"Sprint 4","2025-05-06T22:00:00.000Z","2025-05-18T22:00:00.000Z","2025-05-04T16:34:24.286Z","2025-05-19T09:17:01.863Z","2025-05-05T13:11:36.402Z",,"2025-05-19T09:17:01.845Z",,,,,"",,,
