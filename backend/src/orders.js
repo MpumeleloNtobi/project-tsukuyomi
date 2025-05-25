@@ -258,7 +258,7 @@ const ordersRoute = (app, dbUrl) => {
         ${JSON.stringify(order_items)},
         ${total_price},
         'paid',
-        'pending'
+        'Seller Received'
       )
       RETURNING *;
     `;
