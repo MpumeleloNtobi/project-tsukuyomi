@@ -154,18 +154,13 @@ npm run start
 ### Project Management
 
 We followed **Scrum** to organize weekly work. The project was divided into four sprints with defined goals, tasks, and deliverables.We used a great collaborative platform called [Linear](https://linear.app/sd-project/team/SD/cycles) to achieve convenient collaboration and delegation of tasks.For each sprint:
-Unfortantunately we cannot make our linear project public (it is not a feature they support). But here 
-are some credentials you can use:
-# Add creds (phuteho) 
-alternatively, we have exported each sprint and can be found at ```/docs/sprint-exports```
+Unfortantunately we cannot make our linear project public (it is not a feature they support). 
+But, we have exported each sprint and can be found at ```/docs/sprint-exports```
 - **Product Backlog :**  All planned feautures broken down into tasks
 - **Sprint Planning:** Goals and tasks chosen.
-- **Sprint board:** We used a Linear board to manage our sprints and tasks. See the Sprint Board for the Kanban-style view of our development workflow [here](https://linear.app/sd-project/team/SD/cycles).
+- **Sprint board:** We used a Linear board to manage our sprints and tasks.
 - **Burndown Chart:** Track progress each sprint (e.g., see Sprint 1 Burndown ).**More information and images of all the burndown charts see `/docs/burndowncharts` which shows images of charts for each sprint**
 - **Reviews/Retrospectives:** Demo sessions and feedback after each sprint
-
-To access our full records of all these on Linear and follow-up on this [See here](https://linear.app/sd-project/team/SD/cycles).
-
 
 ### 🔗 Navigation & Resources
 
