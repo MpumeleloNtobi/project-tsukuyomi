@@ -102,7 +102,7 @@ export default function Home() {
       </section>
       <Team03Page></Team03Page>
       <VelocityScroll>Launch your hustle</VelocityScroll>
-      <Footer /> 
+      
     </main>
   );
 }

@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,9 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen font-sans antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-screen font-sans antialiased`}>
         <ClerkProvider>
           <ThemeProvider
             attribute="class"
@@ -38,7 +37,13 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            {/* _All_ of your pages will render in place of {children} */}
             {children}
+
+            {}
+            <Footer />
+
+            {/* Toast notifications */}
             <Toaster />
           </ThemeProvider>
         </ClerkProvider>
